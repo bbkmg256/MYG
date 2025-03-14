@@ -52,7 +52,11 @@ public class Tutor {
 	// private ArrayList<Entrenamiento> entrenamientos_t = new ArrayList<>();
 		
 	// Constructor
-        Tutor(int paramDni, String paramNombre, String paramApellido,
+	public Tutor() {
+		
+	}
+	
+	public Tutor(int paramDni, String paramNombre, String paramApellido,
 		Date paramFechaNac, char paramSexo, String paramCiudad,
 		String paramProvincia, int paramCodPost, Date paramFechaIng){
 		

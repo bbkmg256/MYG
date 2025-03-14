@@ -40,7 +40,11 @@ public class GrupoMuscular {
 	// private ArrayList<Ejercicio> ejercicios = new ArrayList<>();
 	
 	// Constructor
-	GrupoMuscular(int paramIdGM, String paramNombreGrupo){
+	public GrupoMuscular() {
+		
+	}
+	
+	public GrupoMuscular(int paramIdGM, String paramNombreGrupo){
 		this.idGM = paramIdGM;
 		this.nombreGrupo = paramNombreGrupo;
 	}

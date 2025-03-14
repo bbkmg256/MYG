@@ -45,7 +45,11 @@ public class Rutina {
 	// private ArrayList<Entrenamiento> entrenamientos = new ArrayList<>();
 	
 	// Constructor
-	Rutina(int paramIdRutina, int paramCantSeries, int paramCantRepet){
+	public Rutina() {
+		
+	}
+	
+	public Rutina(int paramIdRutina, int paramCantSeries, int paramCantRepet){
 		this.idRutina = paramIdRutina;
 		this.cantSeries = paramCantSeries;
 		this.cantRepeticiones = paramCantRepet;

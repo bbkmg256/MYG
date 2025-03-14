@@ -63,7 +63,11 @@ public class Entrenamiento {
 	// private ArrayList<Seguimiento> seguimientoEntrenamiento = new ArrayList<>();
 	
 	// Constructor
-	Entrenamiento(int paramIdEntre, Date paramFechaInicio, Date paramFechaFin){
+	public Entrenamiento() {
+		
+	}
+	
+	public Entrenamiento(int paramIdEntre, Date paramFechaInicio, Date paramFechaFin){
 		this.idEntrenamiento = paramIdEntre;
 		this.puntaje = 0; // Al inicio es 0 hasta que el cliente lo puntue.
 		this.fechaInicio = paramFechaInicio;

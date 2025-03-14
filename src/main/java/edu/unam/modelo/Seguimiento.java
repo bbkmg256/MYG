@@ -51,7 +51,11 @@ public class Seguimiento {
 	// private Entrenamiento registroEntrenamiento;
 	
 	// Constructor
-	Seguimiento(int paramIdSeg, int paramCantSeries, int paramCantRep,
+	public Seguimiento() {
+		
+	}
+	
+	public Seguimiento(int paramIdSeg, int paramCantSeries, int paramCantRep,
 		String paramEjer, double paramPesoTrabajado){
 		
 		this.idSeguimiento = paramIdSeg;

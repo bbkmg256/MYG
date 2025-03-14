@@ -43,7 +43,11 @@ public class Ejercicio {
 	// private Rutina rutina;
 	
 	// Constructor
-	Ejercicio(int paramIdEjer, String paramNombreEjer){
+	public Ejercicio() {
+		
+	}
+	
+	public Ejercicio(int paramIdEjer, String paramNombreEjer){
 		this.idEjercicio = paramIdEjer;
 		this.nombreEjercicio = paramNombreEjer;
 	}
