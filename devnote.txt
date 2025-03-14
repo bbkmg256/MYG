@@ -1,0 +1,34 @@
+
+# NOTAS DE DESARROLLO #
+
+
+(16/12/24)
+
+Hoy se inicia (por 7ma vez) el proyecto integrador de POO, un sistema de gestion de clientes para un gimnacio,
+basicamente hoy voy a crear las clases basicas, y hacer una primera conexion con mi BD.
+Lo que de por momento mas se me complica es estructurar el esquema o diagrama de clases ya que me confunde un poco
+como hacerlo y llevar el registro de entrenamiento de los usuarios, si bien tengo una base (gracias a un amigo),
+se me sigue haciendo complicado estructurarlo, aun que voy a seguir trabajando en eso.
+
+
+(18/12/24)
+
+Se termino de definir lo basico de las clases principales, ademas de que se soluciono problemas con depedencias 
+de base de datos no funcionales (no era posible la conexion a la BD con la dependencia antes empleada).
+
+Por el momento faltas hacer el mapeo con JPA de las clase y sus relaciones.
+
+
+(02/02/25)
+
+Creado el fichero de persistencia "persistence.xml"
+
+
+(26/02/25)
+
+Vuelta al proyecto...
+
+Se relacionaron las entidades entre si, pero por el momento esas relciónes están comentadas para no romper nadad
+ademas se debe mapear con @OneToOne o @OneToMany y así para las interrelaciones de entidades para la BD.
+
+
