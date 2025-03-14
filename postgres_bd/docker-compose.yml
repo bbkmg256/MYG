@@ -1,0 +1,24 @@
+
+# Compose para la base de datos de la aplicacion GYM
+
+# version: '3.8' # atributo obsoleto
+
+services:
+  postgres:
+    image: postgres:alpine   # Especifica la versión de PostgreSQL (puedes cambiarla si necesitas otra)
+    container_name: postgres_container
+    ports:
+      - "5432:5432" # Mapea el puerto 5432 del contenedor al 5432 del host
+    environment:
+      POSTGRES_USER: tecded # Usuario de PostgreSQL
+      POSTGRES_PASSWORD: 12345 # Contraseña del usuario
+      POSTGRES_DB: GYM_DB # Base de datos que se crea al iniciar
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistencia de datos
+
+volumes:
+  postgres_data:
+
+
+# Para ingresar a psql de forma interactiva
+# docker exec -it postgres_container sh -c "psql -h localhost -U tecded -d GYM_DB"
