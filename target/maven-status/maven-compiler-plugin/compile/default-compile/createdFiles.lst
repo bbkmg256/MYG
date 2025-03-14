@@ -1,0 +1,8 @@
+edu/unam/modelo/Cliente.class
+edu/unam/jpaController/ClienteJpaController.class
+edu/unam/modelo/Rutina.class
+edu/unam/modelo/GrupoMuscular.class
+edu/unam/modelo/Tutor.class
+edu/unam/modelo/Entrenamiento.class
+edu/unam/modelo/Ejercicio.class
+edu/unam/Main.class
