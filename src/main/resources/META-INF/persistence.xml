@@ -8,12 +8,14 @@
     <persistence-unit name="persistencia">
     	<!-- Definicion de clases para mapeado de objeto - entidad -->
     	<class>edu.unam.modelo.Cliente</class>
+    	<!--
     	<class>edu.unam.modelo.Tutor</class>
     	<class>edu.uname.modelo.Entrenamiento</class>
 		<class>edu.unam.modelo.Seguimiento</class>
 		<class>edu.unam.modelo.Rutina</class>
 		<class>edu.unam.modelo.Ejercicio</class>
 		<class>edu.unam.modelo.GrupoMuscular</class>
+		-->
 
         <properties>
             <!-- Config postgres y jpa -->
