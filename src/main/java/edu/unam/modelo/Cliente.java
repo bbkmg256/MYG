@@ -12,7 +12,7 @@ package edu.unam.modelo;
 
 // Libs
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
@@ -36,9 +36,10 @@ public class Cliente implements Serializable {
 	// Atributos
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int dni;
+	private int id;
 
 	@Basic
+	private int dni;
 	private String nombre;
 	private String apellido;
 	private char sexo;
@@ -47,16 +48,20 @@ public class Cliente implements Serializable {
 	private int codigoPostal;
 
 	@Temporal(TemporalType.DATE)
-	private Date fechaNacimiento;
-	private Date fechaIngreso;
+	private LocalDate fechaNacimiento;
+	private LocalDate fechaIngreso;
 	
 	// atributo relación con clase Entrenamiento (Lista)
 	// private ArrayList<Entrenamiento> entrenamientos_c = new ArrayList<>();
 	
 	// Constructor
-        Cliente(int paramDni, String paramNombre, String paramApellido,
-		Date paramFechaNac, char paramSexo, String paramCiudad,
-		String paramProvincia, int paramCodPost, Date paramFechaIng){
+	public Cliente() {
+		
+	}
+	
+	public Cliente(int paramDni, String paramNombre, String paramApellido,
+		LocalDate paramFechaNac, char paramSexo, String paramCiudad,
+		String paramProvincia, int paramCodPost, LocalDate paramFechaIng) {
 		
 		this.dni = paramDni;
 		this.nombre = paramNombre;
@@ -70,76 +75,84 @@ public class Cliente implements Serializable {
         }
 	
 	// Set
-	public void setDni(int valDni){
+	public void setId(int valId) {
+		this.id = valId;
+	}
+	
+	public void setDni(int valDni) {
 		this.dni = valDni;
 	}
 	
-	public void setNombre(String valNombre){
+	public void setNombre(String valNombre) {
 		this.nombre = valNombre;
 	}
 	
-	public void setApellido(String valApellido){
+	public void setApellido(String valApellido) {
 		this.apellido = valApellido;
 	}
 	
-	public void setFechaNacimiento(Date valFechaNac){
+	public void setFechaNacimiento(LocalDate valFechaNac) {
 		this.fechaNacimiento = valFechaNac;
 	}
 	
-	public void setSexo(char valSexo){
+	public void setSexo(char valSexo) {
 		this.sexo = valSexo;
 	}
 	
-	public void setCiudad(String valCiudad){
+	public void setCiudad(String valCiudad) {
 		this.ciudad = valCiudad;
 	}
 	
-	public void setProvicia(String valProvincia){
+	public void setProvicia(String valProvincia) {
 		this.provincia = valProvincia;
 	}
 	
-	public void setCodigoPostal(int valCodPost){
+	public void setCodigoPostal(int valCodPost) {
 		this.codigoPostal = valCodPost;
 	}
 	
-	public void setFechaIngreso(Date valFechaIng){
+	public void setFechaIngreso(LocalDate valFechaIng) {
 		this.fechaIngreso = valFechaIng;
 	}
 	
 	// Get
-	public int getDni(){
+	public int getId() {
+		return this.id;
+	}
+	
+	public int getDni() {
 		return this.dni;
 	}
 	
-	public String getNombre(){
+	public String getNombre() {
 		return this.nombre;
 	}
 	
-	public String getApellido(){
+	public String getApellido() {
 		return this.apellido;
 	}
 	
-	public Date getFechaNacimiento(){
+	public LocalDate getFechaNacimiento() {
 		return this.fechaNacimiento;
 	}
 	
-	public char getSexo(){
+	public char getSexo() {
 		return this.sexo;
 	}
 	
-	public String getCiudad(){
+	public String getCiudad() {
 		return this.ciudad;
 	}
 	
-	public String getProvincia(){
+	public String getProvincia() {
 		return this.provincia;
 	}
 	
-	public int getCodPost(){
+	public int getCodPost() {
 		return this.codigoPostal;
 	}
 	
-	public Date getFechaIngreso(){
+	public LocalDate getFechaIngreso() {
 		return this.fechaIngreso;
 	}
 	
