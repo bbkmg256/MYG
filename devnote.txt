@@ -32,3 +32,7 @@ Se relacionaron las entidades entre si, pero por el momento esas relciónes est�
 ademas se debe mapear con @OneToOne o @OneToMany y así para las interrelaciones de entidades para la BD.
 
 
+(13/03/25)
+
+Tras problemas con netbeans se tuvo que cambiar el IDE y rehacer todo desde 0, por el momento todo vuelve a funcionar,
+pero aun faltan bastantes modulos que crear, ademas de la interfaz graficas y completar el CRUD del los JPAController.
