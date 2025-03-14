@@ -1,0 +1,1 @@
+Esta clase almacena los ejercicios que trabajarán 1 [[GrupoMuscular]] como máximo, el conjunto de esto ejercicios conforman la [[Rutina]].

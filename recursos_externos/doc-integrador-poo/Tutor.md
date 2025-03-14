@@ -1,0 +1,1 @@
+Esta clase almacena los datos de los tutores que impartirán los entrenamiento, es por eso que se asocia a [[Entrenamiento]], ya que deben relacionarse con las rutinas que imparte y con el cliente a quien se lo imparte, pero también detallar cuando comienza y finaliza el entrenamiento del cliente para que posteriormente este califique a dicho tutor.

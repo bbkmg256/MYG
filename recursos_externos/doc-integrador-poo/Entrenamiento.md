@@ -1,0 +1,3 @@
+Esta clase almacena todos los entrenamientos que puede recibir un [[Cliente]](s) y cada entrenamiento tiene **UN SOLO**  [[Tutor]] asociado (que puede ser el mismo u otro para cada entrenamiento asociado a un cliente), y también esta clase recibe (o se asocia) a varias [[Rutina]](s) distintas, esto quiere decir que un entrenamiento se puede componer de 1 o mas rutinas.
+
+(Si no estoy mal) la idea es que se estipule el entrenamiento con la o las rutinas conformadas por los ejercicios a realizar partiendo de las respectivas series y repeticiones asignadas, realizando este entrenamiento (de forma repetida) durante 4 semanas (semanas que se encuentran dentro de las fecha de inicio y fin establecidas).

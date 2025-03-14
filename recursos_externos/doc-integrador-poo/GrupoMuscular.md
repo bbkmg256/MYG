@@ -1,0 +1,1 @@
+Esta clase almacena cada grupo muscular que puede ser trabajado por un conjunto de [[Ejercicio]](s)

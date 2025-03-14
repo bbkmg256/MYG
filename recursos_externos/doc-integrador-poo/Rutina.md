@@ -1,0 +1,1 @@
+Es una clase que almacena las rutinas creadas a partir de los [[Ejercicio]](s) cargados, estas rutinas van a ser detalladas en el entrenamiento asignado a cada cliente impartido por un profesor.

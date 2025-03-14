@@ -1,0 +1,2 @@
+Esta clase almacena todos los datos del cliente, se asocia con el [[Entrenamiento]] ya que en esa tabla estarán todos los entrenamiento con sus respectivas rutinas que el cliente debería realizar, esto impartido por un tutor.
+Como el entrenamiento es **PERSONALIZADO** la asociación es de 1 cliente a 1 o * (varios) entrenamientos.
