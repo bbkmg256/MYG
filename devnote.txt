@@ -36,3 +36,8 @@ ademas se debe mapear con @OneToOne o @OneToMany y así para las interrelaciones
 
 Tras problemas con netbeans se tuvo que cambiar el IDE y rehacer todo desde 0, por el momento todo vuelve a funcionar,
 pero aun faltan bastantes modulos que crear, ademas de la interfaz graficas y completar el CRUD del los JPAController.
+
+(14/03/25)
+
+Se trabajó en el primer JPAController para la entidad cliente, y se logró que funcione la carga de datos, pero de cierta
+manera que todavía se debe verificar que no cargue (o que actualice en todo caso), entidades que ya existen en la BD.
