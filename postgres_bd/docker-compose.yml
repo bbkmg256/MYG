@@ -18,7 +18,7 @@ services:
 
 volumes:
   postgres_data:
-
+    driver: local
 
 # Para ingresar a psql de forma interactiva
 # docker exec -it postgres_container sh -c "psql -h localhost -U tecded -d GYM_DB"
