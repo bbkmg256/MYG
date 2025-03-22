@@ -25,8 +25,9 @@
             <property name="jakarta.persistence.jdbc.password" value="12345" />
             
             <!-- Config hibernate -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" /> -->
+            <!-- EPECIFICAR VALUE EN "CREATE", PRODUCE QUE LA BD SE RECREE CON CADA EJECUCION DEL CODIGO, OJO! -->
+            <property name="hibernate.hbm2ddl.auto" value="update" />
         </properties>
     </persistence-unit>
 
