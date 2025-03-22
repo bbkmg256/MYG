@@ -37,7 +37,18 @@ ademas se debe mapear con @OneToOne o @OneToMany y así para las interrelaciones
 Tras problemas con netbeans se tuvo que cambiar el IDE y rehacer todo desde 0, por el momento todo vuelve a funcionar,
 pero aun faltan bastantes modulos que crear, ademas de la interfaz graficas y completar el CRUD del los JPAController.
 
+
 (14/03/25)
 
 Se trabajó en el primer JPAController para la entidad cliente, y se logró que funcione la carga de datos, pero de cierta
 manera que todavía se debe verificar que no cargue (o que actualice en todo caso), entidades que ya existen en la BD.
+
+
+(15/03/25)
+
+Se está desarrollando el crud para los clientes, por el momento se tiene la carga y la baja, falta la busqueda y la
+actualización, además por el momento se tiene cierto problema con la forma en que Hibernate maneja la BD, es necesario
+tener el esquema de BD creada antes de usar el programa, cosa que no me gusta demaciado pero a fines practicos y para
+enfocarme en otras cosas por el momento, lo voy a dejar así.
+Por último, y poco relevante, es que se volcó toda la prueba al Main principal, así se deja mas unificado todo y no se
+está probando desde una clase que no es.
