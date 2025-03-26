@@ -7,7 +7,7 @@
 
 // Se viene el verdadero BACKEND xd
 
-package edu.unam.jpaController;
+package edu.unam.persistencia;
 
 /*
 	NOTA:
@@ -25,45 +25,39 @@ package edu.unam.jpaController;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-
+import jakarta.persistence.TypedQuery;
 // Varios
 import edu.unam.modelo.Cliente;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public class ClienteJPAController {
 	// Atribs.
-	private static EntityManagerFactory emf;
-	private static EntityManager manager;
+	private EntityManagerFactory emf;
+	private EntityManager manager;
 
 	// Constructor
 	public ClienteJPAController() {
 		emf = Persistence.createEntityManagerFactory("persistencia"); // Devuelve un objetos EMF desde la unidad de persistencia;
+		System.out.println("[ EXITO ] > EMF iniciado correctamente!");
 	}
 	
 	// Teoricamente aca tiene que ir todo el CRUD para poder operar con la base
 	// de datos mediante el EMF.
 	
-	// Crear entidad (para el test este metodo es estatico, pero NO debe ser estatico) (Funcional, aunque falta cierta caracteristica)
+	// Crear entidad (Funcional)
 	public void crearCliente(Cliente entidadCliente) {
-		manager = emf.createEntityManager();
-		
-		String consulta = "SELECT c FROM Cliente c WHERE c.dni = :dni";
-		Cliente regCli = null;
-		
-		try {
-			regCli = manager.createQuery(consulta, Cliente.class) // Prepara una consulta SQL (JPQL)
-					.setParameter("dni", entidadCliente.getDni()) // Asociacion del parametro a la consulta
-					.setMaxResults(1) // Es como el "LIMIT 1" en SQL
-					.getSingleResult(); // Espera 1 solo resultado			
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		// Verifica si ya existe el cliente en la BD
+		Cliente regCli = this.obtenerCliente(entidadCliente.getDni());
 		
 		// Sale del metodo si la condición es verdadera (Comprbación de corto circuito)
 		if (regCli != null && regCli.getDni() == entidadCliente.getDni()) {
-			System.out.println("[ Error ] - El registro a cargar ya existe en la BD!");
-			return;
+			System.out.println("[ Error ] > El registro a cargar ya existe en la BD!");
+			return; // Termina la ejecución del metodo
 		}
+		
+		manager = emf.createEntityManager(); // Administrador de entidades
 		
 		try {
 			// Bloque de transacciones para persistencia
@@ -75,63 +69,122 @@ public class ClienteJPAController {
 			System.out.println(e);
 			manager.getTransaction().rollback();			
 		} finally {
-			// Cierra o destruye el gestor de entitades para liberar memoria
-			manager.close();		
+			manager.close();
 		}
 	}
 	
-	/*
-	// Leer entidad (No listo)
-	public Cliente obtenerCliente() {
-		return xxxx;
-	}
-	*/
+	// Leer entidad (Funcional)
+		public Cliente obtenerCliente(int dni) {
+			Cliente regCli = null; // Variable para almacenar el registro
+			manager = emf.createEntityManager();
+			
+			try { // Busca un cliente mediante su dni
+				regCli = manager.find(Cliente.class, dni);
+				// System.out.println(regCli);
+			} catch (Exception e) {
+				System.out.println(e);
+			} finally {
+				manager.close(); // Cierra el Entity Manager
+			}			
+			return regCli;
+		}
 	
-	// Actualizar entidad (No listo)
-	public void actualizarCliente() {
+	// Actualizar entidad (No Listo)
+	public void actualizarCliente(int dni, String nombre, String apellido,
+			LocalDate fechaNac, char sexo, String ciudad, String provincia,
+			int codPost, LocalDate fechaIng) {
+		
+		Cliente regCli = this.obtenerCliente(dni);
+		System.out.println(regCli);
+		
+		if (regCli == null) {
+			System.out.println("[ ERROR ] > Cliente no encontrado!");
+			return;
+		}
+		
+		manager = emf.createEntityManager();
+		
+		try {
+			manager.getTransaction().begin();
+			regCli = manager.merge(regCli);
+			
+			// Actualización de atributos de entidad
+			regCli.setNombre(nombre);
+			regCli.setApellido(apellido);
+			regCli.setFechaNacimiento(fechaNac);
+			regCli.setSexo(sexo);
+			regCli.setCiudad(ciudad);
+			regCli.setProvicia(provincia);
+			regCli.setCodigoPostal(codPost);
+			regCli.setFechaIngreso(fechaIng);
+			
+			manager.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println(e);
+			manager.getTransaction().rollback();
+		} finally {
+			manager.close();
+		}
 	}
 	
 	// Eliminar entidad (Funcional)
 	public void eliminarCliente(int dni) {
-		manager = emf.createEntityManager();
+		Cliente regCli = this.obtenerCliente(dni);
+		System.out.println(regCli);
 		
-		// Consulta preparada (ESTO NO ES SQL, ES JPQL!!)
-		String consulta = "SELECT c FROM Cliente c WHERE c.dni = :dni";
-		Cliente regCli = null;
-
-		try {
-			regCli = manager.createQuery(consulta, Cliente.class) // Prepara una consulta SQL (JPQL)
-					.setParameter("dni", dni) // Asociacion del parametro a la consulta
-					.setMaxResults(1) // Es como el "LIMIT 1" en SQL
-					.getSingleResult(); // Espera 1 solo resultado
-		} catch (Exception e) {
-			System.out.println("[ ERROR ] - Cliente no encontrado!");
-			manager.getTransaction().rollback();
+		if (regCli == null) {
+			System.out.println("[ ERROR ] > Cliente no encontrado!");
+			return;
 		}
 		
-		// Se supone que si "regCli" es null por que no hay un registro con
+		manager = emf.createEntityManager();
+
+		// Se supone que si "regCli" es null es por que no hay un registro con
 		// el dni ingresado, entonces simplemente se exceptuará y se finaliza el
 		// EntityManager.
 		try {
 			// Bloque de transacciones para eliminar un registro
 			manager.getTransaction().begin();
-			manager.remove(regCli);
+			regCli = manager.merge(regCli); // Reconecta una entidad al gestor de entidades (E.M) que está por fuera del contexto de persistencia
+			manager.remove(regCli); // Elimina la entidad de la persistencia
 			manager.getTransaction().commit();
-			System.out.println("[ EXITO ] - Cliente " + dni + " eliminado!");
+			System.out.println("[ EXITO ] > Cliente " + dni + " eliminado!");
 		} catch (Exception e) {
 			// En caso de fallo en la transaccion
 			System.out.println(e);
-			manager.getTransaction().rollback();			
+			manager.getTransaction().rollback();		
 		} finally {
-			// Cierra o destruye el gestor de entitades para liberar memoria
-			manager.close();		
+			manager.close();
+		}
+	}
+
+	// Por el momento voy a cerrrar el EMF así, ya que no escuentro una forma mejor xd (Funcional)
+	public void cerrarEMF() {
+		if (emf != null && emf.isOpen()) {
+			emf.close(); // Cierra el Entity Manager Factory
+			System.out.println("[ EXITO ] > EMF finalizado correctamente!");
 		}
 	}
 	
-	// Solo es para testear, eliminar posteriormente
-	public void test() {
-		// Esto es solo de prueba, pero devuelve una lista sin tipo de la tabla cliente. (Esto está casteado)
-		List<Cliente> clientes = (List<Cliente>) manager.createQuery("FROM Cliente").getResultList();
-		System.out.println("En la BD hay " + clientes.size() + " clientes registrados");
+	/*
+	// Leer entidad (No listo)
+	public Cliente obtenerCliente(Cliente entidadCliente) {
+		manager = emf.createEntityManager();
+		String consulta = "SELECT c FROM Cliente c WHERE c.dni = :dni"; // Consulta JPQL
+		TypedQuery<Cliente> consultaPreparada; // Variable de consulta (Castea automaticamente el dato obtenido)
+		Cliente regCli = null; // Variable para almacenar el registro
+		
+		try { // Crea y prepara una consulta SQL (JPQL
+			consultaPreparada = manager.createQuery(consulta, Cliente.class)
+								.setParameter("dni", entidadCliente.getDni()); // Asocia el parametro a la consulta
+			
+			regCli = consultaPreparada
+					.setMaxResults(1) // Es como el "LIMIT 1" en SQL
+					.getSingleResult(); // Espera 1 solo resultado			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return regCli;
 	}
+	*/
 }
