@@ -34,7 +34,6 @@ import jakarta.persistence.TemporalType;
 public class Tutor {
 	// Atributos
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int dni;
 	
 	@Basic

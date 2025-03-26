@@ -35,11 +35,9 @@ import jakarta.persistence.TemporalType;
 public class Cliente implements Serializable {
 	// Atributos
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private int dni;
 
 	@Basic
-	private int dni;
 	private String nombre;
 	private String apellido;
 	private char sexo;
@@ -74,11 +72,7 @@ public class Cliente implements Serializable {
 		this.fechaIngreso = paramFechaIng;
         }
 	
-	// Set
-	public void setId(int valId) {
-		this.id = valId;
-	}
-	
+	// Set	
 	public void setDni(int valDni) {
 		this.dni = valDni;
 	}
@@ -116,10 +110,6 @@ public class Cliente implements Serializable {
 	}
 	
 	// Get
-	public int getId() {
-		return this.id;
-	}
-	
 	public int getDni() {
 		return this.dni;
 	}
