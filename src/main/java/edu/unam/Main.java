@@ -1,9 +1,8 @@
 package edu.unam;
 
 import java.time.LocalDate;
-import java.util.List;
 
-import edu.unam.modelo.Cliente;
+import edu.unam.modelo.*;
 import edu.unam.persistencia.*;
 
 /*
@@ -22,30 +21,28 @@ public class Main {
 				LocalDate.of(2001, 05, 12), 'M', "LANDIA",
 				"India", 12345, LocalDate.now()
 				);
-				
-		Cliente c2 = new Cliente(
-				2222, "fuck", "MAN",
-				LocalDate.of(2002, 06, 14), 'M', "DIA",
-				"Indo", 123, LocalDate.now()
-				);
 			
-		/*
-		Cliente c3 = new Cliente(
-				2221, "fack", "MeN",
-				LocalDate.of(2002, 06, 14), 'M', "DIA",
-				"Indo", 123, LocalDate.now()
+		Tutor t1 = new Tutor(
+				2233, "Jorge", "nando",
+				LocalDate.of(1998, 12, 12),
+				'H', "Apóstoles", "Misiones",
+				23653, LocalDate.now()
 				);
-		 */
 		
 		// Instancia del JPAController de cliente
-		ClienteJPAController cjpac = new ClienteJPAController();
-		cjpac.crearCliente(c1);
-		cjpac.crearCliente(c2);
+		// ClienteJPAController cjpac = new ClienteJPAController();
+		// cjpac.crearCliente(c1);
+		// cjpac.crearCliente(c2);
 		// cjpac.crearCliente(c1);
 		// cjpac.eliminarCliente(1234);
 		// cjpac.eliminarCliente(2222);
-		cjpac.cerrarEMF();
+		// cjpac.actualizarCliente(0, null, null, null, 0, null, null, 0, null);
+		// cjpac.cerrarEMF();
 		// Realiza una pequeña devolucion del numero de registros de la tabla correspondiente
-		// cjpac.test();
+		
+		TutorJPAController tjpac = new TutorJPAController();
+		// tjpac.crearTutor(t1);
+		tjpac.eliminarTutor(2233);
+		tjpac.cerrarEMF();
 	}
 }
