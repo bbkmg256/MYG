@@ -13,15 +13,12 @@ package edu.unam.modelo;
 // Libs
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
 import jakarta.persistence.Entity; // Modulo JPA para entidades/objetos
 
-// Modulos JPA para generacion de ID, valores de generación de ID y forma de generación de ID
+// Modulos JPA para el ID
 import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 
 // Modulo JPA para atributos referentes a fechas
 import jakarta.persistence.Temporal;
@@ -70,7 +67,7 @@ public class Cliente implements Serializable {
 		this.provincia = paramProvincia;
 		this.codigoPostal = paramCodPost;
 		this.fechaIngreso = paramFechaIng;
-        }
+	}
 	
 	// Set	
 	public void setDni(int valDni) {
