@@ -1,8 +1,5 @@
 /*
 	JpaController - Entidad Cliente
-	
-	(El main de esta clase es de prueba, no tiene que estar, ya que todo será
-	empleado desde el Main principal del proyecto)
 */
 
 // Se viene el verdadero BACKEND xd
@@ -18,6 +15,9 @@ package edu.unam.persistencia;
 	registro, la modificacion de cada atributo se hace con los propios metodos
 	de la clase, en todo caso, tambien hay que obtener devuelta la entdidad
 	para modificarla, ahí es donde entra el metodo "obtenerCliente()"
+	
+	- Tener en cuenta que cuando se relacionen las clases, se tendrá que modificar los
+	JPAController para adaptarlas a las relaciones.
 */
 
 // Libs.
@@ -25,12 +25,13 @@ package edu.unam.persistencia;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
-// Varios
+
+// Entidad
 import edu.unam.modelo.Cliente;
 
+// Varios
 import java.time.LocalDate;
-import java.util.List;
+
 
 public class ClienteJPAController {
 	// Atribs.
@@ -52,8 +53,8 @@ public class ClienteJPAController {
 		Cliente regCli = this.obtenerCliente(entidadCliente.getDni());
 		
 		// Sale del metodo si la condición es verdadera (Comprbación de corto circuito)
-		if (regCli != null && regCli.getDni() == entidadCliente.getDni()) {
-			System.out.println("[ Error ] > El registro a cargar ya existe en la BD!");
+		if (regCli != null && entidadCliente.getDni() == regCli.getDni()) {
+			System.out.println("[ ERROR ] > El cliente ya existe en la BD!");
 			return; // Termina la ejecución del metodo
 		}
 		
@@ -74,25 +75,25 @@ public class ClienteJPAController {
 	}
 	
 	// Leer entidad (Funcional)
-		public Cliente obtenerCliente(int dni) {
-			Cliente regCli = null; // Variable para almacenar el registro
-			manager = emf.createEntityManager();
+	public Cliente obtenerCliente(int dni) {
+		Cliente regCli = null; // Variable para almacenar el registro
+		manager = emf.createEntityManager();
 			
-			try { // Busca un cliente mediante su dni
-				regCli = manager.find(Cliente.class, dni);
-				// System.out.println(regCli);
-			} catch (Exception e) {
-				System.out.println(e);
-			} finally {
-				manager.close(); // Cierra el Entity Manager
-			}			
-			return regCli;
-		}
+		try { // Busca un cliente mediante su dni
+			regCli = manager.find(Cliente.class, dni);
+			// System.out.println(regCli);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			manager.close(); // Cierra el Entity Manager
+		}			
+		return regCli;
+	}
 	
 	// Actualizar entidad (No Listo)
 	public void actualizarCliente(int dni, String nombre, String apellido,
-			LocalDate fechaNac, char sexo, String ciudad, String provincia,
-			int codPost, LocalDate fechaIng) {
+								LocalDate fechaNac, char sexo, String ciudad,
+								String provincia, int codPost, LocalDate fechaIng) {
 		
 		Cliente regCli = this.obtenerCliente(dni);
 		System.out.println(regCli);
