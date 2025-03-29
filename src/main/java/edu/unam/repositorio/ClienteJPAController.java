@@ -4,17 +4,10 @@
 
 // Se viene el verdadero BACKEND xd
 
-package edu.unam.persistencia;
+package edu.unam.repositorio;
 
 /*
 	NOTA:
-	
-	- Debo verificar que no se ingresen registros con DNI iguales, por mas que
-	el id sea autoincremental. (Metodo "crearCliente()")
-	- El metodo "actualizarCliente()" lo unico que va a hacer es un merge al
-	registro, la modificacion de cada atributo se hace con los propios metodos
-	de la clase, en todo caso, tambien hay que obtener devuelta la entdidad
-	para modificarla, ahí es donde entra el metodo "obtenerCliente()"
 	
 	- Tener en cuenta que cuando se relacionen las clases, se tendrá que modificar los
 	JPAController para adaptarlas a las relaciones.
@@ -32,7 +25,10 @@ import edu.unam.modelo.Cliente;
 // Varios
 import java.time.LocalDate;
 
-
+/**
+*
+* @author bbkmg
+*/
 public class ClienteJPAController {
 	// Atribs.
 	private EntityManagerFactory emf;
@@ -49,15 +45,6 @@ public class ClienteJPAController {
 	
 	// Crear entidad (Funcional)
 	public void crearCliente(Cliente entidadCliente) {
-		// Verifica si ya existe el cliente en la BD
-		Cliente regCli = this.obtenerCliente(entidadCliente.getDni());
-		
-		// Sale del metodo si la condición es verdadera (Comprbación de corto circuito)
-		if (regCli != null && entidadCliente.getDni() == regCli.getDni()) {
-			System.out.println("[ ERROR ] > El cliente ya existe en la BD!");
-			return; // Termina la ejecución del metodo
-		}
-		
 		manager = emf.createEntityManager(); // Administrador de entidades
 		
 		try {
@@ -90,76 +77,56 @@ public class ClienteJPAController {
 		return regCli;
 	}
 	
-	// Actualizar entidad (No Listo)
-	public void actualizarCliente(int dni, String nombre, String apellido,
+	// Actualizar entidad (No Testeado)
+	public void actualizarCliente(Cliente entidadCliente, String nombre, String apellido,
 								LocalDate fechaNac, char sexo, String ciudad,
 								String provincia, int codPost, LocalDate fechaIng) {
-		
-		Cliente regCli = this.obtenerCliente(dni);
-		System.out.println(regCli);
-		
-		if (regCli == null) {
-			System.out.println("[ ERROR ] > Cliente no encontrado!");
-			return;
-		}
 		
 		manager = emf.createEntityManager();
 		
 		try {
 			manager.getTransaction().begin();
-			regCli = manager.merge(regCli);
+			entidadCliente = manager.merge(entidadCliente);
 			
 			// Actualización de atributos de entidad
-			regCli.setNombre(nombre);
-			regCli.setApellido(apellido);
-			regCli.setFechaNacimiento(fechaNac);
-			regCli.setSexo(sexo);
-			regCli.setCiudad(ciudad);
-			regCli.setProvicia(provincia);
-			regCli.setCodigoPostal(codPost);
-			regCli.setFechaIngreso(fechaIng);
+			entidadCliente.setNombre(nombre);
+			entidadCliente.setApellido(apellido);
+			entidadCliente.setFechaNacimiento(fechaNac);
+			entidadCliente.setSexo(sexo);
+			entidadCliente.setCiudad(ciudad);
+			entidadCliente.setProvicia(provincia);
+			entidadCliente.setCodigoPostal(codPost);
+			entidadCliente.setFechaIngreso(fechaIng);
 			
 			manager.getTransaction().commit();
 		} catch (Exception e) {
-			System.out.println(e);
 			manager.getTransaction().rollback();
+			System.out.println(e);
 		} finally {
 			manager.close();
 		}
 	}
 	
 	// Eliminar entidad (Funcional)
-	public void eliminarCliente(int dni) {
-		Cliente regCli = this.obtenerCliente(dni);
-		System.out.println(regCli);
-		
-		if (regCli == null) {
-			System.out.println("[ ERROR ] > Cliente no encontrado!");
-			return;
-		}
-		
+	public void eliminarCliente(Cliente entidadCliente) {
 		manager = emf.createEntityManager();
 
-		// Se supone que si "regCli" es null es por que no hay un registro con
-		// el dni ingresado, entonces simplemente se exceptuará y se finaliza el
-		// EntityManager.
 		try {
 			// Bloque de transacciones para eliminar un registro
 			manager.getTransaction().begin();
-			regCli = manager.merge(regCli); // Reconecta una entidad al gestor de entidades (E.M) que está por fuera del contexto de persistencia
-			manager.remove(regCli); // Elimina la entidad de la persistencia
+			entidadCliente = manager.merge(entidadCliente); // Reconecta una entidad al gestor de entidades (E.M) que está por fuera del contexto de persistencia
+			manager.remove(entidadCliente); // Elimina la entidad de la persistencia
 			manager.getTransaction().commit();
-			System.out.println("[ EXITO ] > Cliente " + dni + " eliminado!");
 		} catch (Exception e) {
 			// En caso de fallo en la transaccion
-			System.out.println(e);
 			manager.getTransaction().rollback();		
+			System.out.println(e);
 		} finally {
 			manager.close();
 		}
 	}
 
-	// Por el momento voy a cerrrar el EMF así, ya que no escuentro una forma mejor xd (Funcional)
+	// Por el momento voy a cerrar el EMF así, ya que no escuentro una forma mejor xd (Funcional)
 	public void cerrarEMF() {
 		if (emf != null && emf.isOpen()) {
 			emf.close(); // Cierra el Entity Manager Factory

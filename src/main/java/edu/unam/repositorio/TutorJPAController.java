@@ -2,7 +2,7 @@
 	JpaController - Entidad Tutor
 */
 
-package edu.unam.persistencia;
+package edu.unam.repositorio;
 
 /*
 	NOTA:
@@ -23,7 +23,10 @@ import java.time.LocalDate;
 // Entidad
 import edu.unam.modelo.Tutor;
 
-
+/**
+*
+* @author bbkmg
+*/
 public class TutorJPAController {
 	// Atribs.
 	private EntityManagerFactory emf;
@@ -37,14 +40,7 @@ public class TutorJPAController {
 	
 	// Operaciones CRUD:
 	// Crear
-	public void crearTutor(Tutor entidadTutor) {
-		Tutor regTutor = this.obtenerTutor(entidadTutor.getDni());
-		
-		if (regTutor != null && entidadTutor.getDni() == regTutor.getDni()) {
-			System.out.println("[ ERROR ] > El tutor ya existe en la BD!");
-			return;
-		}
-		
+	public void crearTutor(Tutor entidadTutor) {		
 		manager = emf.createEntityManager();
 		
 		try {
@@ -73,22 +69,16 @@ public class TutorJPAController {
 	}
 	
 	// Eliminar
-	public void eliminarTutor(int dni) {
-		Tutor regTutor = this.obtenerTutor(dni);
-		
-		if (regTutor == null) {
-			System.out.println("[ ERROR ] > Tutor no encontrado!");
-			return;
-		}
-		
+	public void eliminarTutor(Tutor entidadTutor) {
 		manager = emf.createEntityManager();
 		
 		try {
 			manager.getTransaction().begin();
-			regTutor = manager.merge(regTutor);
-			manager.remove(regTutor);
+			entidadTutor = manager.merge(entidadTutor);
+			manager.remove(entidadTutor);
 			manager.getTransaction().commit();
 		} catch (Exception e) {
+			manager.getTransaction().rollback();
 			System.out.println(e);
 		} finally {
 			manager.close();
@@ -96,36 +86,29 @@ public class TutorJPAController {
 	}
 	
 	// Actualizar
-	public void actualizarTutor(int dni, String nombre, String apellido, char sexo,
+	public void actualizarTutor(Tutor entidadTutor, String nombre, String apellido, char sexo,
 								String ciudad, String provincia, int codigoPostal,
 								LocalDate fechaNacimiento, LocalDate fechaIngreso) {
-		
-		Tutor regTutor = this.obtenerTutor(dni);
-		
-		if (regTutor == null) {
-			System.out.println("[ ERROR ] > Tutor no encontrado!");
-			return;
-		}
 		
 		manager = emf.createEntityManager();
 		
 		try {
 			manager.getTransaction().begin();
-			regTutor = manager.merge(regTutor);
+			entidadTutor = manager.merge(entidadTutor);
 			
-			regTutor.setNombre(nombre);
-			regTutor.setApellido(apellido);
-			regTutor.setSexo(sexo);
-			regTutor.setCiudad(ciudad);
-			regTutor.setProvicia(provincia);
-			regTutor.setCodigoPostal(codigoPostal);
-			regTutor.setFechaNacimiento(fechaNacimiento);
-			regTutor.setFechaIngreso(fechaIngreso);
+			entidadTutor.setNombre(nombre);
+			entidadTutor.setApellido(apellido);
+			entidadTutor.setSexo(sexo);
+			entidadTutor.setCiudad(ciudad);
+			entidadTutor.setProvicia(provincia);
+			entidadTutor.setCodigoPostal(codigoPostal);
+			entidadTutor.setFechaNacimiento(fechaNacimiento);
+			entidadTutor.setFechaIngreso(fechaIngreso);
 			
 			manager.getTransaction().commit();
 		} catch (Exception e) {
-			System.out.println(e);
 			manager.getTransaction().rollback();
+			System.out.println(e);
 		} finally {
 			manager.close();
 		}
