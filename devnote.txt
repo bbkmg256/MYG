@@ -52,3 +52,29 @@ tener el esquema de BD creada antes de usar el programa, cosa que no me gusta de
 enfocarme en otras cosas por el momento, lo voy a dejar así.
 Por último, y poco relevante, es que se volcó toda la prueba al Main principal, así se deja mas unificado todo y no se
 está probando desde una clase que no es.
+
+
+(26/03/25)
+
+Se trabajó en el CRUD del JPAController del cliente (por el momento no hay relaciones, ya que estoy seguro que eso
+va a ser como una patada en las pelotas plantearlo bien xd), se encuentra funcional (aun que no probe la actualizacion
+todavía, son las 5 de la tarde y desde las 9 de la mañana que estoy intridujendo y solucionando mis propios errores
+xd, pero aparentemente todo funciona).
+Algo curioso es que se supone que hibernate en la opcion "update" en el fichero persistence.xml NO debería crear las
+tablas de la BD si estás ya no existen previamente, pero aun así lo hace, osea, es bueno (por que pense que tendría
+que crear algun script o algo por afuera para manejar la creacion de las tablas, pero no xd) ya que no voy a tener
+que hacer matufias raras, pero es curioso por que leí que no debería hacer eso, en fin, funciona.
+
+
+(27/03/25)
+
+Se trabajo en el JPAController del tutor, todavía no se establecieron las relaciones, por lo que a futuro se
+tendrá que modificar estos controladores.
+
+
+(29/03/25)
+
+Se trabajó en la capa de repositorio del sistema, hasta el momento se tienen escritas las clases de los jpa controller,
+mas adelante se tendra que reveer estas clases ya que hay mucho codigo repetido, por ende lo mas probable es que tenga
+que usar algun tipo de dato generico para reutilizar 1 solo jpa controller, o alguna matufia rara tendré que hacer xd.
+Además se creo la capa de servicio el cual interactuará con la capa de repositorio para los datos.
