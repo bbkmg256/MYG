@@ -78,3 +78,12 @@ Se trabajó en la capa de repositorio del sistema, hasta el momento se tienen es
 mas adelante se tendra que reveer estas clases ya que hay mucho codigo repetido, por ende lo mas probable es que tenga
 que usar algun tipo de dato generico para reutilizar 1 solo jpa controller, o alguna matufia rara tendré que hacer xd.
 Además se creo la capa de servicio el cual interactuará con la capa de repositorio para los datos.
+
+
+(30/03/25)
+
+Se creo la capa de servicio para el sistema, la UI y cualquier otra cosa que requiera de interaccion con la BD o realizar
+operaciones con la capa del modelo, va a hacer uso de esta capa (el servicio). Por el momento el codigo esta medio malardo
+pero esto se va a reveer mas a delante ya que hay demaciado codigo repetido (algunos metodos se pueden simplificar en una
+clase que use tipos de datos genericos o algo similar y las clase servicios pueden heredar de este sobreescribiendo metodos
+que requieran un tratamiento especifico para la clase), aun así, esto se reveera mas adelante.
