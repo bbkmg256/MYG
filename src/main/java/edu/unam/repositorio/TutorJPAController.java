@@ -13,9 +13,9 @@ package edu.unam.repositorio;
 
 // Libs.
 // JPA
-import jakarta.persistence.Persistence;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityManager;
+// import jakarta.persistence.Persistence;
+// import jakarta.persistence.EntityManagerFactory;
+// import jakarta.persistence.EntityManager;
 
 // Varios
 import java.time.LocalDate;
@@ -25,68 +25,27 @@ import edu.unam.modelo.Tutor;
 
 /**
 *
-* @author bbkmg
+* @Autor: BBKMG
 */
-public class TutorJPAController {
+public class TutorJPAController extends JPAController {
 	// Atribs.
-	private EntityManagerFactory emf;
-	private EntityManager manager;
+	// private EntityManagerFactory emf;
+	// private EntityManager manager;
 	
 	// Constructor
 	public TutorJPAController() {
-		emf = Persistence.createEntityManagerFactory("persistencia");
-		System.out.println("[ EXITO ] > EMF iniciado correctamente!");
+		// super();
+		// emf = Persistence.createEntityManagerFactory("persistencia");
+		// System.out.println("[ EXITO ] > EMF iniciado correctamente!");
 	}
 	
 	// Operaciones CRUD:
-	// Crear
-	public void crearTutor(Tutor entidadTutor) {		
-		manager = emf.createEntityManager();
-		
-		try {
-			manager.getTransaction().begin();
-			manager.persist(entidadTutor);
-			manager.getTransaction().commit();
-		} catch (Exception e) {
-			manager.getTransaction().rollback();
-		} finally {
-			manager.close();
-		}
-	}
-	
-	// Obtener
-	public Tutor obtenerTutor(int dni) {
-		Tutor regTutor = null;
-		manager = emf.createEntityManager();
-		try {
-			regTutor = manager.find(Tutor.class, dni);
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally {
-			manager.close();
-		}
-		return regTutor;
-	}
-	
-	// Eliminar
-	public void eliminarTutor(Tutor entidadTutor) {
-		manager = emf.createEntityManager();
-		
-		try {
-			manager.getTransaction().begin();
-			entidadTutor = manager.merge(entidadTutor);
-			manager.remove(entidadTutor);
-			manager.getTransaction().commit();
-		} catch (Exception e) {
-			manager.getTransaction().rollback();
-			System.out.println(e);
-		} finally {
-			manager.close();
-		}
-	}
+	// Crear -> En clase padre
+	// Obtener -> En clase padre
+	// Eliminar -> En clase padre
 	
 	// Actualizar
-	public void actualizarTutor(Tutor entidadTutor, String nombre, String apellido, char sexo,
+	public void actualizarEntidad(Tutor entidadTutor, String nombre, String apellido, char sexo,
 								String ciudad, String provincia, int codigoPostal,
 								LocalDate fechaNacimiento, LocalDate fechaIngreso) {
 		
@@ -111,13 +70,6 @@ public class TutorJPAController {
 			System.out.println(e);
 		} finally {
 			manager.close();
-		}
-	}
-	
-	public void cerrarEMF() {
-		if (emf != null && emf.isOpen()) {
-			emf.close(); // Cierra el Entity Manager Factory
-			System.out.println("[ EXITO ] > EMF finalizado correctamente!");
 		}
 	}
 }

@@ -1,78 +1,39 @@
+/*
+	JpaController - entidad Rutina
+*/
+
 package edu.unam.repositorio;
 
 // JPA
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+// import jakarta.persistence.EntityManager;
+// import jakarta.persistence.EntityManagerFactory;
+// import jakarta.persistence.Persistence;
 
 // Entidad
 import edu.unam.modelo.Rutina;
 
 /**
 *
-* @author bbkmg
+* @Autor: BBKMG
 */
-public class RutinaJPAController {
+public class RutinaJPAController extends JPAController {
 	// Atributos
-	private EntityManagerFactory emf;
-	private EntityManager manager;
+	// private EntityManagerFactory emf;
+	// private EntityManager manager;
 	
 	// Constructor
 	public RutinaJPAController() {
-		emf = Persistence.createEntityManagerFactory("persistencia");
-		System.out.println("[ EXITO ] > EMF iniciado correctamente!");
+		// super();
+		// emf = Persistence.createEntityManagerFactory("persistencia");
+		// System.out.println("[ EXITO ] > EMF iniciado correctamente!");
 	}
 	
-	// Crear
-	public void crearRutina(Rutina entidadRutina) {
-		manager = emf.createEntityManager();
-		
-		try {
-			manager.getTransaction().begin();
-			manager.persist(entidadRutina);
-			manager.getTransaction().commit();
-		} catch (Exception e) {
-			manager.getTransaction().rollback();
-			System.out.println(e);
-		} finally {
-			manager.close();
-		}
-	}
-	
-	// Obtener
-	public Rutina obtenerEjercicio(int id) {
-		Rutina regRutina = null;
-		manager = emf.createEntityManager();
-		
-		try {
-			regRutina = manager.find(Rutina.class, id);
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally {
-			manager.close();
-		}
-		return regRutina;
-	}
-	
-	// Eliminar
-	public void eliminarRutina(Rutina entidadRutina) {
-		manager = emf.createEntityManager();
-		
-		try {
-			manager.getTransaction().begin();
-			entidadRutina = manager.merge(entidadRutina);
-			manager.remove(entidadRutina);
-			manager.getTransaction().commit();
-		} catch (Exception e) {
-			manager.getTransaction().rollback();
-			System.out.println(e);
-		} finally {
-			manager.close();
-		}
-	}
-	
+	// Crear -> Clase padre
+	// Obtener -> Clase padre
+	// Eliminar -> Clase padre
+
 	// Actualizar
-	public void actualizarEjercicio(Rutina entidadRutina, int cantSeries, int cantRep) {
+	public void actualizarEntidad(Rutina entidadRutina, int cantSeries, int cantRep) {
 		manager = emf.createEntityManager();
 		
 		try {
@@ -88,14 +49,6 @@ public class RutinaJPAController {
 			System.out.println(e);
 		} finally {
 			manager.close();
-		}
-	}
-	
-	// Destruir el EMF
-	public void cerrarEMF() {
-		if (emf != null && emf.isOpen()) {
-			emf.close();
-			System.out.println("[ EXITO ] > EMF finalizado correctamente!");
 		}
 	}
 }
