@@ -28,7 +28,7 @@ public class TutorServicio {
 	// Registra un tutor en el sistema
 	public void registrarTutor(Tutor tutor) {
 		if (tjpac.obtenerEntidad(tutor.getDni(), Tutor.class) != null) {
-			System.out.printf("[ERROR] > El tutor %d ya se encuentra en el sistema!%n", tutor.getDni());
+			System.out.printf("[ ERROR ] > El tutor %d ya se encuentra en el sistema!%n", tutor.getDni());
 		} else {
 			tjpac.crearEntidad(tutor);
 		}
@@ -41,7 +41,7 @@ public class TutorServicio {
 		Tutor tutor = tjpac.obtenerEntidad(dni, Tutor.class);
 		
 		if (tutor == null) {
-			System.out.printf("[ERROR] > El tutor %d no se encuentra en el sistema!%n", dni);
+			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni);
 		}
 		
 		tjpac.cerrarEMF();
@@ -58,7 +58,7 @@ public class TutorServicio {
 		if (tutor != null) {
 			tjpac.actualizarEntidad(tutor, nombre, apellido, sexo, ciudad, provincia, codigoPostal, fechaNacimiento, fechaIngreso);
 		} else {
-			System.out.printf("[ERROR] > El tutor %d no se encuentra en el sistema!%n", dni);
+			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni);
 		}
 		
 		tjpac.cerrarEMF();
@@ -71,7 +71,7 @@ public class TutorServicio {
 		if (tutor != null) {
 			tjpac.eliminarEntidad(tutor);
 		} else {
-			System.out.printf("[ERROR] > El tutor %d no se encuentra en el sistema!%n", dni);
+			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni);
 		}
 		
 		tjpac.cerrarEMF();

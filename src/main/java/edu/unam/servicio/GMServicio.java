@@ -25,7 +25,7 @@ public class GMServicio {
 	// Cargar Grupo Muscular al sistema
 	public void cargarGM(GrupoMuscular gm) {
 		if (gmjpac.obtenerEntidad(gm.getIdGM(), GrupoMuscular.class) != null) {
-			System.out.printf("[ERROR] > El grupo muscular %d ya se encuentra en el sistema!%n", gm.getIdGM());
+			System.out.printf("[ ERROR ] > El grupo muscular %d ya se encuentra en el sistema!%n", gm.getIdGM());
 		} else {
 			gmjpac.crearEntidad(gm);
 		}
@@ -38,7 +38,7 @@ public class GMServicio {
 		GrupoMuscular gm = gmjpac.obtenerEntidad(id, GrupoMuscular.class);
 		
 		if (gm == null) {
-			System.out.printf("[ERROR] > El grupo muscular %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El grupo muscular %d no se encuentra en el sistema!%n", id);
 		}
 		
 		gmjpac.cerrarEMF();
@@ -52,7 +52,7 @@ public class GMServicio {
 		if (gm != null) {
 			gmjpac.actualizarEntidad(gm, nombreGM);
 		} else {
-			System.out.printf("[ERROR] > El grupo muscular %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El grupo muscular %d no se encuentra en el sistema!%n", id);
 		}
 		
 		gmjpac.cerrarEMF();
@@ -65,7 +65,7 @@ public class GMServicio {
 		if (gm != null) {
 			gmjpac.eliminarEntidad(gm);
 		} else {
-			System.out.printf("[ERROR] > El grupo muscular %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El grupo muscular %d no se encuentra en el sistema!%n", id);
 		}
 		
 		gmjpac.cerrarEMF();

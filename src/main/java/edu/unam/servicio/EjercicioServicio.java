@@ -24,7 +24,7 @@ public class EjercicioServicio {
 	// Cargar Ejercicio
 	public void cargarEjercicio(Ejercicio ejercicio) {
 		if (ejjpac.obtenerEntidad(ejercicio.getIdEjercicio(), Ejercicio.class) != null) {
-			System.out.printf("[ERROR] > El ejercicio %d no se encuentra en el sistema!%n", ejercicio.getIdEjercicio());
+			System.out.printf("[ ERROR ] > El ejercicio %d no se encuentra en el sistema!%n", ejercicio.getIdEjercicio());
 		} else {
 			ejjpac.crearEntidad(ejercicio);
 		}
@@ -37,7 +37,7 @@ public class EjercicioServicio {
 		Ejercicio ejercicio = ejjpac.obtenerEntidad(id, Ejercicio.class);
 		
 		if (ejercicio == null) {
-			System.out.printf("[ERROR] > El ejercicio %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El ejercicio %d no se encuentra en el sistema!%n", id);
 		}
 		
 		ejjpac.cerrarEMF();
@@ -51,7 +51,7 @@ public class EjercicioServicio {
 		if (ejercicio != null) {
 			ejjpac.actualizarEntidad(ejercicio, nombreEj);
 		} else {
-			System.out.printf("[ERROR] > El ejercicio %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El ejercicio %d no se encuentra en el sistema!%n", id);
 		}
 		
 		ejjpac.cerrarEMF();
@@ -64,7 +64,7 @@ public class EjercicioServicio {
 		if (ejercicio != null) {
 			ejjpac.eliminarEntidad(ejercicio);
 		} else {
-			System.out.printf("[ERROR] > El ejercicio %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El ejercicio %d no se encuentra en el sistema!%n", id);
 		}
 		
 		ejjpac.cerrarEMF();

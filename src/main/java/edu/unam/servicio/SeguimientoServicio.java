@@ -27,7 +27,7 @@ public class SeguimientoServicio {
 	// Cargar Seguimiento
 	public void cargarSeguimiento(Seguimiento seg) {
 		if (sjpac.obtenerEntidad(seg.getIdSeguimiento(), Seguimiento.class) != null) {
-			System.out.printf("[ERROR] > El seguimiento %d no se encuentra en el sistema!%n", seg.getIdSeguimiento());
+			System.out.printf("[ ERROR ] > El seguimiento %d no se encuentra en el sistema!%n", seg.getIdSeguimiento());
 		} else {
 			sjpac.crearEntidad(seg);
 		}
@@ -40,7 +40,7 @@ public class SeguimientoServicio {
 		Seguimiento seg = sjpac.obtenerEntidad(id, Seguimiento.class);
 		
 		if (seg == null) {
-			System.out.printf("[ERROR] > El seguimiento %d ", id);
+			System.out.printf("[ ERROR ] > El seguimiento %d ", id);
 		}
 		
 		sjpac.cerrarEMF();
@@ -57,7 +57,7 @@ public class SeguimientoServicio {
 									cantRepeticionesRealizado,
 									ejercicioRealizado, pesoTrabajado);
 		} else {
-			System.out.printf("[ERROR] > El seguimiento %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El seguimiento %d no se encuentra en el sistema!%n", id);
 		}
 		
 		sjpac.cerrarEMF();
@@ -70,7 +70,7 @@ public class SeguimientoServicio {
 		if (seg != null) {
 			sjpac.eliminarEntidad(seg);
 		} else {
-			System.out.printf("[ERROR] > El seguimiento %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El seguimiento %d no se encuentra en el sistema!%n", id);
 		}
 		
 		sjpac.cerrarEMF();

@@ -25,7 +25,7 @@ public class RutinaServicio {
 	// Crear y cargar una Rutina al sistema
 	public void crearRutina(Rutina rutina) {
 		if (rjpac.obtenerEntidad(rutina.getIdRutina(), Rutina.class) != null) {
-			System.out.printf("[ERROR] > La rutina %d ya se encuentra en el sistema!%n", rutina.getIdRutina());
+			System.out.printf("[ ERROR ] > La rutina %d ya se encuentra en el sistema!%n", rutina.getIdRutina());
 		} else {
 			rjpac.crearEntidad(rutina);
 		}
@@ -38,7 +38,7 @@ public class RutinaServicio {
 		Rutina rutina = rjpac.obtenerEntidad(id, Rutina.class);
 		
 		if (rutina == null) {
-			System.out.printf("[ERROR] > La ruutina %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > La ruutina %d no se encuentra en el sistema!%n", id);
 		}
 		
 		rjpac.cerrarEMF();
@@ -52,7 +52,7 @@ public class RutinaServicio {
 		if (rutina != null) {
 			rjpac.eliminarEntidad(rutina);
 		} else {
-			System.out.printf("[ERROR] > La rutina %d  no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > La rutina %d  no se encuentra en el sistema!%n", id);
 		}
 		
 		rjpac.cerrarEMF();
@@ -65,7 +65,7 @@ public class RutinaServicio {
 		if (rutina != null) {
 			rjpac.actualizarEntidad(rutina, cantSeries, cantRep);
 		} else {
-			System.out.printf("[ERROR] > La rutina %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > La rutina %d no se encuentra en el sistema!%n", id);
 		}
 		
 		rjpac.cerrarEMF();

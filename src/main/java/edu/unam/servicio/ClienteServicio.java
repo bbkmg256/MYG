@@ -31,7 +31,7 @@ public class ClienteServicio {
 	public void registrarCliente(Cliente cliente) {
 		// Si el metodo es diferente a null, es por que se encontró un cliente con el mismo DNI
 		if (cjpac.obtenerEntidad(cliente.getDni(), Cliente.class) != null) {
-			System.out.printf("[ERROR] > El cliente %d ya se encuentra en el sistema!%n", cliente.getDni());
+			System.out.printf("[ ERROR ] > El cliente %d ya se encuentra en el sistema!%n", cliente.getDni());
 		} else {
 			cjpac.crearEntidad(cliente);			
 		}
@@ -43,7 +43,7 @@ public class ClienteServicio {
 	public Cliente obtenerCliente(int dni) {
 		Cliente cli = cjpac.obtenerEntidad(dni, Cliente.class);
 		if (cli == null) {
-			System.out.printf("[ERRRO] > El cliente %d no se encuentra en el sistema!%n", dni);
+			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
 		}
 		
 		cjpac.cerrarEMF();
@@ -60,7 +60,7 @@ public class ClienteServicio {
 		if (cli != null) {
 			cjpac.actualizarEntidad(cli, nombre, apellido, fechaNac, sexo, ciudad, provincia, codPost, fechaIng);			
 		} else {
-			System.out.printf("[ERRRO] > El cliente %d no se encuentra en el sistema!%n", dni);
+			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
 		}
 		
 		cjpac.cerrarEMF();
@@ -75,7 +75,7 @@ public class ClienteServicio {
 		if (cli != null) {
 			cjpac.eliminarEntidad(cli);			
 		} else {
-			System.out.printf("[ERROR] > El cliente %d no se encuentra en el sistema!%n", dni);
+			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
 		}
 		
 		cjpac.cerrarEMF();

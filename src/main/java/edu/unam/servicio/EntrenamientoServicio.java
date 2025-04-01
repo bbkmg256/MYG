@@ -28,7 +28,7 @@ public class EntrenamientoServicio {
 	// Cargar Entrenamiento
 	public void cargarEntrenamiento(Entrenamiento entrenamiento) {
 		if (ejpac.obtenerEntidad(entrenamiento.getIdEntrenamiento(), Entrenamiento.class) != null) {
-			System.out.printf("[ERROR] > El entrenamiento %d ya se encuentra en el sistema!%n", entrenamiento.getIdEntrenamiento());
+			System.out.printf("[ ERROR ] > El entrenamiento %d ya se encuentra en el sistema!%n", entrenamiento.getIdEntrenamiento());
 		} else {
 			ejpac.crearEntidad(entrenamiento);
 		}
@@ -41,7 +41,7 @@ public class EntrenamientoServicio {
 		Entrenamiento entrenamiento = ejpac.obtenerEntidad(id, Entrenamiento.class);
 		
 		if (entrenamiento == null) {
-			System.out.printf("[ERROR] > El entrenamiento %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El entrenamiento %d no se encuentra en el sistema!%n", id);
 		}
 		
 		ejpac.cerrarEMF();
@@ -58,7 +58,7 @@ public class EntrenamientoServicio {
 		if (entrenamiento != null) {
 			ejpac.actualizarEntidad(entrenamiento, puntaje, fechaInicio, fechaFin);
 		} else {
-			System.out.printf("[ERROR] > El entrenamiento %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El entrenamiento %d no se encuentra en el sistema!%n", id);
 		}
 		
 		ejpac.cerrarEMF();
@@ -71,7 +71,7 @@ public class EntrenamientoServicio {
 		if (entrenamiento != null) {
 			ejpac.eliminarEntidad(entrenamiento);
 		} else {
-			System.out.printf("[ERROR] > El entrenamiento %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El entrenamiento %d no se encuentra en el sistema!%n", id);
 		}
 		
 		ejpac.cerrarEMF();
