@@ -20,7 +20,7 @@ import edu.unam.modelo.Cliente;
 */
 public class ClienteServicio {
 	// JPAController
-	ClienteJPAController cjpac;
+	private ClienteJPAController cjpac;
 	
 	// Constructor
 	public ClienteServicio() {
@@ -30,10 +30,10 @@ public class ClienteServicio {
 	// Registra un cliente en el sistema
 	public void registrarCliente(Cliente cliente) {
 		// Si el metodo es diferente a null, es por que se encontró un cliente con el mismo DNI
-		if (cjpac.obtenerCliente(cliente.getDni()) != null) {
+		if (cjpac.obtenerEntidad(cliente.getDni(), Cliente.class) != null) {
 			System.out.printf("[ERROR] > El cliente %d ya se encuentra en el sistema!%n", cliente.getDni());
 		} else {
-			cjpac.crearCliente(cliente);			
+			cjpac.crearEntidad(cliente);			
 		}
 
 		cjpac.cerrarEMF(); // Finaliza el EMF
@@ -41,7 +41,7 @@ public class ClienteServicio {
 	
 	// Busca un cliente en el sistema
 	public Cliente obtenerCliente(int dni) {
-		Cliente cli = cjpac.obtenerCliente(dni);
+		Cliente cli = cjpac.obtenerEntidad(dni, Cliente.class);
 		if (cli == null) {
 			System.out.printf("[ERRRO] > El cliente %d no se encuentra en el sistema!%n", dni);
 		}
@@ -55,10 +55,10 @@ public class ClienteServicio {
 									LocalDate fechaNac, char sexo, String ciudad,
 									String provincia, int codPost, LocalDate fechaIng) {
 		
-		Cliente cli = cjpac.obtenerCliente(dni);
+		Cliente cli = cjpac.obtenerEntidad(dni, Cliente.class);
 		
 		if (cli != null) {
-			cjpac.actualizarCliente(cli, nombre, apellido, fechaNac, sexo, ciudad, provincia, codPost, fechaIng);			
+			cjpac.actualizarEntidad(cli, nombre, apellido, fechaNac, sexo, ciudad, provincia, codPost, fechaIng);			
 		} else {
 			System.out.printf("[ERRRO] > El cliente %d no se encuentra en el sistema!%n", dni);
 		}
@@ -68,12 +68,12 @@ public class ClienteServicio {
 	
 	// Da de baja a un cliente del sistema
 	public void eliminarCliente(int dni) {
-		Cliente cli = cjpac.obtenerCliente(dni);
+		Cliente cli = cjpac.obtenerEntidad(dni, Cliente.class);
 		
 		// En caso de que no se encuentre cliente en el sistema,
 		// simplemente no hace nada y finaliza el metodo destruyendo el EMF
 		if (cli != null) {
-			cjpac.eliminarCliente(cli);			
+			cjpac.eliminarEntidad(cli);			
 		} else {
 			System.out.printf("[ERROR] > El cliente %d no se encuentra en el sistema!%n", dni);
 		}
