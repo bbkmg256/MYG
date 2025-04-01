@@ -13,8 +13,7 @@ puntua el servicio del tutor.
 package edu.unam.modelo;
 
 // Libs
-import java.util.Date;
-import java.util.ArrayList;
+import java.time.LocalDate;
 
 import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
 import jakarta.persistence.Entity; // Modulo JPA para entidades/objetos
@@ -29,9 +28,9 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 /**
- *
- * @author bbkmg
- */
+*
+* @Autor: BBKMG
+*/
 @Entity
 public class Entrenamiento {
 	// Atributos
@@ -47,8 +46,8 @@ public class Entrenamiento {
 	private int volumenEntrenamiento;
 
 	@Temporal(TemporalType.DATE)
-	private Date fechaInicio;
-	private Date fechaFin;	
+	private LocalDate fechaInicio;
+	private LocalDate fechaFin;	
 	
 	// atributo relacion a clase Cliente
 	// private Cliente cliente;
@@ -67,7 +66,7 @@ public class Entrenamiento {
 		
 	}
 	
-	public Entrenamiento(int paramIdEntre, Date paramFechaInicio, Date paramFechaFin){
+	public Entrenamiento(int paramIdEntre, LocalDate paramFechaInicio, LocalDate paramFechaFin){
 		this.idEntrenamiento = paramIdEntre;
 		this.puntaje = 0; // Al inicio es 0 hasta que el cliente lo puntue.
 		this.fechaInicio = paramFechaInicio;
@@ -86,11 +85,11 @@ public class Entrenamiento {
 		this.puntaje = valPuntaje;
 	}
 	
-	public void setFechaInicio(Date valFechaInicio){
+	public void setFechaInicio(LocalDate valFechaInicio){
 		this.fechaInicio = valFechaInicio;
 	}
 	
-	public void setFechaFin(Date valFechaFin){
+	public void setFechaFin(LocalDate valFechaFin){
 		this.fechaFin = valFechaFin;
 	}
 	
@@ -107,17 +106,15 @@ public class Entrenamiento {
 		return this.puntaje;
 	}
 	
-	public Date getFechaInicio(){
+	public LocalDate getFechaInicio(){
 		return this.fechaInicio;
 	}
 	
-	public Date getFechaFin(){
+	public LocalDate getFechaFin(){
 		return this.fechaFin;
 	}
 	
 	public int getVolumenEntrenamiento(){
 		return this.volumenEntrenamiento;
 	}
-	
-	// Metodos
 }

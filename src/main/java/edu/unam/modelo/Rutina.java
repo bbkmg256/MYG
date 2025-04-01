@@ -13,7 +13,7 @@ el cliente.
 package edu.unam.modelo;
 
 // Libs
-import java.util.ArrayList;
+// import java.util.ArrayList;
 
 import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
 import jakarta.persistence.Entity; // Modulo JPA para entidades/objetos
@@ -24,9 +24,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 /**
- *
- * @author bbkmg
- */
+*
+* @Autor: BBKMG
+*/
 @Entity
 public class Rutina {
 	// Atributo
@@ -44,7 +44,7 @@ public class Rutina {
 	// atributo relacion a clase Entrenamiento (Lista)
 	// private ArrayList<Entrenamiento> entrenamientos = new ArrayList<>();
 	
-	// Constructor
+	// Constructores
 	public Rutina() {
 		
 	}
@@ -80,6 +80,4 @@ public class Rutina {
 	public int getCantRepeticiones(){
 		return this.cantRepeticiones;
 	}
-	
-	// Metodos
 }

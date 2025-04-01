@@ -12,7 +12,7 @@ que la trabaje.
 package edu.unam.modelo;
 
 // Libs
-import java.util.ArrayList;
+// import java.util.ArrayList;
 
 import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
 import jakarta.persistence.Entity; // Modulo JPA para entidades/objetos
@@ -23,9 +23,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 /**
- *
- * @author bbkmg
- */
+*
+* @Autor: BBKMG
+*/
 @Entity
 public class GrupoMuscular {
 	// Atributos
@@ -66,6 +66,4 @@ public class GrupoMuscular {
 	public String getNombreGrupo(){
 		return this.nombreGrupo;
 	}
-	
-	// Metodos
 }

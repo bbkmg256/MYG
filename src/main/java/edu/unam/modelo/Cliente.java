@@ -11,7 +11,6 @@ El cliente es un cliente que tiene un tutor y un entrenamiento asignado, fin.
 package edu.unam.modelo;
 
 // Libs
-import java.io.Serializable;
 import java.time.LocalDate;
 
 import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
@@ -25,11 +24,11 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 /**
- *
- * @author bbkmg
- */
+*
+* @Autor: BBKMG
+*/
 @Entity
-public class Cliente implements Serializable {
+public class Cliente {
 	// Atributos
 	@Id
 	private int dni;
@@ -142,6 +141,4 @@ public class Cliente implements Serializable {
 	public LocalDate getFechaIngreso() {
 		return this.fechaIngreso;
 	}
-	
-	// Metodos
 }

@@ -24,9 +24,9 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 /**
- *
- * @author bbkmg
- */
+*
+* @Autor: BBKMG
+*/
 @Entity
 public class Tutor {
 	// Atributos
@@ -141,6 +141,4 @@ public class Tutor {
 	public LocalDate getFechaIngreso() {
 		return this.fechaIngreso;
 	}
-	
-	// Metodos
 }

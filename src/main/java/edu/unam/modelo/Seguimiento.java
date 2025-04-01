@@ -13,7 +13,7 @@ cosas.
 package edu.unam.modelo;
 
 // Libs
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
 import jakarta.persistence.Entity; // Modulo JPA para entidades/objetos
@@ -28,9 +28,9 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 /**
- *
- * @author bbkmg
- */
+*
+* @Autor: BBKMG
+*/
 @Entity
 public class Seguimiento {
 	//Atributos
@@ -41,11 +41,11 @@ public class Seguimiento {
 	@Basic
 	private int cantSerieRealizado;
 	private int cantRepeticionesRealizado;
-	private String ejercicioRealizado;
+	private String ejercicioRealizado; // Por el momento se queda en un String, despues veré si es necesario cambiarlo a una entidad Ejercicio
 	private double pesoTrabajado;
 	
 	@Temporal(TemporalType.DATE)
-	private Date fechaHoy;
+	private LocalDate fechaHoy;
 	
 	// atributo relacion con clase Entrenamiento
 	// private Entrenamiento registroEntrenamiento;
@@ -56,7 +56,7 @@ public class Seguimiento {
 	}
 	
 	public Seguimiento(int paramIdSeg, int paramCantSeries, int paramCantRep,
-		String paramEjer, double paramPesoTrabajado){
+		String paramEjer, double paramPesoTrabajado) {
 		
 		this.idSeguimiento = paramIdSeg;
 		this.fechaHoy = null; // Ver como se obtiene la fecha actual del sistema.
@@ -67,50 +67,52 @@ public class Seguimiento {
 	}
 	
 	// Set
-	public void setIdSeguimiento(int valIdSeg){
+	public void setIdSeguimiento(int valIdSeg) {
 		this.idSeguimiento = valIdSeg;
 	}
 	
-	public void setFechaHoy(Date valFechaHoy){
+	public void setFechaHoy(LocalDate valFechaHoy) {
 		this.fechaHoy = valFechaHoy;
 	}
 	
-	public void setCantSerieRealizado(int valCantSerieRelizado){
+	public void setCantSerieRealizado(int valCantSerieRelizado) {
 		this.cantSerieRealizado = valCantSerieRelizado;
 	}
 	
-	public void setCantRepeticionRealizado(int valCantRepeticionRealizado){
+	public void setCantRepeticionRealizado(int valCantRepeticionRealizado) {
 		this.cantRepeticionesRealizado = valCantRepeticionRealizado;
 	}
 	
-	public void setEjercicioRealizado(String valEjercicioRealizado){
+	public void setEjercicioRealizado(String valEjercicioRealizado) {
 		this.ejercicioRealizado = valEjercicioRealizado;
 	}
 	
-	public void setPesoTrabajado(double valPesoTrabajado){
+	public void setPesoTrabajado(double valPesoTrabajado) {
 		this.pesoTrabajado = valPesoTrabajado;
 	}
 	
 	// Get
-	public int getIdSeguimiento(){
+	public int getIdSeguimiento() {
 		return this.idSeguimiento;
 	}
 	
-	public Date getFechaHoy(){
+	public LocalDate getFechaHoy() {
 		return this.fechaHoy;
 	}
 	
-	public int getCantSerieRealizado(){
+	public int getCantSerieRealizado() {
 		return this.cantSerieRealizado;
 	}
 	
-	public String getEjercicioRealizado(){
+	public int getCantRepeticionesRealizado() {
+		return this.cantRepeticionesRealizado;
+	}
+	
+	public String getEjercicioRealizado() {
 		return this.ejercicioRealizado;
 	}
 	
-	public double getPesoTrabajado(){
+	public double getPesoTrabajado() {
 		return this.pesoTrabajado;
 	}
-	
-	// Metodos
 }
