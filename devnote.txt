@@ -1,6 +1,9 @@
 
 # NOTAS DE DESARROLLO #
 
+* Autor: BBKMG *
+* Proyecto: MYG *
+
 
 (16/12/24)
 
@@ -87,3 +90,12 @@ operaciones con la capa del modelo, va a hacer uso de esta capa (el servicio). P
 pero esto se va a reveer mas a delante ya que hay demaciado codigo repetido (algunos metodos se pueden simplificar en una
 clase que use tipos de datos genericos o algo similar y las clase servicios pueden heredar de este sobreescribiendo metodos
 que requieran un tratamiento especifico para la clase), aun así, esto se reveera mas adelante.
+
+
+(31/03/25)
+
+Se modificó la capa de persistencia, todas las clases heredan de una clase padre llamada "JPAController", a su vez las
+clases hijas solo escriben un metodo para actualizar sus propios datos, es decir, como cada entidad varia en parametros
+actualizables, cada JPAController de cada entidad, escribe su propio metodo "actualizarEntidad()".
+La capa de servicio ya tiene todas las clases correspondientes a cada entidad, pero todavía no está completamente terminado
+ya que no contempla TODAS las acciones posibles (lógica de negocios) sobre la BD.
