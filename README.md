@@ -17,3 +17,7 @@ Requerimientos:
 (maven plugin)
 
 - maven-compiler-plugin 2.13.0
+
+(SDK intalación no-modular)
+
+- openjfx-21.0.6
