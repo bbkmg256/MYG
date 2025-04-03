@@ -1,4 +1,4 @@
-# Sistema de control de clientes en java #
+# Sistema de gestión de clientes en java #
 
 Requerimientos:
 
