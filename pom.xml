@@ -50,16 +50,16 @@
 		</dependency>
 		
 		<!-- Dependencias de javaFX -->
-	    <dependency>
-	        <groupId>org.openjfx</groupId>
-	        <artifactId>javafx-controls</artifactId>
-	        <version>${javafx.depend.version}</version>
-	    </dependency>
-	    <dependency>
-	        <groupId>org.openjfx</groupId>
-	        <artifactId>javafx-fxml</artifactId>
-	        <version>${javafx.depend.version}</version>
-	    </dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>${javafx.depend.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>${javafx.depend.version}</version>
+		</dependency>
 	</dependencies>
 	
 	<build>
