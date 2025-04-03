@@ -17,11 +17,11 @@
 	<dependencies>
 		<!-- Driver de Postgres (BD) -->
 		<dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.4</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.4</version>
 			<type>jar</type>
-        </dependency>
+		</dependency>
 		
 		<!-- Dependencias de Hibernate (ORM) -->
 		<dependency>
@@ -30,23 +30,23 @@
 			<version>6.6.9.Final</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.hibernate.orm</groupId>
-		    <artifactId>hibernate-hikaricp</artifactId>
-		    <version>6.2.7.Final</version>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-hikaricp</artifactId>
+			<version>6.2.7.Final</version>
 		</dependency>
 		
 		<!-- Dependencias Jakarta EE (JPA) -->
 		<dependency>
-		    <groupId>jakarta.persistence</groupId>
-		    <artifactId>jakarta.persistence-api</artifactId>
-		    <version>3.1.0</version>
-		    <scope>provided</scope>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>jakarta.transaction</groupId>
-		    <artifactId>jakarta.transaction-api</artifactId>
-		    <version>2.0.0</version>
-		    <scope>provided</scope>
+			<groupId>jakarta.transaction</groupId>
+			<artifactId>jakarta.transaction-api</artifactId>
+			<version>2.0.0</version>
+			<scope>provided</scope>
 		</dependency>
 		
 		<!-- Dependencias de javaFX -->
@@ -63,27 +63,27 @@
 	</dependencies>
 	
 	<build>
-	    <plugins>
-	    	<!-- Plugin de compilación para Maven -->
-	        <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-compiler-plugin</artifactId>
-	            <version>${maven.compiler.version}</version>
-	            <configuration>
-	                <source>21</source>  <!-- Versión de Java fuente -->
-	                <target>21</target>  <!-- Versión de Java objetivo -->
-	            </configuration>
-	        </plugin>
+		<plugins>
+			<!-- Plugin de compilación para Maven -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
+				<configuration>
+					<source>21</source>  <!-- Versión de Java fuente -->
+					<target>21</target>  <!-- Versión de Java objetivo -->
+				</configuration>
+			</plugin>
 	        
-	        <!-- Plugin de compilación para JavaFX -->
-	        <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>${javafx.maven.plugin.version}</version>
-                <configuration>
-                    <mainClass>edu.unam.app.Main</mainClass>
-                </configuration>
-            </plugin>
-	    </plugins>
+			<!-- Plugin de compilación para JavaFX -->
+			<plugin>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-maven-plugin</artifactId>
+				<version>${javafx.maven.plugin.version}</version>
+				<configuration>
+					<mainClass>edu.unam.app.Main</mainClass>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 </project>
