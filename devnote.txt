@@ -105,3 +105,7 @@ ya que no contempla TODAS las acciones posibles (lógica de negocios) sobre la B
 
 Se logró implementar JavaFX al proyecto, solo que no mediante Maven, sino que de forma manual, por ende, se deberá
 instalar el sdk manualmente cada que se quiera compilar o modificar el proyecto.
+
+Actualización: Se logró implementarlo mediante maven, ahora el problema es el fichero modulo, realmente no es necesario al ser un
+proyecto pequeño, pero se recomienda por seguridad y otros temas, aun que como refactorice el proyecto, ahora me está dando problemas
+por el cambio de nombre, por ende opto por no utilizar ese fichero en el proyecto.
