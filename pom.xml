@@ -1,9 +1,17 @@
 <project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>GYM</groupId>
-	<artifactId>GYM</artifactId>
+	<groupId>MYG</groupId>
+	<artifactId>MYG</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
+	
+	 <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.version>3.13.0</maven.compiler.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+        <javafx.depend.version>21</javafx.depend.version>
+    </properties>
 	
 	<!-- Dependencias -->
 	<dependencies>
@@ -40,20 +48,42 @@
 		    <version>2.0.0</version>
 		    <scope>provided</scope>
 		</dependency>
+		
+		<!-- Dependencias de javaFX -->
+	    <dependency>
+	        <groupId>org.openjfx</groupId>
+	        <artifactId>javafx-controls</artifactId>
+	        <version>${javafx.depend.version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.openjfx</groupId>
+	        <artifactId>javafx-fxml</artifactId>
+	        <version>${javafx.depend.version}</version>
+	    </dependency>
 	</dependencies>
-
+	
 	<build>
 	    <plugins>
 	    	<!-- Plugin de compilación para Maven -->
 	        <plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
 	            <artifactId>maven-compiler-plugin</artifactId>
-	            <version>3.13.0</version>
+	            <version>${maven.compiler.version}</version>
 	            <configuration>
 	                <source>21</source>  <!-- Versión de Java fuente -->
 	                <target>21</target>  <!-- Versión de Java objetivo -->
 	            </configuration>
 	        </plugin>
+	        
+	        <!-- Plugin de compilación para JavaFX -->
+	        <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${javafx.maven.plugin.version}</version>
+                <configuration>
+                    <mainClass>edu.unam.app.Main</mainClass>
+                </configuration>
+            </plugin>
 	    </plugins>
 	</build>
 </project>
