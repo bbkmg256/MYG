@@ -7,6 +7,9 @@ package edu.unam.servicio;
 // JPA
 import edu.unam.repositorio.EjercicioJPAController;
 
+// Varios
+import java.util.List;
+
 // Entidad
 import edu.unam.modelo.Ejercicio;
 
@@ -42,6 +45,18 @@ public class EjercicioServicio {
 		
 		ejjpac.cerrarEMF();
 		return ejercicio;
+	}
+	
+	// Obtener todos los Ejercicios cargados
+	public List<Ejercicio> obtenerTodosLosEjercicios(){
+		String entidadString = "Ejercicio";
+		List<Ejercicio> ejer = ejjpac.obtenerEntidades(entidadString, Ejercicio.class);
+		if (ejer == null) {
+			System.out.printf("[ ERROR ] > No hay Ejercicios en el sistema!%n");
+		}
+		
+		ejjpac.cerrarEMF();
+		return ejer;
 	}
 
 	// Actualizar Ejercicio

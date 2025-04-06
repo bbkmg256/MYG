@@ -9,6 +9,7 @@ import edu.unam.repositorio.EntrenamientoJPAController;
 
 // Varios
 import java.time.LocalDate;
+import java.util.List;
 
 // Entidad
 import edu.unam.modelo.Entrenamiento;
@@ -46,6 +47,19 @@ public class EntrenamientoServicio {
 		
 		ejpac.cerrarEMF();
 		return entrenamiento;
+	}
+	
+	// Obtiene todos los Entrenamientos del sistema
+	public List<Entrenamiento> obtenerTodosLosEntrenamientos(){
+		String entidadString = "Entrenamiento";
+		List<Entrenamiento> entr = ejpac.obtenerEntidades(entidadString, Entrenamiento.class);
+		
+		if (entr == null) {
+			System.out.printf("[ ERROR ] > No hay entrenamientos en el sistema!%n");
+		}
+		
+		ejpac.cerrarEMF();
+		return entr;
 	}
 
 	// Actualizar Entrenamiento

@@ -7,6 +7,9 @@ package edu.unam.servicio;
 // JPA
 import edu.unam.repositorio.GMJPAController;
 
+// Varios
+import java.util.List;
+
 // Entidad
 import edu.unam.modelo.GrupoMuscular;
 
@@ -39,6 +42,19 @@ public class GMServicio {
 		
 		if (gm == null) {
 			System.out.printf("[ ERROR ] > El grupo muscular %d no se encuentra en el sistema!%n", id);
+		}
+		
+		gmjpac.cerrarEMF();
+		return gm;
+	}
+	
+	// Obtener todos los Grupo Musculares
+	public List<GrupoMuscular> obtenerTodosLosGM(){
+		String entidadString = "GrupoMuscular";
+		List<GrupoMuscular> gm = gmjpac.obtenerEntidades(entidadString, GrupoMuscular.class);
+		
+		if (gm == null) {
+			System.out.printf("[ ERROR ] > No hay grupos musculares en el sistema!%n");
 		}
 		
 		gmjpac.cerrarEMF();

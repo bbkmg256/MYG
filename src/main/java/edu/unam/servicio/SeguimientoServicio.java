@@ -9,6 +9,7 @@ import edu.unam.repositorio.SeguimientoJPAController;
 
 // Varios
 import java.time.LocalDate;
+import java.util.List;
 
 // Entidad
 import edu.unam.modelo.Seguimiento;
@@ -46,6 +47,19 @@ public class SeguimientoServicio {
 		sjpac.cerrarEMF();
 		return seg;
 	}
+	
+	// Obtiene todos los Seguimientos del sistema
+	public List<Seguimiento> obtenerTodosLosSeguimientos(){
+		String entidadString = "Seguimiento";
+		List<Seguimiento> seg = sjpac.obtenerEntidades(entidadString, Seguimiento.class);
+		if (seg == null) {
+			System.out.printf("[ ERROR ] > No hay seguimientos en el sistema!%n");
+		}
+		
+		sjpac.cerrarEMF();
+		return seg;
+	}
+	
 	// Actualizar Seguimiento
 	public void actualizarInfSeguimiento(int id, LocalDate fechaActual, int cantSerieRealizado,
 			int cantRepeticionesRealizado,String ejercicioRealizado, double pesoTrabajado) {

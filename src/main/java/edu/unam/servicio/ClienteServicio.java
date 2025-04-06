@@ -10,13 +10,14 @@ import edu.unam.repositorio.ClienteJPAController;
 
 // Varios
 import java.time.LocalDate;
+import java.util.List;
 
 // Entidad
 import edu.unam.modelo.Cliente;
 
 /**
 *
-* @author bbkmg
+* @Autor: BBKMG
 */
 public class ClienteServicio {
 	// JPAController
@@ -44,6 +45,20 @@ public class ClienteServicio {
 		Cliente cli = cjpac.obtenerEntidad(dni, Cliente.class);
 		if (cli == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
+		}
+		
+		cjpac.cerrarEMF();
+		return cli;
+	}
+	
+	// Obtener todos los clientes del sistema
+	public List<Cliente> obtenerTodosLosClientes(){
+		// El nombre de la entidad en JPQL empieza con mayuscula
+		// (ej: Cliente, Tutor) como las mismas clases
+		String entidadString = "Cliente"; // Para especificar en la consulta JPQL en clase "JPAController"
+		List<Cliente> cli = cjpac.obtenerEntidades(entidadString, Cliente.class);
+		if (cli == null) {
+			System.out.printf("[ ERROR ] > No hay clientes en el sistema!%n");
 		}
 		
 		cjpac.cerrarEMF();

@@ -9,6 +9,7 @@ import edu.unam.repositorio.TutorJPAController;
 
 // Varios
 import java.time.LocalDate;
+import java.util.List;
 
 // Entidad
 import edu.unam.modelo.Tutor;
@@ -42,6 +43,19 @@ public class TutorServicio {
 		
 		if (tutor == null) {
 			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni);
+		}
+		
+		tjpac.cerrarEMF();
+		return tutor;
+	}
+	
+	// Obtener todos los Tutores del sistema
+	public List<Tutor> obtenerTodosLosTutores(){
+		String entidadString = "Tutor";
+		List<Tutor> tutor = tjpac.obtenerEntidades(entidadString, Tutor.class);
+		
+		if (tutor == null) {
+			System.out.printf("[ ERROR ] > No hay tutores en el sistema!%n");
 		}
 		
 		tjpac.cerrarEMF();

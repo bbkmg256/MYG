@@ -7,6 +7,9 @@ package edu.unam.servicio;
 // JPA
 import edu.unam.repositorio.RutinaJPAController;
 
+// Varios
+import java.util.List;
+
 // Entidad
 import edu.unam.modelo.Rutina;
 
@@ -43,6 +46,19 @@ public class RutinaServicio {
 		
 		rjpac.cerrarEMF();
 		return rutina;
+	}
+	
+	// Obtiene todos las Rutinas en el sistema
+	public List<Rutina> obtenerTodasLasRutinas(){
+		String entidadString = "Rutina";
+		List<Rutina> rut = rjpac.obtenerEntidades(entidadString, Rutina.class);
+		
+		if (rut == null) {
+			System.out.printf("[ ERROR ] > No hay rutinas en el sistema!%n");
+		}
+		
+		rjpac.cerrarEMF();
+		return rut;
 	}
 	
 	// Eliminar una Rutina del sistema
