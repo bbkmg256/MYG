@@ -15,6 +15,7 @@ package edu.unam.repositorio;
 
 // Libs.
 // JPA
+import jakarta.persistence.TypedQuery;
 // import jakarta.persistence.EntityManager;
 // import jakarta.persistence.EntityManagerFactory;
 // import jakarta.persistence.Persistence;
@@ -24,10 +25,11 @@ import edu.unam.modelo.Cliente;
 
 // Varios
 import java.time.LocalDate;
+import java.util.List;
 
 /**
 *
-* @author bbkmg
+* @Autor: BBKMG
 */
 public class ClienteJPAController extends JPAController {
 	// Atribs.
@@ -77,26 +79,6 @@ public class ClienteJPAController extends JPAController {
 			manager.close();
 		}
 	}
+
+	// Leer todas las entidades (No listo) -> Clase padre
 }
-	
-	/*
-	// Leer entidad (No listo)
-	public Cliente obtenerCliente(Cliente entidadCliente) {
-		manager = emf.createEntityManager();
-		String consulta = "SELECT c FROM Cliente c WHERE c.dni = :dni"; // Consulta JPQL
-		TypedQuery<Cliente> consultaPreparada; // Variable de consulta (Castea automaticamente el dato obtenido)
-		Cliente regCli = null; // Variable para almacenar el registro
-		
-		try { // Crea y prepara una consulta SQL (JPQL
-			consultaPreparada = manager.createQuery(consulta, Cliente.class)
-								.setParameter("dni", entidadCliente.getDni()); // Asocia el parametro a la consulta
-			
-			regCli = consultaPreparada
-					.setMaxResults(1) // Es como el "LIMIT 1" en SQL
-					.getSingleResult(); // Espera 1 solo resultado			
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return regCli;
-	}
-	*/

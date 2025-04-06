@@ -7,10 +7,13 @@
 
 package edu.unam.repositorio;
 
+import java.util.List;
+
 // JPA
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
 /**
 *
@@ -47,23 +50,43 @@ public class JPAController {
 	}
 	
 	// Leer entidad (Funcional)
-	public <T> T obtenerEntidad(int dni, Class <T> clase) {
-		T regCli = null; // Variable para almacenar el registro
+	public <T> T obtenerEntidad(int dni, Class<T> clase) {
+		T regEntidad = null; // Variable para almacenar el registro
 		manager = emf.createEntityManager();
 			
 		try { // Busca un cliente mediante su dni
-			regCli = manager.find(clase, dni);
+			regEntidad = manager.find(clase, dni);
 			// System.out.println(regCli);
 		} catch (Exception e) {
 			System.out.println(e);
 		} finally {
 			manager.close(); // Cierra el Entity Manager
 		}			
-		return regCli;
+		return regEntidad;
+	}
+	
+	// Leer todas las entidades (No listo)
+	public <T> List<T> obtenerEntidades(String entidad, Class<T> clase) {
+		manager = emf.createEntityManager();
+		String consulta = String.format("SELECT %c FROM %s %c", entidad.charAt(0), entidad, entidad.charAt(0)); // Consulta JPQL
+		System.out.println(consulta);
+		TypedQuery<T> consultaPreparada; // Variable de consulta (Castea automaticamente el dato obtenido)
+		List<T> regEntidades = null; // Variable para almacenar el registro
+			
+		try { // Crea y prepara una consulta SQL (JPQL)
+			consultaPreparada = manager.createQuery(consulta, clase);
+			regEntidades = consultaPreparada.getResultList(); // Devuelve los registros obtenidos en una lista
+
+		} catch (Exception e) {
+			System.out.println(e);
+			// System.out.println("EL PROBLEMA ES ACÁ");
+		}
+		// Retorna una lista de los clientes de la BD
+		return regEntidades;
 	}
 	
 	// Actualizar entidad (Metodo escrito en cada clase hija)
-	
+
 	// Eliminar entidad (Funcional)
 	public <T> void eliminarEntidad(T entidad) {
 		manager = emf.createEntityManager();
@@ -100,4 +123,29 @@ public class JPAController {
 
 
 
-// JEJE, soy el papi de las clases!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// You do too many searches, Billy!
+// https://www.youtube.com/watch?v=MRV8mFWwtS4
