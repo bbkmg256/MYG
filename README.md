@@ -13,11 +13,11 @@ Requerimientos:
 - hibernate-core 6.6.9
 - hibernate-hikaricp 6.2.7
 - postgresql 42.7.4 (postgreSQL JDBC Driver)
+- javafx-controls 21
+- javafx-fxml 21
 
 (maven plugin)
 
 - maven-compiler-plugin 2.13.0
-
-(SDK intalación no-modular)
-
-- openjfx-21.0.6
+- javafx-maven-plugin 0.0.8
+- dependency-check-maven 8.4.0 (Opcional)
