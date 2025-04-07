@@ -106,6 +106,39 @@ ya que no contempla TODAS las acciones posibles (lógica de negocios) sobre la B
 Se logró implementar JavaFX al proyecto, solo que no mediante Maven, sino que de forma manual, por ende, se deberá
 instalar el sdk manualmente cada que se quiera compilar o modificar el proyecto.
 
-Actualización: Se logró implementarlo mediante maven, ahora el problema es el fichero modulo, realmente no es necesario al ser un
+Actualización: Se logró implementarlo mediante Maven, ahora el problema es el fichero modulo, realmente no es necesario al ser un
 proyecto pequeño, pero se recomienda por seguridad y otros temas, aun que como refactorice el proyecto, ahora me está dando problemas
 por el cambio de nombre, por ende opto por no utilizar ese fichero en el proyecto.
+
+
+(03/04/25)
+
+[JEJE, hoy salió "Una película de Minecraft" acabo de ver un leak de 1H pensando que era la peli final, casi me muero!!]
+
+Se pudo implementar el uso de .fxml para las vistas, desde ahora se trabajará con estos ficheros para crear cada vista
+y se importara para poder darle funcionamiento con java.
+
+
+(05/04/25)
+
+Se ah trabajado en el backend del sistema, buscando mejorar la modularidad del codigo, se creo un nuevo metodo en la capa
+del JPAController ("obtenerEntidades"), la idea es poder, a diferencia del metodo "obtenerEntidad", buscar registros de la
+base de datos correspondiente a la entidad desde donde se ejecuta el metodo y traer todos los registros almacenados de
+dicha entidad, en una lista, para su posterior manipulación. Mas que nada se pretende usar este metodo en vistas que tengan
+como funcion la de mostrar todos los registros almacenados de una entidad en la BD.
+
+Además de esto se ah creado un tablero en Trello para ayudar a la organización del proyecto, marcando:
+
+- Cosas pendientes -> Para organizar lo que se debe hacer
+
+- Cosas en proceso -> Para organizar y marcar lo que se está haciendo
+
+- Cosas realizadas -> Para organizar y tener registro de lo que ya se cumplió
+
+- Cosas pospuestas -> Para sentar las cosas que por el momento se van a dejar para despues
+
+Otra cosa en la que se estuvo trabajando fue en el problema de la clase "module-info.java", se optó por eliminar está clase
+modulo, por problemas en la refactorización del proyecto (se cambió el nombre de GYM a MYG), este daba errores de dependencias
+no encontradas. Justamente por la encapsulación fuerte que brinda la modularizacion mediante modulos xd, al cambiarle el
+nombre al proyecto se produjeron errores en las dependencias Maven y la clase no permitia exponer paquetes a las dependencias,
+por que no las encontraba.
