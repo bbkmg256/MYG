@@ -4,7 +4,8 @@
 	<artifactId>MYG</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	
+
+	<!-- Variables -->	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>21</maven.compiler.release>
@@ -63,6 +64,7 @@
 	</dependencies>
 	
 	<build>
+	<!-- Plugins -->
 		<plugins>
 			<!-- Plugin de compilación para Maven -->
 			<plugin>
@@ -83,6 +85,20 @@
 				<configuration>
 					<mainClass>edu.unam.app.Main</mainClass>
 				</configuration>
+			</plugin>
+
+			<!-- Plugin para escanear vulnerabilidades con OWASP -->
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>8.4.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
