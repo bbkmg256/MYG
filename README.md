@@ -20,4 +20,3 @@ Requerimientos:
 
 - maven-compiler-plugin 2.13.0
 - javafx-maven-plugin 0.0.8
-- dependency-check-maven 8.4.0 (Opcional)
