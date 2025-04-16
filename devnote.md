@@ -21,6 +21,11 @@
 - [03/04/25](#030425)
 - [05/04/25](#050425)
 - [09/04/25](#090425)
+- [10/04/25](#100425)
+- [11/04/25](#110425)
+- [12/04/25](#120425)
+- [13/04/25](#130425)
+- [15/04/25](#150425)
 
 ---
 
@@ -141,6 +146,60 @@ Por último, eliminé `module-info.java` por los problemas de refactor y depende
 ---
 
 ### 09/04/25
-Se modificó el fichero `devnote.txt` a `devnote.md`, pasando todo el log de desarrollo a Markdown, y además se lo organizó para mayor compención
+Se modificó el fichero `devnote.txt` a `devnote.md`, pasando todo el log de desarrollo a Markdown, y además se lo organizó para mayor comprensión.
+
+Se **modificaron** las clases de la capa de **persistencia**, diferenciando cuales son los **DAO's (Data Access Object)** del **JPAController** heredado.
+
+Se **recomentó** las **clases** de la **capa del modelo** de **minuscula a mayuscula** para mejor comprensión, por cantidad no se recomentará el resto, pero **desde ahora se utilizará la mayuscula**.
+
+---
+
+### 10/04/25
+Se trabajo en las relaciones de las entidades, por el momento se logró relacionar de forma funcional las clases `Ejercicio` con `GrupoMuscular`.
+
+---
+
+### 11/04/25
+Se trabajo en los mapeados de las relaciones de las entidades `GrupoMucular` y `Ejercicio`, y `Rutina`, la relacion entre las 2 ultimas por el momento
+no funciona, y se plantea en tomarlo como una relacion de M a M. Por otro lado, la relacion entre `GrupoMusuclar` y `Ejercicio` si funciona y es posible
+cargar entidades relacionadas, ahora bien, respecto a esto, se modificaron ciertas cosas en la capa `repositorio` y `servicio`, para el primero, se agrego
+un metodo en la clase `GMDAO` llamado `actualizarRelacion()` que recibe 2 parametros (una entidad de tipo GM y otra entidad de tipo ejercicio), este metodo
+permite cargar una entidad ejercicio que se persistio anteriormente, para poder mantener los enlaces de la relacion (añade la entidad a la lista `ejercicios`).
+
+Tambien se modificó la clase `GMServicio` de la capa de servicio, se agregaron 2 metodos mas, `actualizarRelacionGMEjercicio` y `finalizarConexion`, el primero para
+actualizar la lista "ejercicios" de la entida GM al que se halla relacionado alguna entidad ejercicio, y la segunda, para finalizar la conexion con la BD.
+
+Mencionar tambien que se agrego 1 metodo y se modifico otro de la clase jpacontroller del que herendan las clases de la capa persistencia, se agrego el metodo
+`hayConexion` que permite verificar si el EMF (Entity Manager Factory) está activo (o si hay conexion abierta con la BD), y se modifico `cerrarEMF`, quitando la
+logica interna que tenia, para derivarserla a la capa de servicio.
+
+---
+
+### 12/04/25
+Se trabajó en la relación entre `Entrenamiento` y las entidades `Cliente` y `Tutor`, por el momento las relaciones no se pueden probar hasta tener solucionado
+los problemas con las relacion de `Ejercicio` y `Rutina` (aun que en realidad puedo hacer pruebas eliminando momentaneamente el atributo rutina de entrenamiento, bueno
+aveces soy medio boludo xd).
+
+También se agregaron nombre especificos para los atributos (de alguna entidades) que están escritos con "camelCase", ya que en la BD las columnas aparecen en minusculas todas juntas
+y queda medio raro para leer.
+
+---
+
+### 13/04/25
+Se refactorizaron algunos metodos de todas las clases de la capa de servicio (los de creación entidades, actualizacion de informacion de entidades, actualizacion de relaciones entre entidades
+y eliminación de entidad), especificamente las sentencias "if", no es un cambio significativo, pero para evitar redundancia mas que nada.
+
+---
+
+### 15/04/25
+Se refactorizó toda la capa de persistencia, haciendo independiente a cada DAO, es decir, ya no heredan de la clase `JPAController`, sino que cada DAO se maneja con sus metodos sin
+afectar a otros DAO's, **por ende la clase `JPAController` queda totalmente obsoleta**, pero por el momento la voy a dejar donde está, además se realizó otro cambio bastante importante deacuerdo a
+la forma de asociación respecto a clases hijas y padres, cuando se instancias una clase hija, dentro de su mismo metodo de carga hacia la BD, esta realiza la operacion pertinente para que la clase
+padre almacene a esta instanciacion de la entidad hija dentro de su lista de clases hijas (esto deacuerdo como se asocian las relaciones 1 a muchos).
+
+Además, y por consecuencia, al haber modificado metodos de los DAO's de la capa de persistencia, se tuvo que modificar los metodos de los servicios de la capa de servicios, donde se cambiaron algunos
+nombres de metodos y se adaptarón estos mismo a las modificacions de parametros realizadas en los metodos de los DAO's.
+
+NOTA IMPORTANTE: NO SE TESTEARON LOS CAMBIOS, Y SE LO DEJO COMO PENDIENTE!!
 
 ---
