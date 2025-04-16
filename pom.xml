@@ -87,7 +87,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- Plugin para escanear vulnerabilidades con OWASP -->
+			<!-- Plugin para escanear vulnerabilidades con OWASP (Opcional) -->
 			<plugin>
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
