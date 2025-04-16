@@ -5,14 +5,14 @@
 
 package edu.unam.servicio;
 
-// JPA Controller
-import edu.unam.repositorio.ClienteJPAController;
+// JPA
+import edu.unam.repositorio.ClienteDAO;
 
-// Varios
+// VARIOS
 import java.time.LocalDate;
 import java.util.List;
 
-// Entidad
+// ENTIDAD
 import edu.unam.modelo.Cliente;
 
 /**
@@ -21,33 +21,39 @@ import edu.unam.modelo.Cliente;
 */
 public class ClienteServicio {
 	// JPAController
-	private ClienteJPAController cjpac;
+	private ClienteDAO cjpac;
 	
 	// Constructor
 	public ClienteServicio() {
-		cjpac = new ClienteJPAController();
+		cjpac = new ClienteDAO();
 	}
 	
 	// Registra un cliente en el sistema
-	public void registrarCliente(Cliente cliente) {
-		// Si el metodo es diferente a null, es por que se encontró un cliente con el mismo DNI
-		if (cjpac.obtenerEntidad(cliente.getDni(), Cliente.class) != null) {
+	public void cargarCliente(Cliente cliente) {
+		// Si el metodo es diferente de null, es por que se encontró un cliente con el mismo DNI
+		if (cjpac.obtenerEntidadCliente(cliente.getDni()) != null) {
 			System.out.printf("[ ERROR ] > El cliente %d ya se encuentra en el sistema!%n", cliente.getDni());
-		} else {
-			cjpac.crearEntidad(cliente);			
+			return; // SI EL OBJETO YA ESTÁ EN LA BD, MUESTRA EL MENSAJE Y SALE DEL METODO.
 		}
 
-		cjpac.cerrarEMF(); // Finaliza el EMF
+		// MODIFICA TODOS LOS VALORES TEXTUALES QUE TENGA EL OBJETO, A MINUSCULA.
+		cliente.setNombre(cliente.getNombre().toLowerCase());
+		cliente.setApellido(cliente.getApellido().toLowerCase());
+		cliente.setCiudad(cliente.getCiudad().toLowerCase());
+		cliente.setProvicia(cliente.getProvincia().toLowerCase());
+		cliente.setSexo(Character.toLowerCase(cliente.getSexo()));
+		
+		// CARGA EL OBJETO A LA BD
+		cjpac.crearEntidadCliente(cliente);			
 	}
 	
 	// Busca un cliente en el sistema
 	public Cliente obtenerCliente(int dni) {
-		Cliente cli = cjpac.obtenerEntidad(dni, Cliente.class);
+		Cliente cli = cjpac.obtenerEntidadCliente(dni);
 		if (cli == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
 		}
 		
-		cjpac.cerrarEMF();
 		return cli;
 	}
 	
@@ -55,13 +61,11 @@ public class ClienteServicio {
 	public List<Cliente> obtenerTodosLosClientes(){
 		// El nombre de la entidad en JPQL empieza con mayuscula
 		// (ej: Cliente, Tutor) como las mismas clases
-		String entidadString = "Cliente"; // Para especificar en la consulta JPQL en clase "JPAController"
-		List<Cliente> cli = cjpac.obtenerEntidades(entidadString, Cliente.class);
+		List<Cliente> cli = cjpac.obtenerEntidadesCliente();
 		if (cli == null) {
 			System.out.printf("[ ERROR ] > No hay clientes en el sistema!%n");
 		}
 		
-		cjpac.cerrarEMF();
 		return cli;
 	}
 	
@@ -70,29 +74,47 @@ public class ClienteServicio {
 									LocalDate fechaNac, char sexo, String ciudad,
 									String provincia, int codPost, LocalDate fechaIng) {
 		
-		Cliente cli = cjpac.obtenerEntidad(dni, Cliente.class);
+		Cliente cli = cjpac.obtenerEntidadCliente(dni);
 		
-		if (cli != null) {
-			cjpac.actualizarEntidad(cli, nombre, apellido, fechaNac, sexo, ciudad, provincia, codPost, fechaIng);			
-		} else {
+		if (cli == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
+			return;
 		}
 		
-		cjpac.cerrarEMF();
+		// ALGUNOS PARAMETROS SE MODIFICAN A MINUSCULA
+		cjpac.actualizarEntidadCliente(cli, nombre.toLowerCase(), apellido.toLowerCase(),
+								fechaNac, Character.toLowerCase(sexo), ciudad.toLowerCase(),
+								provincia.toLowerCase(), codPost, fechaIng);
 	}
+	
+//	// ACTUALIZAR RELACION CON ENTRENAMIENTO
+//	public void actualizarRelacionClienteEntrenamiento(Cliente entidadCliente, Entrenamiento entidadEntrenamiento) {
+//		if (entidadCliente == null && entidadEntrenamiento == null) {
+//			System.out.printf("[ ERROR ] > Alguno de los objetos ingresados es nulo o no es válido!%n");
+//			return;
+//		}
+//		
+//		cjpac.actualizarRelacion(entidadCliente, entidadEntrenamiento);
+//	}
 	
 	// Da de baja a un cliente del sistema
 	public void eliminarCliente(int dni) {
-		Cliente cli = cjpac.obtenerEntidad(dni, Cliente.class);
+		Cliente cli = cjpac.obtenerEntidadCliente(dni);
 		
 		// En caso de que no se encuentre cliente en el sistema,
 		// simplemente no hace nada y finaliza el metodo destruyendo el EMF
-		if (cli != null) {
-			cjpac.eliminarEntidad(cli);			
-		} else {
+		if (cli == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
+			return;
 		}
 		
-		cjpac.cerrarEMF();
+		cjpac.eliminarEntidadCliente(cli);
+	}
+	
+	// CERRAR CONEXION
+	public void finalizarConexion() {
+		if (cjpac != null && cjpac.hayConexion()) {
+			cjpac.cerrarEMF();			
+		}
 	}
 }

@@ -5,12 +5,12 @@
 package edu.unam.servicio;
 
 // JPA
-import edu.unam.repositorio.EjercicioJPAController;
+import edu.unam.repositorio.EjercicioDAO;
 
-// Varios
+// VARIOS
 import java.util.List;
 
-// Entidad
+// ENTIDAD
 import edu.unam.modelo.Ejercicio;
 
 /**
@@ -18,70 +18,81 @@ import edu.unam.modelo.Ejercicio;
 * @Autor: BBKMG
 */
 public class EjercicioServicio {
-	private EjercicioJPAController ejjpac;
+	private EjercicioDAO ejjpac;
 	
 	public EjercicioServicio() {
-		ejjpac = new EjercicioJPAController();
+		ejjpac = new EjercicioDAO();
 	}
 	
 	// Cargar Ejercicio
 	public void cargarEjercicio(Ejercicio ejercicio) {
-		if (ejjpac.obtenerEntidad(ejercicio.getIdEjercicio(), Ejercicio.class) != null) {
-			System.out.printf("[ ERROR ] > El ejercicio %d no se encuentra en el sistema!%n", ejercicio.getIdEjercicio());
-		} else {
-			ejjpac.crearEntidad(ejercicio);
+		// MANEJO DE FALLO [ ENTIDAD EXISTENTE EN LA BD ]
+		if (ejjpac.obtenerEntidadEjercicio(ejercicio.getIdEjercicio()) != null) {
+			System.out.printf("[ ERROR ] > El ejercicio %d ya se encuentra en el sistema!%n", ejercicio.getIdEjercicio());
+			return;
 		}
 		
-		ejjpac.cerrarEMF();
+		// MANEJO DE FALLO [ ATRIBUTO GM NULL ]
+		if (ejercicio.getGrupoMuscular() == null) {
+			System.out.printf("[ ERROR ] > El ejercicio %d no tiene grupo muscular asignado o este es nulo!%n", ejercicio.getIdEjercicio());
+			return;
+		}
+		
+		// MODIFICA EL PARAMETRO A MINUSCULA
+		ejercicio.setNombreEjercicio(ejercicio.getNombreEjercicio().toLowerCase());
+		
+		// CARGA EL OBJETO A LA BD
+		ejjpac.crearEntidadEjercicio(ejercicio);
 	}
 	
 	// Buscar Ejercicio
 	public Ejercicio obtenerEjercicio(int id) {
-		Ejercicio ejercicio = ejjpac.obtenerEntidad(id, Ejercicio.class);
+		Ejercicio ejercicio = ejjpac.obtenerEntidadEjercicio(id);
 		
 		if (ejercicio == null) {
 			System.out.printf("[ ERROR ] > El ejercicio %d no se encuentra en el sistema!%n", id);
 		}
-		
-		ejjpac.cerrarEMF();
 		return ejercicio;
 	}
 	
 	// Obtener todos los Ejercicios cargados
 	public List<Ejercicio> obtenerTodosLosEjercicios(){
-		String entidadString = "Ejercicio";
-		List<Ejercicio> ejer = ejjpac.obtenerEntidades(entidadString, Ejercicio.class);
+		List<Ejercicio> ejer = ejjpac.obtenerEntidadesEjercicio();
 		if (ejer == null) {
 			System.out.printf("[ ERROR ] > No hay Ejercicios en el sistema!%n");
 		}
-		
-		ejjpac.cerrarEMF();
 		return ejer;
 	}
 
 	// Actualizar Ejercicio
-	public void actualizarInfEjercicio(int id, String nombreEj) {
-		Ejercicio ejercicio = ejjpac.obtenerEntidad(id, Ejercicio.class);
+	public void actualizarEstadoEjercicio(int id, String nombreEj) {
+		Ejercicio ejercicio = ejjpac.obtenerEntidadEjercicio(id);
 		
-		if (ejercicio != null) {
-			ejjpac.actualizarEntidad(ejercicio, nombreEj);
-		} else {
+		if (ejercicio == null) {
 			System.out.printf("[ ERROR ] > El ejercicio %d no se encuentra en el sistema!%n", id);
+			return;
 		}
 		
-		ejjpac.cerrarEMF();
+		// ALGUNOS PARAMETROS SE MODIFICAN A MAYUSCULA
+		ejjpac.actualizarEntidadEjercicio(ejercicio, nombreEj.toLowerCase());
 	}
 
 	// Eliminar Ejercicio
 	public void eliminarEjercicio(int id) {
-		Ejercicio ejercicio = ejjpac.obtenerEntidad(id, Ejercicio.class);
+		Ejercicio ejercicio = ejjpac.obtenerEntidadEjercicio(id);
 		
-		if (ejercicio != null) {
-			ejjpac.eliminarEntidad(ejercicio);
-		} else {
+		if (ejercicio == null) {
 			System.out.printf("[ ERROR ] > El ejercicio %d no se encuentra en el sistema!%n", id);
+			return;
 		}
 		
-		ejjpac.cerrarEMF();
+		ejjpac.eliminarEntidadEjercicio(ejercicio);
+	}
+	
+	// CERRAR CONEXION
+	public void finalizarConexion() {
+		if (ejjpac != null && ejjpac.hayConexion()) {
+			ejjpac.cerrarEMF();			
+		}
 	}
 }
