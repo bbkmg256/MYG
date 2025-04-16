@@ -1,27 +1,42 @@
-
-// Clase tutor
-
 /*
+ * 
+ * CLASE TUTOR
+ * 
+ * ESTA CLASE SE RELACIONA CON EL ENTRENAMIENTO (EL TUTOR IMPARTE EL ENTRENAMIENTO), FIN.
+ * 
+ */
 
-El tutor imparte el entrenamiento al cliente, fin.
 
-*/
-
-// Paquete
+// PAQUETE
 package edu.unam.modelo;
 
-// Libs
+// LIBRERIAS
+// VARIOS
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
-import jakarta.persistence.Entity; // Modulo JPA para entidades/objetos
+import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
 
-// Modulos JPA para generacion el ID
+// MODULOS JPA PARA EL ID
 import jakarta.persistence.Id;
-
-// Modulo JPA para atributos referentes a fechas
+import jakarta.persistence.OneToMany;
+// MODULO JPA PARA ATRIBUTOS REFERENTES A FECHAS
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+
+
+/*
+ *
+ * NOTA:
+ * 
+ * NO DESCOMENTES LAS RELACIONES TODAVIA
+ * 
+ */
+
 
 /**
 *
@@ -29,7 +44,7 @@ import jakarta.persistence.TemporalType;
 */
 @Entity
 public class Tutor {
-	// Atributos
+	// ATRIBUTOS
 	@Id
 	private int dni;
 	
@@ -39,19 +54,21 @@ public class Tutor {
 	private char sexo;
 	private String ciudad;
 	private String provincia;
+	@Column(name = "codigo_postal")
 	private int codigoPostal;
 	
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_nacimiento")
 	private LocalDate fechaNacimiento;
+	@Column(name = "fecha_ingreso")
 	private LocalDate fechaIngreso;
 	
-	// atributo relacion con clase Entrenamiento (Lista)
-	// private ArrayList<Entrenamiento> entrenamientos_t = new ArrayList<>();
+	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO (LISTA)
+	@OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
+	private List<Entrenamiento> entrenamientos = new ArrayList<>();
 		
-	// Constructor
-	public Tutor() {
-		
-	}
+	// CONTRUCTOR
+	public Tutor() {}
 	
 	public Tutor(int paramDni, String paramNombre, String paramApellido,
 				LocalDate paramFechaNac, char paramSexo, String paramCiudad,
@@ -68,7 +85,7 @@ public class Tutor {
 		this.fechaIngreso = paramFechaIng;
 	}
 	
-	// Set
+	// SET
 	public void setDni(int valDni) {
 		this.dni = valDni;
 	}
@@ -105,7 +122,11 @@ public class Tutor {
 		this.fechaIngreso = valFechaIng;
 	}
 	
-	// Get
+	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
+		this.entrenamientos = listEntrenamientos;
+	}
+	
+	// GET
 	public int getDni() {
 		return this.dni;
 	}
@@ -140,5 +161,9 @@ public class Tutor {
 	
 	public LocalDate getFechaIngreso() {
 		return this.fechaIngreso;
+	}
+	
+	public List<Entrenamiento> getEntrenamientos(){
+		return this.entrenamientos;
 	}
 }
