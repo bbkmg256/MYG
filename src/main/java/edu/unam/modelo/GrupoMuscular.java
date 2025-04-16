@@ -1,26 +1,51 @@
-
-// Clase grupo muscular
-
 /*
+ * 
+ * CLASE GRUPO MUSCULAR
+ * 
+ * ESTA CLASE SE RELACIONA CON EJERCICIO, QUE ES LA QUE ENTRENA AL GRUPO MUSCULAR
+ * 
+ */
 
-Un simple grupo muscular, al se relaciona con uno o mas ejercicios para
-que la trabaje.
 
-*/
-
-// Paquete
+// PAQUETE
 package edu.unam.modelo;
 
-// Libs
-// import java.util.ArrayList;
+// LIBRERIAS
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
-import jakarta.persistence.Entity; // Modulo JPA para entidades/objetos
+import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
+import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
+import jakarta.persistence.Column;
 
-// Modulos JPA para generacion de ID, valores de generación de ID y forma de generación de ID
+// MODULOS JPA PARA GENERACIONES DE ID, VALORES DE GENERACION DE ID Y FORMA DE GENERACION DE ID
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+
+// MODULOS JPA DE MAPEADO DE RELACIONES
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+
+
+/*
+ * 
+ * NOTA:
+ * 
+ * mappedBy -> REFERENCIA QUE LAS PK'S DE ESTA ENTIDAD VAN A PARAR COMO FK'S
+ * A LA ENTIDAD CON LA QUE SE RELACIONA, EN EL ATRIBUTO (DE ESA MISMA ENTIDAD)
+ * QUE SE ESPECIFICA ENTRE COMILLAS (OSEA, EL NOMBRE DEL ATRIBUTO).
+ * 
+ * LAS CLASES NECESITAN SI O SI CONOCERSE PARA PERSISTIRSE DE FORMA CORRECTA
+ * CUANDO ESTAN RELACIONADAS, ES POR ESO QUE ES IMPORTANTE LA LISTA DE LA
+ * ENTIDAD DE UNO (RESPECTO A CARDINALIDAD DE RELACION), SI NO SE ALMACENAN
+ * LAS ENTIDADES DE MUCHO QUE SE RELACIONAN CON ESTA, POR MAS QUE SE TENGA
+ * LA OPCION DE CASCADA SETEADA EN "CascadeType.ALL" NO PERSISTIRÁ LOS OBJETOS
+ * DE LAS ENTIDAD DE MUCHOS HABIENDO PERSISTIDO SOLAMENTE EL OBJETO DE LA ENTIDAD
+ * DE UNO.
+ * 
+ */
+
 
 /**
 *
@@ -31,25 +56,25 @@ public class GrupoMuscular {
 	// Atributos
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "id_gm")
 	private int idGM;
 	
 	@Basic
+	@Column(name = "nombre_gm")
 	private String nombreGrupo;
 	
-	// atributo relacion con clase Ejercicio (Lista)	
-	// private ArrayList<Ejercicio> ejercicios = new ArrayList<>();
+	// ATRIBUTO RELACION CON CLASE EJERCICIO (LISTA)
+	@OneToMany(mappedBy = "GM", cascade = CascadeType.ALL)
+	private List<Ejercicio> ejercicios = new ArrayList<>();
 	
-	// Constructor
-	public GrupoMuscular() {
-		
-	}
+	// CONTRUCTOR
+	public GrupoMuscular() {}
 	
-	public GrupoMuscular(int paramIdGM, String paramNombreGrupo){
-		this.idGM = paramIdGM;
+	public GrupoMuscular(String paramNombreGrupo){
 		this.nombreGrupo = paramNombreGrupo;
 	}
 	
-	// Set
+	// SET
 	public void setIdGM(int valIdGM){
 		this.idGM = valIdGM;
 	}
@@ -58,12 +83,20 @@ public class GrupoMuscular {
 		this.nombreGrupo = valNombreGrupo;
 	}
 	
-	// Get
+	public void setEjercicios(List<Ejercicio> listaEjercicios) {
+		this.ejercicios = listaEjercicios;
+	}
+	
+	// GET
 	public int getIdGM(){
 		return this.idGM;
 	}
 	
 	public String getNombreGrupo(){
 		return this.nombreGrupo;
+	}
+	
+	public List<Ejercicio> getEjercicios(){
+		return this.ejercicios;
 	}
 }
