@@ -1,31 +1,55 @@
-
-// Clase entrenamiento
-
 /*
+ * 
+ * CLASE ENTRENAMIENTO
+ * 
+ * BASICAMENTE ESTA CLASE ES EL ENTRENAMIENTO EN SI QUE IMPARTE EL TUTOR AL
+ * CLIENTE.
+ * 
+ * TAMBIEN SE SUPONE QUE ACA SE ESPECIFICA LA PUNTUACION QUE EL CLIENTE LE DA
+ * AL TUTOR DESPUES DE TERMINAR EL ENTRENAMIENTO DE 5 SEMANAS
+ * 
+ */
 
-Basicamente esta clase se el entrenamiento en si que imparte el tutor al
-cliente, acá tambien se supone que el cliente al finalizar las 5 semanas
-puntua el servicio del tutor.
 
-*/
-
-// Paquete
+// PAQUETE
 package edu.unam.modelo;
 
-// Libs
+// LIBRERIAS
 import java.time.LocalDate;
+import java.util.List;
+import java.util.ArrayList;
 
-import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
-import jakarta.persistence.Entity; // Modulo JPA para entidades/objetos
+import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
 
-// Modulos JPA para generacion de ID, valores de generación de ID y forma de generación de ID
+// MODULOS JPA PARA GENERACIONES DE ID, VALORES DE GENERACION DE ID Y FORMA DE GENERACION DE ID
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
-// Modulo JPA para atributos referentes a fechas
+// MODULO JPA PARA ATRIBUTOS REFERENTES A FECHAS
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+
+// MODULOS JPA PARA MAPEADO DE RELACIONES
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
+
+
+/*
+ * 
+ * NOTA:
+ * 
+ * NO DESCOMENTES EL MAPEADO DE LAS RELACIONES POR QUE SE ROMPE EL CODIGO
+ * 
+ * ESTO YA ESTA RELACIONADO CON CLIENTE Y TUTOR!!
+ * 
+ */
+
 
 /**
 *
@@ -33,50 +57,59 @@ import jakarta.persistence.TemporalType;
 */
 @Entity
 public class Entrenamiento {
-	// Atributos
+	// ATRIBUTOS
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "id_entrenamiento")
 	private int idEntrenamiento;
 	
 	@Basic
-	private int puntaje; // Puntuación por parte del cliente al tutor.
+	private int puntaje; // PUNTUACION POR PARTE DEL CLIENTE AL TUTOR.
 	
-	// Volumen de entrenamiento semanal
-	// (si no estoy mal, es lo que se entreno en la semana).
+	// VOLUMEN DE ENTRENAMIENTO SEMANAL
+	// (SI NO ESTOY MAL, ES LO QUE SE ENTRENO EN LA SEMANA)
+	@Column(name = "volumen_entrenamiento")
 	private int volumenEntrenamiento;
 
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_inicio")
 	private LocalDate fechaInicio;
+	@Column(name = "fecha_fin")
 	private LocalDate fechaFin;	
 	
-	// atributo relacion a clase Cliente
-	// private Cliente cliente;
+	// ATRIBUTO RELACION A CLASE CLIENTE
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente; // FK'S DE CLIENTE
 	
-	// atributo relacion a clase Tutor
-	// private Tutor tutor;
+	// ATRIBUTO RELACION A CLASE TUTOR
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tutor_id")
+	private Tutor tutor; // FK'S DE TUTOR
 	
-	// atributo relacion a clase Rutina (Lista)
-	// private ArrayList<Rutina> rutinas = new ArrayList<>();
+	// ATRIBUTO RELACION A CLASE RUTINA (LISTA)
+	// private List<Rutina> rutinas = new ArrayList<>();
 	
-	// atributo relacion a clase Seguimiento (Lista)
-	// private ArrayList<Seguimiento> seguimientoEntrenamiento = new ArrayList<>();
+	// ATRIBUTO RELACION A CLASE SEGUIMIENTO (LISTA)
+	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
+	private List<Seguimiento> seguimientos = new ArrayList<>();
 	
-	// Constructor
-	public Entrenamiento() {
+	// CONTRUCTOR
+	public Entrenamiento() {}
+	
+	public Entrenamiento(int paramIdEntre, LocalDate paramFechaInicio, LocalDate paramFechaFin,
+						Cliente paramCli, Tutor paramTutor){
 		
-	}
-	
-	public Entrenamiento(int paramIdEntre, LocalDate paramFechaInicio, LocalDate paramFechaFin){
 		this.idEntrenamiento = paramIdEntre;
-		this.puntaje = 0; // Al inicio es 0 hasta que el cliente lo puntue.
+		this.puntaje = 0; // AL INICIO ES 0 HASTA QUE EL CLIENTE LO PUNTUE DESPUES DE 5 SEMANAS DEL ENTRENAMIENTO
 		this.fechaInicio = paramFechaInicio;
 		this.fechaFin = paramFechaFin;
-		this.volumenEntrenamiento = 0;
-		// El volumen es 0 hasta que se empiece a registrar los
-		// entrenamientos del cliente.
+		this.volumenEntrenamiento = 0; // EL VOLUMEN ES 0 HASTA QUE SE EMPIECE A REGISTRAR LOS ENTRENAMIENTOS
+		this.cliente = paramCli;
+		this.tutor = paramTutor;
 	}
 	
-	// Set
+	// SET
 	public void setIdEntrenamiento(int valIdEntre){
 		this.idEntrenamiento = valIdEntre;
 	}
@@ -97,7 +130,19 @@ public class Entrenamiento {
 		this.volumenEntrenamiento = valVE;
 	}
 	
-	// Get
+	public void setCliente(Cliente valCli) {
+		this.cliente = valCli;
+	}
+	
+	public void setTutor(Tutor valTutor) {
+		this.tutor = valTutor;
+	}
+	
+	public void setSeguimientos(List<Seguimiento> listSeguimiento) {
+		this.seguimientos = listSeguimiento;
+	}
+	
+	// GET
 	public int getIdEntrenamiento(){
 		return this.idEntrenamiento;
 	}
@@ -116,5 +161,17 @@ public class Entrenamiento {
 	
 	public int getVolumenEntrenamiento(){
 		return this.volumenEntrenamiento;
+	}
+	
+	public Cliente getCliente() {
+		return this.cliente;
+	}
+	
+	public Tutor getTutor() {
+		return this.tutor;
+	}
+	
+	public List<Seguimiento> getSeguimientos(){
+		return this.seguimientos;
 	}
 }
