@@ -1,8 +1,8 @@
 /*
-	"JPAController Padre", heredado para todas las entidades JPAController.
+	"JPAController Padre", heredado para todas las entidades DAO.
 	
 	(Es un JPA controller generico para evitar repetir tanto codigo en los
-	controllers de las entidades)
+	DAO's)
 */
 
 package edu.unam.repositorio;
@@ -14,6 +14,22 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
+
+
+/*
+ * 
+ * NOTA:
+ * 
+ * PROBABLEMENTE A FUTURO ESTA CLASE DESAPAREZCA, POR QUE ME DOY CUENTA QUE
+ * AL RELACIONAR ENTIDADES, LA CREARLAS, ES ENGORROSO TENER UN METODO APARTE
+ * EN EL DAO QUE RELACIONA EN SU LISTA AL OBJETO QUE LO ALMACENO COMO ATRIBUTO,
+ * POR ENDE SE ME HACE QUE ESTA CLASE DEBE DESAPARECER Y CADA DAO DEBE DEFINIR
+ * Y ESPECIFICAR COMO INTERACCIONA CON LA BD Y SUS RELACIONES.
+ * 
+ * ESTA CLASE QUEDA COMPLETAMENTE DESCARTADA, AUN QUE LA VOY A DEJAR MOMENTANEAMENTE.
+ * 
+ */
+
 
 /**
 *
@@ -65,7 +81,7 @@ public class JPAController {
 		return regEntidad;
 	}
 	
-	// Leer todas las entidades (No listo)
+	// Leer todas las entidades (FUNCIONAL)
 	public <T> List<T> obtenerEntidades(String entidad, Class<T> clase) {
 		manager = emf.createEntityManager();
 		String consulta = String.format("SELECT %c FROM %s %c", entidad.charAt(0), entidad, entidad.charAt(0)); // Consulta JPQL
@@ -86,6 +102,8 @@ public class JPAController {
 	}
 	
 	// Actualizar entidad (Metodo escrito en cada clase hija)
+	
+	// ACTUALIZAR RELACION (METODO PARA CADA CLASE)
 
 	// Eliminar entidad (Funcional)
 	public <T> void eliminarEntidad(T entidad) {
@@ -105,13 +123,16 @@ public class JPAController {
 			manager.close();
 		}
 	}
-
+	
+	// PARA VERIFICAR SI HAY CONEXION ABIERTA
+	public boolean hayConexion() {
+		return emf.isOpen();
+	}
+	
 	// Por el momento voy a cerrar el EMF así, ya que no escuentro una forma mejor xd (Funcional)
 	public void cerrarEMF() {
-		if (emf != null && emf.isOpen()) {
-			emf.close(); // Cierra el Entity Manager Factory
-			System.out.println("[ EXITO ] > EMF finalizado correctamente!");
-		}
+		emf.close(); // Cierra el Entity Manager Factory
+		System.out.println("[ EXITO ] > EMF finalizado correctamente!");
 	}
 }
 

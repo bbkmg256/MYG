@@ -1,59 +1,111 @@
 /*
-	JpaController - Entidad Cliente
+	DAO - Entidad Cliente
 */
 
 // Se viene el verdadero BACKEND xd
 
 package edu.unam.repositorio;
 
-/*
-	NOTA:
-	
-	- Tener en cuenta que cuando se relacionen las clases, se tendrá que modificar los
-	JPAController para adaptarlas a las relaciones.
-*/
-
 // Libs.
-// JPA
-import jakarta.persistence.TypedQuery;
-// import jakarta.persistence.EntityManager;
-// import jakarta.persistence.EntityManagerFactory;
-// import jakarta.persistence.Persistence;
+// Varios
+import java.time.LocalDate;
+import java.util.List;
 
 // Entidad
 import edu.unam.modelo.Cliente;
 
-// Varios
-import java.time.LocalDate;
-import java.util.List;
+// JPA
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
+
+
+/*
+
+NOTA:
+
+- Tener en cuenta que cuando se relacionen las clases, se tendrá que modificar los
+JPAController para adaptarlas a las relaciones.
+
+NO ESTA CLASE COMO TODAS LAS DEL LA CAPA DE PERSISTENCIA VAN A MANEJARSE INDIVIDUALMENTE
+POR MAS CODIFO REDUNDANTE QUE HAYA, ASÍ SE EVITA QUE MODIFICANDO UNA CLASE GENERAL, SE VAYA
+AL CARAJO EL RESTO DE CLASES HIJAS.
+
+ADEMAS ME DA MAS FLEXIBILIDAD YA QUE HAY ENTIDADES QUE SE RELACIONAN CON OTRA MEDIANTE UNA LISTA
+Y PUEDO CREAR LA ENTIDAD Y ASOCIARLA EN UN SOLO METODO.
+
+*/
+
 
 /**
 *
 * @Autor: BBKMG
 */
-public class ClienteJPAController extends JPAController {
-	// Atribs.
-	// private EntityManagerFactory emf;
-	// private EntityManager manager;
+public class ClienteDAO {
+	// ATRIBUTOS
+	private EntityManagerFactory emf;
+	private EntityManager manager;
 
 	// Constructor
-	public ClienteJPAController() {
-		// super(); // No necesario por que la superclase no tiene parametros en su constructor
-		// emf = Persistence.createEntityManagerFactory("persistencia"); // Devuelve un objetos EMF desde la unidad de persistencia;
-		// System.out.println("[ EXITO ] > EMF iniciado correctamente!");
+	public ClienteDAO() {
+		emf = Persistence.createEntityManagerFactory("persistencia");
+		System.out.println("[ EXITO ] > EMF iniciado correctamente!");
 	}
 	
-	// Teoricamente aca tiene que ir todo el CRUD para poder operar con la base
-	// de datos mediante el EMF.
+	// CREAR ENTIDAD
+	public void crearEntidadCliente(Cliente entidadCliente) {
+		manager = emf.createEntityManager(); // Administrador de entidades
+		
+		try {
+			manager.getTransaction().begin();
+			manager.persist(entidadCliente);
+			manager.getTransaction().commit();			
+		} catch (Exception e) {
+			System.out.println(e);
+			manager.getTransaction().rollback();			
+		} finally {
+			manager.close();
+		}
+	}
 	
-	// Crear entidad (Funcional) -> Clase padre	
-	// Leer entidad (Funcional)	 -> Clase padre
-	// Eliminar entidad (Funcional) -> Clase padre
+	// LEER ENTIDAD
+	public Cliente obtenerEntidadCliente(int dni) {
+		Cliente regEntidad = null;
+		manager = emf.createEntityManager();
+			
+		try {
+			regEntidad = manager.find(Cliente.class, dni);
+			// System.out.println(regCli);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			manager.close();
+		}			
+		return regEntidad;
+	}
 	
-	// Actualizar entidad (No Testeado)
-	public void actualizarEntidad(Cliente entidadCliente, String nombre, String apellido,
-								LocalDate fechaNac, char sexo, String ciudad,
-								String provincia, int codPost, LocalDate fechaIng) {
+	// LEER ENTIDADES
+	public List<Cliente> obtenerEntidadesCliente() {
+		manager = emf.createEntityManager();
+		String consulta = String.format("SELECT %c FROM %s %c", 'c', "Cliente", 'c'); // Consulta JPQL
+		System.out.println(consulta);
+		TypedQuery<Cliente> consultaPreparada; // Variable de consulta (Castea automaticamente el dato obtenido)
+		List<Cliente> regEntidades = null;
+			
+		try {
+			consultaPreparada = manager.createQuery(consulta, Cliente.class);
+			regEntidades = consultaPreparada.getResultList();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return regEntidades;
+	}
+	
+	// ACTUALIZAR ENTIDAD
+	public void actualizarEntidadCliente(Cliente entidadCliente, String nombre, String apellido,
+										LocalDate fechaNac, char sexo, String ciudad,
+										String provincia, int codPost, LocalDate fechaIng) {
 		
 		manager = emf.createEntityManager();
 		
@@ -61,7 +113,7 @@ public class ClienteJPAController extends JPAController {
 			manager.getTransaction().begin();
 			entidadCliente = manager.merge(entidadCliente);
 			
-			// Actualización de atributos de entidad
+			// ACTUALIZACION DE ATRIBUTOS
 			entidadCliente.setNombre(nombre);
 			entidadCliente.setApellido(apellido);
 			entidadCliente.setFechaNacimiento(fechaNac);
@@ -80,5 +132,29 @@ public class ClienteJPAController extends JPAController {
 		}
 	}
 
-	// Leer todas las entidades (No listo) -> Clase padre
+	// ELIMINAR ENTIDAD
+	public void eliminarEntidadCliente(Cliente entidadCliente) {
+		manager = emf.createEntityManager();
+
+		try {
+			manager.getTransaction().begin();
+			entidadCliente = manager.merge(entidadCliente); // Reconecta una entidad al gestor de entidades (E.M) que está por fuera del contexto de persistencia
+			manager.remove(entidadCliente);
+			manager.getTransaction().commit();
+		} catch (Exception e) {
+			manager.getTransaction().rollback();		
+			System.out.println(e);
+		} finally {
+			manager.close();
+		}
+	}
+	
+	public boolean hayConexion() {
+		return emf.isOpen();
+	}
+	
+	public void cerrarEMF() {
+		emf.close();
+		System.out.println("[ EXITO ] > EMF finalizado correctamente!");
+	}
 }
