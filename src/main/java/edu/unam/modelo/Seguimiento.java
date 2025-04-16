@@ -1,31 +1,45 @@
-
-// Clase seguimiento
-
 /*
+ * 
+ * CLASE SEGUIMIENTO
+ * 
+ * ESTA CLASE REGISTRA LO QUE EL CLIENTE REALIZA RESPECTO A SU ENTRENAMIENTO
+ * (DE FORMA DIARIA)
+ * 
+ */
 
-Se supone que esta clase va a servir como registro de lo que realiza el cliente
-acá se debería detallar cuanto se ejercito y que ejercicios realizo, entre otras
-cosas.
 
-*/
-
-// Paquete
+// PAQUETES
 package edu.unam.modelo;
 
-// Libs
+// LIBRERIAS
+// VARIOS
 import java.time.LocalDate;
 
-import jakarta.persistence.Basic; // Modulo JPA para atributos basicos
-import jakarta.persistence.Entity; // Modulo JPA para entidades/objetos
+import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
+import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
-// Modulos JPA para generacion de ID, valores de generación de ID y forma de generación de ID
+// MODULOS JPA PARA GENERACIONES DE ID, VALORES DE GENERACION DE ID Y FORMA DE GENERACION DE ID
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
-// Modulo JPA para atributos referentes a fechas
+// MODULO JPA PARA ATRIBUTOS REFERENTES A FECHAS
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+
+
+/*
+ * 
+ * NOTA:
+ * 
+ * NO DESCOMENTES LAS RELACIONES TODAVIA
+ * 
+ */
+
 
 /**
 *
@@ -33,40 +47,46 @@ import jakarta.persistence.TemporalType;
 */
 @Entity
 public class Seguimiento {
-	//Atributos
+	//ATRIBUTOS
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idSeguimiento;
 	
 	@Basic
+	@Column(name = "cantidad_series_realizadas")
 	private int cantSerieRealizado;
+	@Column(name = "cantidad_repeticiones_realizadas")
 	private int cantRepeticionesRealizado;
-	private String ejercicioRealizado; // Por el momento se queda en un String, despues veré si es necesario cambiarlo a una entidad Ejercicio
+	@Column(name = "ejercicio_realizado")
+	private String ejercicioRealizado; // POR EL MOMENTO SE QUEDA EN UN STRING, DESPUES VERÉ SI ES ENCESARIO CAMBIARLO A UNA ENTIDAD EJERCICIO (Y SI, CREO QUE ES LO LOGICO)
+	@Column(name = "peso_trabajado")
 	private double pesoTrabajado;
 	
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_hoy")
 	private LocalDate fechaHoy;
 	
-	// atributo relacion con clase Entrenamiento
-	// private Entrenamiento registroEntrenamiento;
+	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "entrenamiento_id")
+	private Entrenamiento entrenamiento; // FK'S DE ENTRENAMIENTO
 	
-	// Constructor
-	public Seguimiento() {
-		
-	}
+	// CONTRUCTOR
+	public Seguimiento() {}
 	
-	public Seguimiento(int paramIdSeg, int paramCantSeries, int paramCantRep,
-		String paramEjer, double paramPesoTrabajado) {
+	public Seguimiento(int paramIdSeg, LocalDate paramFechaHoy, int paramCantSeries, int paramCantRep,
+						String paramEjer, double paramPesoTrabajado, Entrenamiento paramEntrenamiento) {
 		
 		this.idSeguimiento = paramIdSeg;
-		this.fechaHoy = null; // Ver como se obtiene la fecha actual del sistema.
+		this.fechaHoy = paramFechaHoy;
 		this.cantSerieRealizado = paramCantSeries;
 		this.cantRepeticionesRealizado = paramCantRep;
 		this.ejercicioRealizado = paramEjer;
 		this.pesoTrabajado = paramPesoTrabajado;
+		this.entrenamiento = paramEntrenamiento;
 	}
 	
-	// Set
+	// SET
 	public void setIdSeguimiento(int valIdSeg) {
 		this.idSeguimiento = valIdSeg;
 	}
@@ -91,7 +111,11 @@ public class Seguimiento {
 		this.pesoTrabajado = valPesoTrabajado;
 	}
 	
-	// Get
+	public void setEntrenamiento(Entrenamiento paramEntrenamiento) {
+		this.entrenamiento = paramEntrenamiento;
+	}
+	
+	// GET
 	public int getIdSeguimiento() {
 		return this.idSeguimiento;
 	}
@@ -114,5 +138,9 @@ public class Seguimiento {
 	
 	public double getPesoTrabajado() {
 		return this.pesoTrabajado;
+	}
+	
+	public Entrenamiento getEntrenamiento() {
+		return this.entrenamiento;
 	}
 }
