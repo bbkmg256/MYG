@@ -26,6 +26,7 @@
 - [12/04/25](#120425)
 - [13/04/25](#130425)
 - [15/04/25](#150425)
+- [18/04/25](#180425)
 
 ---
 
@@ -201,5 +202,10 @@ Además, y por consecuencia, al haber modificado metodos de los DAO's de la capa
 nombres de metodos y se adaptarón estos mismo a las modificacions de parametros realizadas en los metodos de los DAO's.
 
 NOTA IMPORTANTE: NO SE TESTEARON LOS CAMBIOS, Y SE LO DEJO COMO PENDIENTE!!
+
+---
+
+### 18/04/25
+Se creó la rama `inestable` para tabajar mas comodamente con cambios sin afectar a la rama `main` del proyecto (y basicamente no cagarla xd).
 
 ---
