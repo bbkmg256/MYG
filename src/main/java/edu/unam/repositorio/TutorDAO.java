@@ -98,7 +98,7 @@ public class TutorDAO {
 //		}
 //		return regEntidades;
 
-		return em.createNamedQuery(consulta, Tutor.class).getResultList();
+		return em.createQuery(consulta, Tutor.class).getResultList();
 	}
 	
 	// ACTUALIZA ATRIBUTO NOMBRE
