@@ -7,35 +7,61 @@ package edu.unam.servicio;
 
 // JPA
 import edu.unam.repositorio.ClienteDAO;
+import jakarta.persistence.EntityManager;
 
 // VARIOS
 import java.time.LocalDate;
 import java.util.List;
 
+import utilidades.EMFSingleton;
+import utilidades.ParametrosClienteTutor;
+
 // ENTIDAD
 import edu.unam.modelo.Cliente;
+
+
+/*
+ * 
+ * NOTA:
+ * 
+ * TENGO QUE COMPROBAR QUE ACTUALIZAR DE LA MANERA EN QUE ACTUALIZO LOS DATOS EN ESTE SERVICIO
+ * NO TRAERIA CONFUSION AL USUARIO, EN REALIDAD CREO QUE NO DEBERIA IMPACTAR LOS CAMBIOS SI POR
+ * LO MENOS 1 DE ESOS FALLA.
+ * 
+ * SOLUCIONA: SOY UN PELOTUDO Y ME OLVIDE QUE A LOS OBJETOS LOS PUEDO MODIFICAR EN MEMORIA!
+ * 
+ */
+
 
 /**
 *
 * @Autor: BBKMG
 */
 public class ClienteServicio {
+	// ATRIBUTOS
+	// ADMINISTRADOR DE ENTIDADES
+	private EntityManager manager;
+	
 	// JPAController
-	private ClienteDAO cjpac;
+	private ClienteDAO clienteDao;
 	
 	// Constructor
 	public ClienteServicio() {
-		cjpac = new ClienteDAO();
+		clienteDao = new ClienteDAO();
 	}
 	
+	
 	// Registra un cliente en el sistema
+	/**
+	 * Recibe un objeto de tipo Cliente, no retorna datos.
+	 */
 	public void cargarCliente(Cliente cliente) {
 		// Si el metodo es diferente de null, es por que se encontró un cliente con el mismo DNI
-		if (cjpac.obtenerEntidadCliente(cliente.getDni()) != null) {
+		if (this.obtenerCliente(cliente.getDni()) != null) {
 			System.out.printf("[ ERROR ] > El cliente %d ya se encuentra en el sistema!%n", cliente.getDni());
 			return; // SI EL OBJETO YA ESTÁ EN LA BD, MUESTRA EL MENSAJE Y SALE DEL METODO.
 		}
-
+		
 		// MODIFICA TODOS LOS VALORES TEXTUALES QUE TENGA EL OBJETO, A MINUSCULA.
 		cliente.setNombre(cliente.getNombre().toLowerCase());
 		cliente.setApellido(cliente.getApellido().toLowerCase());
@@ -43,63 +69,157 @@ public class ClienteServicio {
 		cliente.setProvicia(cliente.getProvincia().toLowerCase());
 		cliente.setSexo(Character.toLowerCase(cliente.getSexo()));
 		
+		// ADMINISTRADOR DE ENTIDADES
+		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
 		// CARGA EL OBJETO A LA BD
-		cjpac.crearEntidadCliente(cliente);			
+		try {
+			manager.getTransaction().begin();
+			clienteDao.crearEntidadCliente(manager, cliente);
+			System.out.printf("[ EXITO ] > El cliente %d cargado correctamente!%n", cliente.getDni());
+			manager.getTransaction().commit();
+		} catch (Exception e) {
+			manager.getTransaction().rollback();
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al cargar el cliente!");
+		} finally {
+			manager.close();
+		}
+		
+		// SIN IMPORTANCIA ;)
+		this.egg(cliente);
 	}
 	
 	// Busca un cliente en el sistema
+	/**
+	 * Recibe un primitivo de tipo int, retorna un objeto de tipo Cliente.
+	 */
 	public Cliente obtenerCliente(int dni) {
-		Cliente cli = cjpac.obtenerEntidadCliente(dni);
-		if (cli == null) {
-			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
+		// CODIGO VIEJO
+//		Cliente cli = cjpac.obtenerEntidadCliente(dni);
+//		if (cli == null) {
+//			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
+//		}
+//		
+//		return cli;
+
+		Cliente regCliente = null;
+		// ADMINISTRADOR DE ENTIDADES
+		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			regCliente = clienteDao.obtenerEntidadCliente(manager, dni);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener el cliente!");
+		} finally {
+			manager.close();
 		}
 		
-		return cli;
+		return regCliente;
 	}
 	
 	// Obtener todos los clientes del sistema
+	/**
+	 * No recibe parametros, retorna una lista de tipo Cliente.
+	 */
 	public List<Cliente> obtenerTodosLosClientes(){
-		// El nombre de la entidad en JPQL empieza con mayuscula
-		// (ej: Cliente, Tutor) como las mismas clases
-		List<Cliente> cli = cjpac.obtenerEntidadesCliente();
-		if (cli == null) {
-			System.out.printf("[ ERROR ] > No hay clientes en el sistema!%n");
+		// CODIGO VIEJO
+//		List<Cliente> cli = cjpac.obtenerEntidadesCliente();
+//		if (cli == null) {
+//			System.out.printf("[ ERROR ] > No hay clientes en el sistema!%n");
+//		}
+//		
+//		return cli;
+		
+		// ADMINISTRADOR DE ENTIDADES
+		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		String consulta = String.format("SELECT %c FROM %s %c", 'c', "Cliente", 'c'); // Consulta JPQL
+		List<Cliente> regClientes = null;
+		
+		try {
+			clienteDao.obtenerEntidadesCliente(manager, consulta);
+		} catch (Exception e) {
+			System.out.print(e);
+			System.out.println("[ ERROR ] > Falla al obtener los clientes!");
+		} finally {
+			manager.close();
 		}
 		
-		return cli;
+		return regClientes;
 	}
 	
 	// Actualiza la información de un cliente
-	public void actualizarInfCliente(int dni, String nombre, String apellido,
-									LocalDate fechaNac, char sexo, String ciudad,
-									String provincia, int codPost, LocalDate fechaIng) {
-		
-		Cliente cli = cjpac.obtenerEntidadCliente(dni);
+	/**
+	 * Recibe un primitivo de tipo int y un objeto de tipo ParametrosClienteTutor, no retorna datos.
+	 */
+	public void actualizarEstadoCliente(int dni, ParametrosClienteTutor paramCli) {
+		Cliente cli = this.obtenerCliente(dni);
 		
 		if (cli == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
 			return;
 		}
+
+		// CONDICIONES PARA VERIFICAR CUALES ATRIBUTOS SE MODIFICAN, Y CUALES NO
+		if (paramCli.nombre != null) {
+			cli.setNombre(paramCli.nombre.toLowerCase());
+		}
 		
-		// ALGUNOS PARAMETROS SE MODIFICAN A MINUSCULA
-		cjpac.actualizarEntidadCliente(cli, nombre.toLowerCase(), apellido.toLowerCase(),
-								fechaNac, Character.toLowerCase(sexo), ciudad.toLowerCase(),
-								provincia.toLowerCase(), codPost, fechaIng);
+		if (paramCli.apellido != null) {
+			cli.setApellido(paramCli.apellido.toLowerCase());
+		}
+		
+		if (paramCli.sexo != 'x') {
+			cli.setSexo(Character.toLowerCase(paramCli.sexo));
+		}
+		
+		if (paramCli.ciudad != null) {
+			cli.setCiudad(paramCli.ciudad.toLowerCase());
+		}
+		
+		if (paramCli.provincia != null) {
+			cli.setProvicia(paramCli.provincia.toLowerCase());
+		}
+		
+		if (paramCli.codigoPostal != 0) {
+			cli.setCodigoPostal(paramCli.codigoPostal);
+		}
+		
+		if (paramCli.fechaNacimiento != null) {
+			cli.setFechaNacimiento(paramCli.fechaNacimiento);
+		}
+		
+		if (paramCli.fechaIngreso != null) {
+			cli.setFechaIngreso(paramCli.fechaIngreso);
+		}
+		
+		// ADMINISTRADOR DE ENTIDADES
+		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+
+		try {
+			manager.getTransaction().begin();
+			clienteDao.actualizarEstadoCliente(manager, cli);
+			manager.getTransaction().commit();
+			System.out.printf("[ EXITO ] > El cliente %d actualizado correctamente!%n", cli.getDni());
+		} catch (Exception e) {
+			manager.getTransaction().rollback();
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al actualizar el cliente!");
+		} finally {
+			manager.close();
+		}
+		
+		// CODIGO VIEJO
+		// cjpac.actualizarEstadoCliente(cli);
 	}
 	
-//	// ACTUALIZAR RELACION CON ENTRENAMIENTO
-//	public void actualizarRelacionClienteEntrenamiento(Cliente entidadCliente, Entrenamiento entidadEntrenamiento) {
-//		if (entidadCliente == null && entidadEntrenamiento == null) {
-//			System.out.printf("[ ERROR ] > Alguno de los objetos ingresados es nulo o no es válido!%n");
-//			return;
-//		}
-//		
-//		cjpac.actualizarRelacion(entidadCliente, entidadEntrenamiento);
-//	}
-	
 	// Da de baja a un cliente del sistema
+	/**
+	 * Recibe un primitivo de tipo int, no retorna datos.
+	 */
 	public void eliminarCliente(int dni) {
-		Cliente cli = cjpac.obtenerEntidadCliente(dni);
+		Cliente cli = this.obtenerCliente(dni);
 		
 		// En caso de que no se encuentre cliente en el sistema,
 		// simplemente no hace nada y finaliza el metodo destruyendo el EMF
@@ -108,13 +228,41 @@ public class ClienteServicio {
 			return;
 		}
 		
-		cjpac.eliminarEntidadCliente(cli);
+		// ADMINISTRADOR DE ENTIDADES		
+		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			manager.getTransaction().begin();
+			clienteDao.eliminarEntidadCliente(manager, cli);
+			manager.getTransaction().commit();
+			System.out.printf("[ EXITO ] > El cliente %d eliminado correctamente!%n", cli.getDni());
+		} catch (Exception e) {
+			manager.getTransaction().rollback();
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al eliminar el cliente!");
+		} finally {
+			manager.close();
+		}
+		
+		// cjpac.eliminarEntidadCliente(cli);
 	}
-	
-	// CERRAR CONEXION
-	public void finalizarConexion() {
-		if (cjpac != null && cjpac.hayConexion()) {
-			cjpac.cerrarEMF();			
+
+
+
+
+
+
+
+
+
+
+	// YOU DO TOO MANY SEARCHES, BILLY!
+	private void egg(Cliente cli) {
+		if (cli.getFechaNacimiento() != LocalDate.of(2001, 12, 05)) {
+			System.out.println(
+					"[ ! ] > SOLO EXISTEN 2 POSIBILIDADES, O ESTA PERSONA NACIÓ EL MISMO DÍA QUE EL DESARROLLADOR, " +
+					"O DIRECTAMENTE ESTA PERSONA ES EL DESARROLLADOR XD, CASUALIDADES DE LA VIDA!"
+			);
 		}
 	}
 }
