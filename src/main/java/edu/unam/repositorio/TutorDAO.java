@@ -9,18 +9,23 @@ package edu.unam.repositorio;
 	
 	- Tener en cuenta que cuando se relacionen las clases, se tendrá que modificar los
 	JPAController para adaptarlas a las relaciones.
+	
+	Esto se arreglo por que el diseño estaba mal planteado, ahora esta clase solo se
+	preocupa de realizar acciones en BD, las transacciones se manejan en el servicio.
  */
 
 // LIBRERIAS
 // VARIOS
-import java.time.LocalDate;
 import java.util.List;
 
 // JPA
-import jakarta.persistence.Persistence;
+// import jakarta.persistence.Persistence;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+
+// SINGLETON PARA EL EMF
+import utilidades.EMFSingleton;
 
 // ENTIDAD
 import edu.unam.modelo.Tutor;
@@ -31,138 +36,109 @@ import edu.unam.modelo.Tutor;
 */
 public class TutorDAO {
 	// ATRIBUTOS
-	private EntityManagerFactory emf;
+//	private EntityManagerFactory emf;
 	private EntityManager manager;
 	
 	// CONSTRUCTOR
 	public TutorDAO() {
-		emf = Persistence.createEntityManagerFactory("persistencia");
-		System.out.println("[ EXITO ] > EMF iniciado correctamente!");
+//		emf = EMFSingleton.getInstancia().getEMF();
 	}
 	
 	// CREAR ENTIDAD
-	public void crearEntidadTutor(Tutor entidadTutor) {
-		manager = emf.createEntityManager();
+	public void crearEntidadTutor(EntityManager em, Tutor entidadTutor) {
+//		manager = emf.createEntityManager();
+//		
+//		try {
+//			manager.getTransaction().begin();
+//			manager.persist(entidadTutor);
+//			manager.getTransaction().commit();
+//			System.out.println("[ EXITO ] > Tutor cargado!");
+//		} catch (Exception e) {
+//			System.out.println(e);
+//			manager.getTransaction().rollback();
+//			System.out.println("[ ERROR ] > Falla al cargar el tutor!");
+//		} finally {
+//			manager.close();
+//		}
 		
-		try {
-			manager.getTransaction().begin();
-			manager.persist(entidadTutor);
-			manager.getTransaction().commit();			
-		} catch (Exception e) {
-			System.out.println(e);
-			manager.getTransaction().rollback();			
-		} finally {
-			manager.close();
-		}
+		em.persist(entidadTutor);
 	}
 	
 	// LEER ENTIDAD
-	public Tutor obtenerEntidadTutor(int dni) {
-		Tutor regEntidad = null;
-		manager = emf.createEntityManager();
-			
-		try {
-			regEntidad = manager.find(Tutor.class, dni);
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally {
-			manager.close();
-		}
-		return regEntidad;
-	}
-	
-	// LEER ENTIDADES
-	public List<Tutor> obtenerEntidadesTutor() {
-		manager = emf.createEntityManager();
-		String consulta = String.format("SELECT %c FROM %s %c", 't', "Tutor", 't'); // Consulta JPQL
-		System.out.println(consulta);
-		TypedQuery<Tutor> consultaPreparada; // Castea automaticamente el dato obtenido
-		List<Tutor> regEntidades = null;
-			
-		try {
-			consultaPreparada = manager.createQuery(consulta, Tutor.class);
-			regEntidades = consultaPreparada.getResultList();
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return regEntidades;
-	}
-	
-	// ACTUALIZAR ENTIDAD
-	public void actualizarEntidadTutor(Tutor entidadTutor, String nombre, String apellido, char sexo,
-										String ciudad, String provincia, int codigoPostal,
-										LocalDate fechaNacimiento, LocalDate fechaIngreso) {
-		
-		manager = emf.createEntityManager();
-		
-		try {
-			manager.getTransaction().begin();
-			entidadTutor = manager.merge(entidadTutor);
-			
-			entidadTutor.setNombre(nombre);
-			entidadTutor.setApellido(apellido);
-			entidadTutor.setSexo(sexo);
-			entidadTutor.setCiudad(ciudad);
-			entidadTutor.setProvicia(provincia);
-			entidadTutor.setCodigoPostal(codigoPostal);
-			entidadTutor.setFechaNacimiento(fechaNacimiento);
-			entidadTutor.setFechaIngreso(fechaIngreso);
-			
-			manager.getTransaction().commit();
-		} catch (Exception e) {
-			manager.getTransaction().rollback();
-			System.out.println(e);
-		} finally {
-			manager.close();
-		}
-	}
-
-	// ELIMINAR ENTIDAD
-	public void eliminarEntidadTutor(Tutor entidadTutor) {
-		manager = emf.createEntityManager();
-
-		try {
-			manager.getTransaction().begin();
-			entidadTutor = manager.merge(entidadTutor); // Reconecta una entidad al gestor de entidades (E.M) que está por fuera del contexto de persistencia
-			manager.remove(entidadTutor);
-			manager.getTransaction().commit();
-		} catch (Exception e) {
-			manager.getTransaction().rollback();		
-			System.out.println(e);
-		} finally {
-			manager.close();
-		}
-	}
-
-	public boolean hayConexion() {
-		return emf.isOpen();
-	}
-	
-	public void cerrarEMF() {
-		emf.close();
-		System.out.println("[ EXITO ] > EMF finalizado correctamente!");
-	}
-	
-
-	// CODIGO VIEJO
-//	// ACTUALIZA RELACION CON ENTRENAMIENTO
-//	public void actualizarRelacion(Tutor entidadTutor, Entrenamiento entidadEntrenamiento) {
+	public Tutor obtenerEntidadTutor(EntityManager em, int dni) {
+//		Tutor regEntidad = null;
 //		manager = emf.createEntityManager();
 //			
 //		try {
-//			manager.getTransaction().begin();
-//			entidadTutor = manager.merge(entidadTutor);
+//			regEntidad = manager.find(Tutor.class, dni);
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		} finally {
+//			manager.close();
+//		}
+//		return regEntidad;
+		
+		return em.find(Tutor.class, dni);
+	}
+	
+	// LEER ENTIDADES
+	public List<Tutor> obtenerEntidadesTutor(EntityManager em, String consulta) {
+//		manager = emf.createEntityManager();
+//		String consulta = String.format("SELECT %c FROM %s %c", 't', "Tutor", 't'); // Consulta JPQL
+//		System.out.println(consulta);
+//		TypedQuery<Tutor> consultaPreparada; // Castea automaticamente el dato obtenido
+//		List<Tutor> regEntidades = null;
 //			
-//			// AÑADE LA ENTIDAD ENTRENAMIENTO PERSISTIDA, A LA LISTA PROPIA DE TUTOR
-//			entidadTutor.getEntrenamientos().add(entidadEntrenamiento);
-//				
+//		try {
+//			consultaPreparada = manager.createQuery(consulta, Tutor.class);
+//			regEntidades = consultaPreparada.getResultList();
+//
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		}
+//		return regEntidades;
+
+		return em.createNamedQuery(consulta, Tutor.class).getResultList();
+	}
+	
+	// ACTUALIZA ATRIBUTO NOMBRE
+	public void actualizarEstadoTutor(EntityManager em, Tutor entidadTutor) {
+//		manager = emf.createEntityManager();
+//		
+//		try {
+//			manager.getTransaction().begin();
+//			manager.merge(entidadTutor);
 //			manager.getTransaction().commit();
+//			System.out.println("[ EXITO ] > Entidad actualizada!");
+//		} catch (Exception e) {
+//			manager.getTransaction().rollback();
+//			System.out.println(e);
+//			System.out.println("[ ERROR ] > Falla al actualizar la entidad!");
+//		} finally {
+//			manager.close();
+//		}
+		
+		em.merge(entidadTutor);
+		
+	}
+
+	// ELIMINAR ENTIDAD
+	public void eliminarEntidadTutor(EntityManager em, Tutor entidadTutor) {
+//		manager = emf.createEntityManager();
+//
+//		try {
+//			manager.getTransaction().begin();
+//			entidadTutor = manager.merge(entidadTutor); // Reconecta una entidad al gestor de entidades (E.M) que está por fuera del contexto de persistencia
+//			manager.remove(entidadTutor);
+//			manager.getTransaction().commit();
+//			System.out.println("[ EXITO ] > Tutor eliminado!");
 //		} catch (Exception e) {
 //			manager.getTransaction().rollback();
 //			System.out.println(e);
 //		} finally {
 //			manager.close();
 //		}
-//	}
+		entidadTutor = em.merge(entidadTutor); // RECONECTAR ENTIDAD PARA ELIMINARLA
+		em.remove(entidadTutor);
+	}
 }
