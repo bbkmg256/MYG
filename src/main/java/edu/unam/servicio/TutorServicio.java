@@ -224,7 +224,7 @@ public class TutorServicio {
 			manager.getTransaction().begin();
 			tutorDao.eliminarEntidadTutor(manager, tutor);
 			manager.getTransaction().commit();
-			System.out.printf("[ EXITO ] > El cliente %d eliminado correctamente!%n", tutor.getDni());
+			System.out.printf("[ EXITO ] > El tutor %d eliminado correctamente!%n", tutor.getDni());
 		} catch (Exception e) {
 			manager.getTransaction().rollback();
 			System.out.println(e);
