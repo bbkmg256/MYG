@@ -49,19 +49,19 @@ public class TutorServicio {
 		tutor.setSexo(Character.toLowerCase(tutor.getSexo()));
 		
 		// ADMINISTRADOR DE ENTIDADES
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			manager.getTransaction().begin();
-			tutorDao.crearEntidadTutor(manager, tutor);
-			manager.getTransaction().commit();
+			this.manager.getTransaction().begin();
+			this.tutorDao.crearEntidadTutor(this.manager, tutor);
+			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El tutor %d cargado correctamente!%n", tutor.getDni());
 		} catch (Exception e) {
-			manager.getTransaction().rollback();
+			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al cargar el tutor!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 	}
 
@@ -70,15 +70,15 @@ public class TutorServicio {
 		Tutor regTutor = null;
 		
 		// ADMINISTRADOR DE ENTIDADES
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			regTutor = tutorDao.obtenerEntidadTutor(manager, dni);
+			regTutor = this.tutorDao.obtenerEntidadTutor(this.manager, dni);
 		} catch (Exception e) {
 			System.out.println(e);
 			System.out.print("[ ERROR ] > Falla al obtener el tutor!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 		
 		return regTutor;
@@ -90,15 +90,15 @@ public class TutorServicio {
 		List<Tutor> listaTutores = null;
 		
 		// ADMINISTRADOR DE ENTIDADES
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			listaTutores = tutorDao.obtenerEntidadesTutor(manager, consulta);
+			listaTutores = this.tutorDao.obtenerEntidadesTutor(this.manager, consulta);
 		} catch (Exception e) {
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al obtener los tutores!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 				
 		return listaTutores;
@@ -181,19 +181,19 @@ public class TutorServicio {
 		}
 		
 		// ADMINISTRADOR DE ENTIDADES
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			manager.getTransaction().begin();
-			tutorDao.actualizarEstadoTutor(manager, tutor);
-			manager.getTransaction().commit();
+			this.manager.getTransaction().begin();
+			this.tutorDao.actualizarEstadoTutor(this.manager, tutor);
+			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El tutor %d actualizado correctamente!%n", tutor.getDni());
 		} catch (Exception e) {
-			manager.getTransaction().rollback();
+			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al actualizar el tutor!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 	}
 	
@@ -218,19 +218,20 @@ public class TutorServicio {
 		// (MAN, COMO ME ENCANTA DEFTONES!!) :)
 		
 		// ADMINISTRADOR DE ENTIDADES
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			manager.getTransaction().begin();
-			tutorDao.eliminarEntidadTutor(manager, tutor);
-			manager.getTransaction().commit();
+			this.manager.getTransaction().begin();
+			tutor = this.manager.merge(tutor);
+			this.tutorDao.eliminarEntidadTutor(this.manager, tutor);
+			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El tutor %d eliminado correctamente!%n", tutor.getDni());
 		} catch (Exception e) {
-			manager.getTransaction().rollback();
+			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al eliminar el Tutor!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 	}
 }

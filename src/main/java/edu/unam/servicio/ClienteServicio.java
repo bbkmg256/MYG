@@ -12,9 +12,10 @@ import jakarta.persistence.EntityManager;
 // VARIOS
 import java.time.LocalDate;
 import java.util.List;
-
-import utilidades.EMFSingleton;
 import utilidades.ParametrosClienteTutor;
+
+// SINGLETON EMF
+import utilidades.EMFSingleton;
 
 // ENTIDAD
 import edu.unam.modelo.Cliente;
@@ -70,20 +71,20 @@ public class ClienteServicio {
 		cliente.setSexo(Character.toLowerCase(cliente.getSexo()));
 		
 		// ADMINISTRADOR DE ENTIDADES
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		// CARGA EL OBJETO A LA BD
 		try {
-			manager.getTransaction().begin();
-			clienteDao.crearEntidadCliente(manager, cliente);
+			this.manager.getTransaction().begin();
+			this.clienteDao.crearEntidadCliente(this.manager, cliente);
+			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El cliente %d cargado correctamente!%n", cliente.getDni());
-			manager.getTransaction().commit();
 		} catch (Exception e) {
-			manager.getTransaction().rollback();
+			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al cargar el cliente!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 		
 		// SIN IMPORTANCIA ;)
@@ -105,15 +106,15 @@ public class ClienteServicio {
 
 		Cliente regCliente = null;
 		// ADMINISTRADOR DE ENTIDADES
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			regCliente = clienteDao.obtenerEntidadCliente(manager, dni);
+			regCliente = this.clienteDao.obtenerEntidadCliente(this.manager, dni);
 		} catch (Exception e) {
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al obtener el cliente!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 		
 		return regCliente;
@@ -132,18 +133,19 @@ public class ClienteServicio {
 //		
 //		return cli;
 		
-		// ADMINISTRADOR DE ENTIDADES
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		String consulta = String.format("SELECT %c FROM %s %c", 'c', "Cliente", 'c'); // Consulta JPQL
 		List<Cliente> regClientes = null;
 		
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+
 		try {
-			clienteDao.obtenerEntidadesCliente(manager, consulta);
+			regClientes = this.clienteDao.obtenerEntidadesCliente(this.manager, consulta);
 		} catch (Exception e) {
 			System.out.print(e);
 			System.out.println("[ ERROR ] > Falla al obtener los clientes!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 		
 		return regClientes;
@@ -195,19 +197,19 @@ public class ClienteServicio {
 		}
 		
 		// ADMINISTRADOR DE ENTIDADES
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 
 		try {
-			manager.getTransaction().begin();
-			clienteDao.actualizarEstadoCliente(manager, cli);
-			manager.getTransaction().commit();
+			this.manager.getTransaction().begin();
+			this.clienteDao.actualizarCliente(this.manager, cli);
+			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El cliente %d actualizado correctamente!%n", cli.getDni());
 		} catch (Exception e) {
-			manager.getTransaction().rollback();
+			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al actualizar el cliente!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 		
 		// CODIGO VIEJO
@@ -229,19 +231,20 @@ public class ClienteServicio {
 		}
 		
 		// ADMINISTRADOR DE ENTIDADES		
-		manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			manager.getTransaction().begin();
-			clienteDao.eliminarEntidadCliente(manager, cli);
-			manager.getTransaction().commit();
+			this.manager.getTransaction().begin();
+			cli = this.manager.merge(cli); // RECONEXION DE LA ENTIDAD
+			this.clienteDao.eliminarEntidadCliente(this.manager, cli);
+			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El cliente %d eliminado correctamente!%n", cli.getDni());
 		} catch (Exception e) {
-			manager.getTransaction().rollback();
+			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al eliminar el cliente!");
 		} finally {
-			manager.close();
+			this.manager.close();
 		}
 		
 		// cjpac.eliminarEntidadCliente(cli);
