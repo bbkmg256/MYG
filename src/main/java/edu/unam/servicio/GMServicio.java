@@ -6,20 +6,21 @@ package edu.unam.servicio;
 
 // JPA
 import edu.unam.repositorio.GMDAO;
+import jakarta.persistence.EntityManager;
+import utilidades.EMFSingleton;
 
 // Varios
 import java.util.List;
 
 // Entidad
 import edu.unam.modelo.GrupoMuscular;
-import edu.unam.modelo.Ejercicio;
 
 
 /*
  * 
  * NOTA:
  * 
- * ESTE VA A SER EL CODIGO QUE MOMENTANEAMENTE MAS COMENTADO VOY A DEJAR POR EL MOMENTO, AL RESTO LOS LIMPIO TODOS
+ * NO HAY NOTA XD
  * 
  */
 
@@ -29,115 +30,133 @@ import edu.unam.modelo.Ejercicio;
 * @Autor: BBKMG
 */
 public class GMServicio {
-	private GMDAO gmjpac;
+	private GMDAO gmDao;
+	private EntityManager manager;
 	
 	// Constructor
 	public GMServicio() {
-		gmjpac = new GMDAO();
+		gmDao = new GMDAO();
 	}
 	
 	// Cargar Grupo Muscular al sistema
-	public void cargarGM(GrupoMuscular gm) {
-		if (gmjpac.obtenerEntidadGM(gm.getIdGM()) != null) {
-			System.out.printf("[ ERROR ] > El grupo muscular %d ya se encuentra en el sistema!%n", gm.getIdGM());
+	public void cargarGM(GrupoMuscular gm) {		
+		if (this.obtenerGM(gm.getIdGM()) != null) {
+			System.out.printf("[ ERROR ] > El GM %d ya se encuentra en el sistema!%n", gm.getIdGM());
 			return;
 		}
 		
 		// MODIFICA TODOS LOS VALORESTEXTUALES DEL OBJETO, A MINUSCULA
 		gm.setNombreGrupo(gm.getNombreGrupo().toLowerCase());
 		
-		// CARGA EL OBJETO A LA BD
-		gmjpac.crearEntidadGM(gm);
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
-		// CODIGO VIEJO
-//		if (gmjpac.obtenerEntidad(gm.getIdGM(), GrupoMuscular.class) != null) {
-//			System.out.printf("[ ERROR ] > El grupo muscular %d ya se encuentra en el sistema!%n", gm.getIdGM());
-//		} else {
-//			gmjpac.crearEntidad(gm);
-//		}
+		try {
+			this.manager.getTransaction().begin();
+			this.gmDao.crearEntidadGM(this.manager, gm);
+			this.manager.getTransaction().commit();
+			System.out.printf("[ EXITO ] > El GM %d cargado correctamente!%n", gm.getIdGM());
+		} catch (Exception e) {
+			this.manager.getTransaction().rollback();
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al cargar el GM!");
+		} finally {
+			this.manager.close();
+		}
 	}
 	
 	// Buscar Grupo Muscular en el sistema
-	public GrupoMuscular obtenerGM(int id) {
-		GrupoMuscular gm = gmjpac.obtenerEntidadGM(id);
+	public GrupoMuscular obtenerGM(int id) {		
+		GrupoMuscular gmReg = null;
+
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
-		if (gm == null) {
-			System.out.printf("[ ERROR ] > El grupo muscular %d no se encuentra en el sistema!%n", id);
+		try {
+			gmReg = this.gmDao.obtenerEntidadGM(this.manager, id);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener los GM's!");
+		} finally {
+			this.manager.close();
 		}
 		
-		return gm;
+		return gmReg;
 	}
 	
 	// Obtener todos los Grupo Musculares
-	public List<GrupoMuscular> obtenerTodosLosGM(){
-		List<GrupoMuscular> gm = gmjpac.obtenerEntidadesGM();
-		if (gm == null) {
-			System.out.printf("[ ERROR ] > No hay grupos musculares en el sistema!%n");
+	public List<GrupoMuscular> obtenerTodosLosGM(){		
+		String consulta = String.format("SELECT %c FROM %s %c", 'g', "GrupoMuscular", 'g'); // Consulta JPQL
+		List<GrupoMuscular> regEntidades = null; // Variable para almacenar el registro
+		
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			regEntidades = this.gmDao.obtenerEntidadesGM(this.manager, consulta);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener los GM's!");
+		} finally {
+			this.manager.close();
 		}
-		return gm;
+		
+		return regEntidades;
 	}
 	
 	// Actualizar Grupo Muscular en el sistema
-	public void actualizarEstadoGM(int id, String nombreGM) {
-		GrupoMuscular gm = gmjpac.obtenerEntidadGM(id);
+	public void actualizarEstadoGM(int id, String nombreGM) {		
+		GrupoMuscular gm = this.obtenerGM(id);
 		
 		if (gm == null) {
-			System.out.printf("[ ERROR ] > El grupo muscular %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El GM %d no se encuentra en el sistema!%n", id);
 			return;
 		}
 		
 		// ALGUNOS PARAMETROS SE MODIFICAN A MINUSCULA
-		gmjpac.actualizareEntidadGM(gm, nombreGM.toLowerCase());
+		gm.setNombreGrupo(nombreGM.toLowerCase());
 		
-		// CODIGO VIEJO
-//		if (gm != null) {
-//			gmjpac.actualizarEntidad(gm, nombreGM);
-//		} else {
-//			System.out.printf("[ ERROR ] > El grupo muscular %d no se encuentra en el sistema!%n", id);
-//		}
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			this.manager.getTransaction().begin();
+			this.gmDao.actualizarNombreGM(this.manager, gm);
+			this.manager.getTransaction().commit();
+			System.out.printf("[ EXITO ] > El GM %d actualizado correctamente!%n", id);
+		} catch (Exception e) {
+			this.manager.getTransaction().rollback();
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al actualiza el GM!");
+		} finally {
+			this.manager.close();
+		}
 	}
-
-	// CODIGO VIEJO
-//	// ACTUALIZAR RELACION
-//	public void actualizarRelacionGMEjercicio(GrupoMuscular gm, Ejercicio ejercicio) {
-//		if (gm == null && ejercicio == null) {
-//			System.out.printf("[ ERROR ] > Alguno de los objetos ingresados es nulo o no es válido!%n");
-//			return;
-//		}
-//		
-//		gmjpac.actualizarRelacion(gm, ejercicio);
-//		
-//		// CODIGO VIEJO
-////		if (gm != null && ejercicio != null) {
-////			gmjpac.actualizarRelacion(gm, ejercicio);			
-////		} else {
-////			System.out.printf("[ ERROR ] > Alguno de los objetos ingresados es nulo o no es válido!%n");
-////		}
-//	}
 	
 	// Eliminar Grupo Muscular del Sistema
 	public void eliminarGM(int id) {
-		GrupoMuscular gm = gmjpac.obtenerEntidadGM(id);
+		GrupoMuscular gm = this.obtenerGM(id);
 		
 		if (gm == null) {
-			System.out.printf("[ ERROR ] > El grupo muscular %d no se encuentra en el sistema!%n", id);
+			System.out.printf("[ ERROR ] > El GM %d no se encuentra en el sistema!%n", id);
 			return;
 		}
 		
-		gmjpac.eliminarEntidadGM(gm);
+		// ADMINISTRADO DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
-		// CODIGO VIEJO
-//		if (gm != null) {
-//			gmjpac.eliminarEntidad(gm);
-//		} else {
-//			System.out.printf("[ ERROR ] > El grupo muscular %d no se encuentra en el sistema!%n", id);
-//		}
-	}
-	
-	// CERRAR CONEXION
-	public void finalizarConexion() {
-		if (gmjpac != null && gmjpac.hayConexion()) {
-			gmjpac.cerrarEMF();			
+		try {
+			this.manager.getTransaction().begin();
+			gm = this.manager.merge(gm); // RECONEXION DE LA ENTIDAD
+			this.gmDao.eliminarEntidadGM(this.manager, gm);
+			this.manager.getTransaction().commit();
+			System.out.printf("[ EXITO ] > El GM %d cargado correctamente!%n", gm.getIdGM());
+		} catch (Exception e) {
+			this.manager.getTransaction().rollback();
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al eliminar el GM!");
+		} finally {
+			this.manager.close();
 		}
 	}
 }
