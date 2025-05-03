@@ -1,5 +1,7 @@
 # Notas de Desarrollo – Proyecto MYG
+
 **Autor:** BBKMG
+
 **Proyecto:** MYG – Sistema de gestión de clientes para un gimnasio
 
 ---
@@ -27,6 +29,8 @@
 - [13/04/25](#130425)
 - [15/04/25](#150425)
 - [18/04/25](#180425)
+- [28/04/25](#280425)
+- [03/05/25](#030525)
 
 ---
 
@@ -207,5 +211,37 @@ NOTA IMPORTANTE: NO SE TESTEARON LOS CAMBIOS, Y SE LO DEJO COMO PENDIENTE!!
 
 ### 18/04/25
 Se creó la rama `inestable` para tabajar mas comodamente con cambios sin afectar a la rama `main` del proyecto (y basicamente no cagarla xd).
+
+---
+
+### 27/04/25
+Se modificaron las operaciones que agregaban a objetos de entidades hijas en las lista relacional de las entidades padres de estas,
+ahora estas operaciones forman parte de cada servicio que lo requiera, cumpliendo la buna practica de dejar a los DAO's solamente hacer
+sus operaciones crud y nada mas.
+
+Se modificaron las operaciones de actualizacion de los atributos de las entidades en sus respectivos DAO's, ahora son metodos separados,
+que modifican 1 solo atributo nada mas, permitiendo al usuario modificar solo lo que necesita.
+NOTA IMPORTANTE: Algunas entidades todavía no pueden modificar sus atributos por que no se probaron sus relaciones ni cargarlas a la BD,
+despues de probar que funcionan correctamente, se terminaran sus metodos actualizar.
+
+Se modificaron los metodos que eliminan entidades de la BD en la capa de repositiorio. Cuando se elimina una entidad hija de la BD, se supone
+que se debe desenlazar este objeto de la lista relacional que tiene su entidad padre, esto no se hacía, ahora si.
+
+---
+
+### 28/04/25
+Se arreglo un fallo de diseño que había con las operaciones de actualizacion de datos de las entidades. Estas hacian cambios por dato en la
+BD, rompiendo la atomicidad de operaciones, ahora el objeto se trae de la BD y se modifica en memoria, antes de mergearlo (actualizarlo) a la BD.
+
+---
+### 03/05/25
+Se está refactorizado los servicios y los DAOs por problemas de diseño, la idea es modificar todo para tener a las clases y capas funcionando como deben,
+el DAO solo preocupandose por las operaciones a BD y los servicios generando las transacciones. Hasta el momento se modificaron los servicios y DAOs
+correspondientes a las entidades de `Cliente`, `Tutor`, `GM`, `Ejercicio` y `Rutina`.
+
+Además, cosas que nunca se menciona, la creacion del EMF (EntityManagerFactory) se redefinió de forma correcta en un Singleton, para instanciarlo y
+hacer la conexion a BD solo 1 vez durante toda la ejecucion del codigo, evitando "sobrecarga" innecesaria o mal uso del mismo.
+
+Y por último, se limpiaron un poco los comentarios o codigos comentados que ya no se usan xd.
 
 ---
