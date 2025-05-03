@@ -19,13 +19,7 @@ package edu.unam.repositorio;
 import java.util.List;
 
 // JPA
-// import jakarta.persistence.Persistence;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-
-// SINGLETON PARA EL EMF
-import utilidades.EMFSingleton;
 
 // ENTIDAD
 import edu.unam.modelo.Tutor;
@@ -34,11 +28,7 @@ import edu.unam.modelo.Tutor;
 *
 * @Autor: BBKMG
 */
-public class TutorDAO {
-	// ATRIBUTOS
-//	private EntityManagerFactory emf;
-	private EntityManager manager;
-	
+public class TutorDAO {	
 	// CONSTRUCTOR
 	public TutorDAO() {
 //		emf = EMFSingleton.getInstancia().getEMF();
@@ -138,7 +128,8 @@ public class TutorDAO {
 //		} finally {
 //			manager.close();
 //		}
-		entidadTutor = em.merge(entidadTutor); // RECONECTAR ENTIDAD PARA ELIMINARLA
+		// NO HACE FALTA ESTE MERGE, YA LO HACE EL SERVICIO
+		// entidadTutor = em.merge(entidadTutor); // RECONECTAR ENTIDAD PARA ELIMINARLA
 		em.remove(entidadTutor);
 	}
 }
