@@ -96,14 +96,6 @@ public class ClienteServicio {
 	 * Recibe un primitivo de tipo int, retorna un objeto de tipo Cliente.
 	 */
 	public Cliente obtenerCliente(int dni) {
-		// CODIGO VIEJO
-//		Cliente cli = cjpac.obtenerEntidadCliente(dni);
-//		if (cli == null) {
-//			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
-//		}
-//		
-//		return cli;
-
 		Cliente regCliente = null;
 		// ADMINISTRADOR DE ENTIDADES
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
@@ -124,15 +116,7 @@ public class ClienteServicio {
 	/**
 	 * No recibe parametros, retorna una lista de tipo Cliente.
 	 */
-	public List<Cliente> obtenerTodosLosClientes(){
-		// CODIGO VIEJO
-//		List<Cliente> cli = cjpac.obtenerEntidadesCliente();
-//		if (cli == null) {
-//			System.out.printf("[ ERROR ] > No hay clientes en el sistema!%n");
-//		}
-//		
-//		return cli;
-		
+	public List<Cliente> obtenerTodosLosClientes(){		
 		String consulta = String.format("SELECT %c FROM %s %c", 'c', "Cliente", 'c'); // Consulta JPQL
 		List<Cliente> regClientes = null;
 		
@@ -211,9 +195,6 @@ public class ClienteServicio {
 		} finally {
 			this.manager.close();
 		}
-		
-		// CODIGO VIEJO
-		// cjpac.actualizarEstadoCliente(cli);
 	}
 	
 	// Da de baja a un cliente del sistema
@@ -246,8 +227,6 @@ public class ClienteServicio {
 		} finally {
 			this.manager.close();
 		}
-		
-		// cjpac.eliminarEntidadCliente(cli);
 	}
 
 

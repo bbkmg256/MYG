@@ -42,9 +42,14 @@ public class EjercicioServicio {
 			return;
 		}
 		
-		// MANEJO DE FALLO [ ATRIBUTO GM NULL ]
+		// MANEJO DE FALLO [ ATRIBUTOS VACIOS O NULL ]
 		if (ejercicio.getGrupoMuscular() == null) {
 			System.out.printf("[ ERROR ] > El ejercicio %d no tiene grupo muscular asignado o este es nulo!%n", ejercicio.getIdEjercicio());
+			return;
+		}
+		
+		if (ejercicio.getNombreEjercicio() == null) {
+			System.out.printf("[ ERROR ] > El ejercicio %d no tiene un nombre asignado o este es nulo!%n", ejercicio.getIdEjercicio());
 			return;
 		}
 		
