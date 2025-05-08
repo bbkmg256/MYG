@@ -53,7 +53,7 @@ import jakarta.persistence.CascadeType;
 */
 @Entity
 public class GrupoMuscular {
-	// Atributos
+	// ATRIBUTOS
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "id_gm")
