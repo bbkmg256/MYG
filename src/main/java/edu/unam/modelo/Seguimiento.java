@@ -36,7 +36,6 @@ import jakarta.persistence.TemporalType;
  * 
  * NOTA:
  * 
- * NO DESCOMENTES LAS RELACIONES TODAVIA
  * 
  */
 
@@ -58,7 +57,7 @@ public class Seguimiento {
 	@Column(name = "cantidad_repeticiones_realizadas")
 	private int cantRepeticionesRealizado;
 	@Column(name = "ejercicio_realizado")
-	private String ejercicioRealizado; // POR EL MOMENTO SE QUEDA EN UN STRING, DESPUES VERÉ SI ES ENCESARIO CAMBIARLO A UNA ENTIDAD EJERCICIO (Y SI, CREO QUE ES LO LOGICO)
+	private String ejercicioRealizado;
 	@Column(name = "peso_trabajado")
 	private double pesoTrabajado;
 	
@@ -74,14 +73,15 @@ public class Seguimiento {
 	// CONTRUCTOR
 	public Seguimiento() {}
 	
-	public Seguimiento(int paramIdSeg, LocalDate paramFechaHoy, int paramCantSeries, int paramCantRep,
-						String paramEjer, double paramPesoTrabajado, Entrenamiento paramEntrenamiento) {
+	public Seguimiento(LocalDate paramFechaHoy, String paramEjercicio,
+		int paramCantSeries, int paramCantRep,
+		double paramPesoTrabajado,
+		Entrenamiento paramEntrenamiento) {
 		
-		this.idSeguimiento = paramIdSeg;
 		this.fechaHoy = paramFechaHoy;
+		this.ejercicioRealizado = paramEjercicio;
 		this.cantSerieRealizado = paramCantSeries;
 		this.cantRepeticionesRealizado = paramCantRep;
-		this.ejercicioRealizado = paramEjer;
 		this.pesoTrabajado = paramPesoTrabajado;
 		this.entrenamiento = paramEntrenamiento;
 	}
