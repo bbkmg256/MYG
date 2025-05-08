@@ -33,7 +33,7 @@ import jakarta.persistence.TemporalType;
  *
  * NOTA:
  * 
- * NO DESCOMENTES LAS RELACIONES TODAVIA
+ * EL TUTOR NO TIENE FECHA DE INGRESO
  * 
  */
 
@@ -60,8 +60,6 @@ public class Tutor {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nacimiento")
 	private LocalDate fechaNacimiento;
-	@Column(name = "fecha_ingreso")
-	private LocalDate fechaIngreso;
 	
 	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO (LISTA)
 	@OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
@@ -71,8 +69,8 @@ public class Tutor {
 	public Tutor() {}
 	
 	public Tutor(int paramDni, String paramNombre, String paramApellido,
-				LocalDate paramFechaNac, char paramSexo, String paramCiudad,
-				String paramProvincia, int paramCodPost, LocalDate paramFechaIng) {
+		LocalDate paramFechaNac, char paramSexo, String paramCiudad,
+		String paramProvincia, int paramCodPost) {
 		
 		this.dni = paramDni;
 		this.nombre = paramNombre;
@@ -82,7 +80,6 @@ public class Tutor {
 		this.ciudad = paramCiudad;
 		this.provincia = paramProvincia;
 		this.codigoPostal = paramCodPost;
-		this.fechaIngreso = paramFechaIng;
 	}
 	
 	// SET
@@ -116,10 +113,6 @@ public class Tutor {
 	
 	public void setCodigoPostal(int valCodPost) {
 		this.codigoPostal = valCodPost;
-	}
-	
-	public void setFechaIngreso(LocalDate valFechaIng) {
-		this.fechaIngreso = valFechaIng;
 	}
 	
 	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
@@ -157,10 +150,6 @@ public class Tutor {
 	
 	public int getCodPost() {
 		return this.codigoPostal;
-	}
-	
-	public LocalDate getFechaIngreso() {
-		return this.fechaIngreso;
 	}
 	
 	public List<Entrenamiento> getEntrenamientos(){
