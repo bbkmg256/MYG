@@ -44,9 +44,7 @@ import jakarta.persistence.FetchType;
  * 
  * NOTA:
  * 
- * NO DESCOMENTES EL MAPEADO DE LAS RELACIONES POR QUE SE ROMPE EL CODIGO
- * 
- * ESTO YA ESTA RELACIONADO CON CLIENTE Y TUTOR!!
+ * NO HAY XD
  * 
  */
 
@@ -69,7 +67,7 @@ public class Entrenamiento {
 	// VOLUMEN DE ENTRENAMIENTO SEMANAL
 	// (SI NO ESTOY MAL, ES LO QUE SE ENTRENO EN LA SEMANA)
 	@Column(name = "volumen_entrenamiento")
-	private int volumenEntrenamiento;
+	private int volumenEntrenamiento; // ESTO HAY QUE VERLO TODAVÍA, POR EL MOMENTO DEJALO QUIETITO
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_inicio")
@@ -88,7 +86,9 @@ public class Entrenamiento {
 	private Tutor tutor; // FK'S DE TUTOR
 	
 	// ATRIBUTO RELACION A CLASE RUTINA (LISTA)
-	// private List<Rutina> rutinas = new ArrayList<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "rutina_id")
+	private Rutina rutina;
 	
 	// ATRIBUTO RELACION A CLASE SEGUIMIENTO (LISTA)
 	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
@@ -97,36 +97,36 @@ public class Entrenamiento {
 	// CONTRUCTOR
 	public Entrenamiento() {}
 	
-	public Entrenamiento(int paramIdEntre, LocalDate paramFechaInicio, LocalDate paramFechaFin,
-						Cliente paramCli, Tutor paramTutor){
+	public Entrenamiento(LocalDate paramFechaInicio, LocalDate paramFechaFin,
+		Cliente paramCli, Tutor paramTutor, Rutina paramRutina) {
 		
-		this.idEntrenamiento = paramIdEntre;
 		this.puntaje = 0; // AL INICIO ES 0 HASTA QUE EL CLIENTE LO PUNTUE DESPUES DE 5 SEMANAS DEL ENTRENAMIENTO
 		this.fechaInicio = paramFechaInicio;
 		this.fechaFin = paramFechaFin;
 		this.volumenEntrenamiento = 0; // EL VOLUMEN ES 0 HASTA QUE SE EMPIECE A REGISTRAR LOS ENTRENAMIENTOS
 		this.cliente = paramCli;
 		this.tutor = paramTutor;
+		this.rutina = paramRutina;
 	}
 	
 	// SET
-	public void setIdEntrenamiento(int valIdEntre){
+	public void setIdEntrenamiento(int valIdEntre) {
 		this.idEntrenamiento = valIdEntre;
 	}
 	
-	public void setPuntaje(int valPuntaje){
+	public void setPuntaje(int valPuntaje) {
 		this.puntaje = valPuntaje;
 	}
 	
-	public void setFechaInicio(LocalDate valFechaInicio){
+	public void setFechaInicio(LocalDate valFechaInicio) {
 		this.fechaInicio = valFechaInicio;
 	}
 	
-	public void setFechaFin(LocalDate valFechaFin){
+	public void setFechaFin(LocalDate valFechaFin) {
 		this.fechaFin = valFechaFin;
 	}
 	
-	public void setVolumenEntrenamiento(int valVE){
+	public void setVolumenEntrenamiento(int valVE) {
 		this.volumenEntrenamiento = valVE;
 	}
 	
@@ -142,24 +142,28 @@ public class Entrenamiento {
 		this.seguimientos = listSeguimiento;
 	}
 	
+	public void setRutina(Rutina valRutina) {
+		this.rutina = valRutina;
+	}
+	
 	// GET
-	public int getIdEntrenamiento(){
+	public int getIdEntrenamiento() {
 		return this.idEntrenamiento;
 	}
 	
-	public int getPuntaje(){
+	public int getPuntaje() {
 		return this.puntaje;
 	}
 	
-	public LocalDate getFechaInicio(){
+	public LocalDate getFechaInicio() {
 		return this.fechaInicio;
 	}
 	
-	public LocalDate getFechaFin(){
+	public LocalDate getFechaFin() {
 		return this.fechaFin;
 	}
 	
-	public int getVolumenEntrenamiento(){
+	public int getVolumenEntrenamiento() {
 		return this.volumenEntrenamiento;
 	}
 	
@@ -171,7 +175,11 @@ public class Entrenamiento {
 		return this.tutor;
 	}
 	
-	public List<Seguimiento> getSeguimientos(){
+	public List<Seguimiento> getSeguimientos() {
 		return this.seguimientos;
+	}
+	
+	public Rutina getRutina() {
+		return this.rutina;
 	}
 }
