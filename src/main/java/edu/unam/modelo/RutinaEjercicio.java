@@ -62,7 +62,7 @@ public class RutinaEjercicio {
 	public RutinaEjercicio() {}
 	
 	public RutinaEjercicio(Rutina paramRutina, Ejercicio paramEjercicio,
-							int paramSerie, int paramRepeticion) {
+		int paramSerie, int paramRepeticion) {
 		
 		this.rutina = paramRutina;
 		this.ejercicio = paramEjercicio;
