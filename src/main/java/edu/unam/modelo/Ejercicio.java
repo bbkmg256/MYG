@@ -14,8 +14,8 @@ package edu.unam.modelo;
 
 // LIBRERIAS
 // VARIOS
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
 import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
 import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
@@ -28,11 +28,11 @@ import jakarta.persistence.GenerationType;
 
 // MODULOS JPA DE MAPEADO DE RELACIONES
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+//import jakarta.persistence.OneToMany;
 // import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.CascadeType;
+//import jakarta.persistence.CascadeType;
 // import jakarta.persistence.ManyToMany;
 
 
@@ -98,8 +98,8 @@ public class Ejercicio {
 	private GrupoMuscular GM; // FK'S DE GRUPO MUSCULAR
 	
 	// ATRIBUTO RELACION CON CLASE RUTINAEJERCICIO
-	@OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL)
-	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
+//	@OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL)
+//	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
 
 	// CONSTRUCTOR
 	public Ejercicio() {}
@@ -122,9 +122,9 @@ public class Ejercicio {
 		this.GM = paramGM;
 	}
 	
-	public void setRutinaEjercicio(List<RutinaEjercicio> listRutinaEjercicio) {
-		this.rutinaEjercicio = listRutinaEjercicio;
-	}
+//	public void setRutinaEjercicio(List<RutinaEjercicio> listRutinaEjercicio) {
+//		this.rutinaEjercicio = listRutinaEjercicio;
+//	}
 	
 	// GET
 	public int getIdEjercicio(){
@@ -139,7 +139,7 @@ public class Ejercicio {
 		return this.GM;
 	}
 	
-	public List<RutinaEjercicio> getRutinaEjercicio() {
-		return this.rutinaEjercicio;
-	}
+//	public List<RutinaEjercicio> getRutinaEjercicio() {
+//		return this.rutinaEjercicio;
+//	}
 }

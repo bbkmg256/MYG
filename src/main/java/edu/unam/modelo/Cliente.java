@@ -13,8 +13,8 @@ package edu.unam.modelo;
 // LIBRERIAS
 // VARIOS
 import java.time.LocalDate;
-import java.util.List;
-import java.util.ArrayList;
+//import java.util.List;
+//import java.util.ArrayList;
 
 import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
 import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
@@ -27,8 +27,8 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 // MODULOS JPA PARA EL MAPEADO DE RELACIONES
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
+//import jakarta.persistence.OneToMany;
+//import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
 
@@ -76,8 +76,8 @@ public class Cliente {
 	private LocalDate fechaIngreso;
 	
 	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO (LISTA)
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-	private List<Entrenamiento> entrenamientos = new ArrayList<>(); // Cliente (1) a Entrenamiento (*)
+//	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+//	private List<Entrenamiento> entrenamientos = new ArrayList<>(); // Cliente (1) a Entrenamiento (*)
 	
 	// CONSTRUCTOR
 	public Cliente() {}
@@ -134,9 +134,9 @@ public class Cliente {
 		this.fechaIngreso = valFechaIng;
 	}
 	
-	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
-		this.entrenamientos = listEntrenamientos;
-	}
+//	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
+//		this.entrenamientos = listEntrenamientos;
+//	}
 	
 	// GET
 	public int getDni() {
@@ -175,7 +175,7 @@ public class Cliente {
 		return this.fechaIngreso;
 	}
 	
-	public List<Entrenamiento> getEntrenamientos(){
-		return this.entrenamientos;
-	}
+//	public List<Entrenamiento> getEntrenamientos(){
+//		return this.entrenamientos;
+//	}
 }

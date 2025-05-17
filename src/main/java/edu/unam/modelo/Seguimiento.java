@@ -21,6 +21,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.OneToMany;
 
 // MODULOS JPA PARA GENERACIONES DE ID, VALORES DE GENERACION DE ID Y FORMA DE GENERACION DE ID
 import jakarta.persistence.Id;
@@ -56,8 +57,6 @@ public class Seguimiento {
 	private int cantSerieRealizado;
 	@Column(name = "cantidad_repeticiones_realizadas")
 	private int cantRepeticionesRealizado;
-	@Column(name = "ejercicio_realizado")
-	private String ejercicioRealizado;
 	@Column(name = "peso_trabajado")
 	private double pesoTrabajado;
 	
@@ -70,10 +69,15 @@ public class Seguimiento {
 	@JoinColumn(name = "entrenamiento_id")
 	private Entrenamiento entrenamiento; // FK'S DE ENTRENAMIENTO
 	
+	// ATRIBUTO RELACION CON CLASE EJERCICIO
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ejercicio_realizado")
+	private Ejercicio ejercicioRealizado;
+	
 	// CONTRUCTOR
 	public Seguimiento() {}
 	
-	public Seguimiento(LocalDate paramFechaHoy, String paramEjercicio,
+	public Seguimiento(LocalDate paramFechaHoy, Ejercicio paramEjercicio,
 		int paramCantSeries, int paramCantRep,
 		double paramPesoTrabajado,
 		Entrenamiento paramEntrenamiento) {
@@ -103,8 +107,8 @@ public class Seguimiento {
 		this.cantRepeticionesRealizado = valCantRepeticionRealizado;
 	}
 	
-	public void setEjercicioRealizado(String valEjercicioRealizado) {
-		this.ejercicioRealizado = valEjercicioRealizado;
+	public void setEjercicioRealizado(Ejercicio paramEjercicioRealizado) {
+		this.ejercicioRealizado = paramEjercicioRealizado;
 	}
 	
 	public void setPesoTrabajado(double valPesoTrabajado) {
@@ -132,7 +136,7 @@ public class Seguimiento {
 		return this.cantRepeticionesRealizado;
 	}
 	
-	public String getEjercicioRealizado() {
+	public Ejercicio getEjercicioRealizado() {
 		return this.ejercicioRealizado;
 	}
 	

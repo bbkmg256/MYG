@@ -63,11 +63,6 @@ public class Entrenamiento {
 	
 	@Basic
 	private int puntaje; // PUNTUACION POR PARTE DEL CLIENTE AL TUTOR.
-	
-	// VOLUMEN DE ENTRENAMIENTO SEMANAL
-	// (SI NO ESTOY MAL, ES LO QUE SE ENTRENO EN LA SEMANA)
-	@Column(name = "volumen_entrenamiento")
-	private int volumenEntrenamiento; // ESTO HAY QUE VERLO TODAVÍA, POR EL MOMENTO DEJALO QUIETITO
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_inicio")
@@ -103,7 +98,6 @@ public class Entrenamiento {
 		this.puntaje = 0; // AL INICIO ES 0 HASTA QUE EL CLIENTE LO PUNTUE DESPUES DE 5 SEMANAS DEL ENTRENAMIENTO
 		this.fechaInicio = paramFechaInicio;
 		this.fechaFin = paramFechaFin;
-		this.volumenEntrenamiento = 0; // EL VOLUMEN ES 0 HASTA QUE SE EMPIECE A REGISTRAR LOS ENTRENAMIENTOS
 		this.cliente = paramCli;
 		this.tutor = paramTutor;
 		this.rutina = paramRutina;
@@ -126,9 +120,6 @@ public class Entrenamiento {
 		this.fechaFin = valFechaFin;
 	}
 	
-	public void setVolumenEntrenamiento(int valVE) {
-		this.volumenEntrenamiento = valVE;
-	}
 	
 	public void setCliente(Cliente valCli) {
 		this.cliente = valCli;
@@ -163,9 +154,6 @@ public class Entrenamiento {
 		return this.fechaFin;
 	}
 	
-	public int getVolumenEntrenamiento() {
-		return this.volumenEntrenamiento;
-	}
 	
 	public Cliente getCliente() {
 		return this.cliente;

@@ -13,17 +13,17 @@ package edu.unam.modelo;
 // LIBRERIAS
 // VARIOS
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
 import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
-import jakarta.persistence.CascadeType;
+//import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
 
 // MODULOS JPA PARA EL ID
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+//import jakarta.persistence.OneToMany;
 // MODULO JPA PARA ATRIBUTOS REFERENTES A FECHAS
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -62,8 +62,8 @@ public class Tutor {
 	private LocalDate fechaNacimiento;
 	
 	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO (LISTA)
-	@OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
-	private List<Entrenamiento> entrenamientos = new ArrayList<>();
+//	@OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
+//	private List<Entrenamiento> entrenamientos = new ArrayList<>();
 		
 	// CONTRUCTOR
 	public Tutor() {}
@@ -115,9 +115,9 @@ public class Tutor {
 		this.codigoPostal = valCodPost;
 	}
 	
-	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
-		this.entrenamientos = listEntrenamientos;
-	}
+//	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
+//		this.entrenamientos = listEntrenamientos;
+//	}
 	
 	// GET
 	public int getDni() {
@@ -152,7 +152,7 @@ public class Tutor {
 		return this.codigoPostal;
 	}
 	
-	public List<Entrenamiento> getEntrenamientos(){
-		return this.entrenamientos;
-	}
+//	public List<Entrenamiento> getEntrenamientos(){
+//		return this.entrenamientos;
+//	}
 }

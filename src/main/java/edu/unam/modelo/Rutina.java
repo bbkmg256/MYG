@@ -87,8 +87,8 @@ public class Rutina {
 	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
 	
 	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO (LISTA)
-	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
-	private List<Entrenamiento> entrenamientos = new ArrayList<>();
+//	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
+//	private List<Entrenamiento> entrenamientos = new ArrayList<>();
 	
 	// CONTRUCTOR
 	public Rutina() {}
@@ -106,9 +106,9 @@ public class Rutina {
 		this.rutinaEjercicio = listRutinaEjercico;
 	}
 	
-	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
-		this.entrenamientos = listEntrenamientos;
-	}
+//	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
+//		this.entrenamientos = listEntrenamientos;
+//	}
 	
 	public void setNombreRutina(String valNombre) {
 		this.nombreRutina = valNombre;
@@ -123,9 +123,9 @@ public class Rutina {
 		return this.rutinaEjercicio;
 	}
 	
-	public List<Entrenamiento> getEntrenamientos() {
-		return this.entrenamientos;
-	}
+//	public List<Entrenamiento> getEntrenamientos() {
+//		return this.entrenamientos;
+//	}
 	
 	public String getNombreRutina() {
 		return this.nombreRutina;
