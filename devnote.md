@@ -31,6 +31,9 @@
 - [18/04/25](#180425)
 - [28/04/25](#280425)
 - [03/05/25](#030525)
+- [11/05/25](#110525)
+- [12/05/25](#120525)
+- [17/05/25](#170525)
 
 ---
 
@@ -234,6 +237,7 @@ Se arreglo un fallo de diseño que había con las operaciones de actualizacion d
 BD, rompiendo la atomicidad de operaciones, ahora el objeto se trae de la BD y se modifica en memoria, antes de mergearlo (actualizarlo) a la BD.
 
 ---
+
 ### 03/05/25
 Se está refactorizado los servicios y los DAOs por problemas de diseño, la idea es modificar todo para tener a las clases y capas funcionando como deben,
 el DAO solo preocupandose por las operaciones a BD y los servicios generando las transacciones. Hasta el momento se modificaron los servicios y DAOs
@@ -245,3 +249,40 @@ hacer la conexion a BD solo 1 vez durante toda la ejecucion del codigo, evitando
 Y por último, se limpiaron un poco los comentarios o codigos comentados que ya no se usan xd.
 
 ---
+
+### 11/05/25
+Se modificó la entidad seguimiento, ahora el atributo "ejercicioRealizado" no es un simple String, sino que pasa a ser una relacion de Ejercicio, para poder
+confirmar al GM que pertenece cuando se esté calculando "volumen de entenamiento semanal, por cliente y grupo muscular".
+Tambíen se modifico este aspecto en su servicio (el de seguimiento).
+
+Se quitaron las relaciones bidireccionales entre entidades que no lo necestiaban:
+- Cliente
+- Tutor
+- GM
+- Ejercicio (Hacia RutinaEjercicio)
+- Rutina (Hacia Entrenamiento)
+
+y se dejaron los de Rutina (Hacia RutinaEjercicio) y Entrenamiento (Hacia Seguimiento), en los servicios este aspecto también fue modificado.
+
+En todos los servicios (a excepcion de Tutor y Cliente) se quitaron la comprobacion de ID's repetidos, como esto lo administra automaticamente
+hibernate, no es necesario comprobar si el id de un registro ya se encuentra en la BD, por que lo normal sería que no pase.
+
+Se modificó la entidad Entrenamiento, se elimino el atributo "volumenEntrenamiento", por que esto será calculado para el usuario y no almacenado
+como tal, no tiene sentido.
+
+---
+
+### 12/05/25
+Se creó una clase test (TestFuncionamiento), donde se está desarrollando una pequeña aplicacion de prueba para testear las funcionalidades de la aplicación
+con la BD, para posteriormente desarrollar la UI, tadavía no está terminado, por ende es algo pendiente a finalizar y probar.
+
+---
+
+### 17/05/25
+Se modificaron los servicios de las entidades, ahora validan solamente aquellos parametros o atributos que puedan ser o no, null (osea, todos aquellos que
+sean objetos).
+
+No se llegó a terminar la clase de prueba (TestFuncionamiento), pero se realizaron pruebas con esta y la mayoría de funcionalidades están correctar,
+aún así esta clase probablemente se vaya cosntruyendo a medida que se va terminando el proyecto.
+
+Hoy comienza el frontend, dando por termindado (aun que sujeto a cambios), el backend.

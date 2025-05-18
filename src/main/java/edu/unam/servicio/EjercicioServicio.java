@@ -17,7 +17,7 @@ import utilidades.EMFSingleton;
 
 // ENTIDAD
 import edu.unam.modelo.Ejercicio;
-import edu.unam.modelo.GrupoMuscular;
+//import edu.unam.modelo.GrupoMuscular;
 
 /**
 *
@@ -27,24 +27,25 @@ public class EjercicioServicio {
 	// ATRIBUTOS
 	private EntityManager manager;
 	private EjercicioDAO ejerDao;
-	private GrupoMuscular gm;
+//	private GrupoMuscular gm;
+	private GMServicio sgm;
 	
 	// CONSTRUCTOR
 	public EjercicioServicio() {
-		ejerDao = new EjercicioDAO();
+		this.ejerDao = new EjercicioDAO();
+		this.sgm = new GMServicio();
 	}
 	
 	// Cargar Ejercicio
 	public void cargarEjercicio(Ejercicio ejercicio) {
-		// MANEJO DE FALLO [ ENTIDAD EXISTENTE EN LA BD ]	
-		if (this.obtenerEjercicio(ejercicio.getIdEjercicio()) != null) {
-			System.out.printf("[ ERROR ] > El ejercicio %d ya se encuentra en el sistema!%n", ejercicio.getIdEjercicio());
+		// MANEJO DE FALLO [ ATRIBUTOS VACIOS O NULL ]
+		if (ejercicio.getGrupoMuscular() == null || this.sgm.obtenerGM(ejercicio.getGrupoMuscular().getIdGM()) == null) {
+			System.out.printf("[ ERROR ] > El ejercicio %d no tiene grupo muscular asignado o este es nulo!%n", ejercicio.getIdEjercicio());
 			return;
 		}
 		
-		// MANEJO DE FALLO [ ATRIBUTO GM NULL ]
-		if (ejercicio.getGrupoMuscular() == null) {
-			System.out.printf("[ ERROR ] > El ejercicio %d no tiene grupo muscular asignado o este es nulo!%n", ejercicio.getIdEjercicio());
+		if (ejercicio.getNombreEjercicio() == null) {
+			System.out.printf("[ ERROR ] > El ejercicio %d no tiene un nombre asignado o este es nulo!%n", ejercicio.getIdEjercicio());
 			return;
 		}
 		
@@ -60,8 +61,8 @@ public class EjercicioServicio {
 			this.manager.getTransaction().begin();
 			this.ejerDao.crearEntidadEjercicio(this.manager, ejercicio);
 			//this.enlazarEntidadALista(this.manager, ejercicio); // ENLAZA EL OBJETO A LA LISTA RELACIONAL DE GM
-			this.gm = this.manager.merge(ejercicio.getGrupoMuscular()); // RECONECTA LA ENTIDAD AL CONTEXTO DEL EM
-			this.gm.getEjercicios().add(ejercicio); // AÑADE EL EJERCICIO AL ATRIBUTO LISTA DEL LA ENTIDAD GM
+//			this.gm = this.manager.merge(ejercicio.getGrupoMuscular()); // RECONECTA LA ENTIDAD AL CONTEXTO DEL EM
+//			this.gm.getEjercicios().add(ejercicio); // AÑADE EL EJERCICIO AL ATRIBUTO LISTA DEL LA ENTIDAD GM
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El ejercicio %d cargado correctamente!%n", ejercicio.getIdEjercicio());
@@ -117,10 +118,9 @@ public class EjercicioServicio {
 	// Actualizar Ejercicio
 	public void actualizarEstadoEjercicio(int id, ParametrosEjercicio paramEjer) {
 		Ejercicio ejer = this.obtenerEjercicio(id);
-		GMServicio sGM = new GMServicio();
 		
 		// PARA EL RE-ENLAZADO DE LA ENTIDAD A LA LISTA DE GM
-		GrupoMuscular gmAntiguo = null;
+//		GrupoMuscular gmAntiguo = null;
 		
 		if (ejer == null) {
 			System.out.printf("[ ERROR ] > El ejercicio %d no se encuentra en el sistema!%n", id);
@@ -128,10 +128,14 @@ public class EjercicioServicio {
 		}
 		
 		// ALMACENA EL GM ANTIGUO ANTES DE CAMBIARLO
-		gmAntiguo = ejer.getGrupoMuscular();
+//		gmAntiguo = ejer.getGrupoMuscular();
 		
 		// SI EL ATRIBUTO NO ES NULO, SE VERIFICA QUE EL INDICE SEA VALIDO EN LA TABLA DE GM
-		if (paramEjer.gm != null && sGM.obtenerGM(paramEjer.gm.getIdGM()) != null) {
+		if (paramEjer.gm != null) {
+			if (this.sgm.obtenerGM(paramEjer.gm.getIdGM()) == null) {
+				System.out.println("[ ERROR ] > El parámetro GM no es valido!");
+				return;
+			}
 			ejer.setGrupoMuscular(paramEjer.gm);
 		}
 		
@@ -149,13 +153,12 @@ public class EjercicioServicio {
 			// ENLAZA EL OBJETO QUE SE ESTA MODIFICANDO A LA LISTA DE LA NUEVA ENTIDAD PADRE
 			// Y MERGEA LA ENTIDAD ANTIGUA PARA QUE DE SU LISTA RELACIONAL REMUEVE
 			// EL MISMO OBJETO QUE SE ESTA MODIFICANDO (OSEA EL EJERCICIO XD).
-			if (paramEjer.gm != null) {
-				// this.enlazarEntidadALista(this.manager, ejer);
-				this.gm = this.manager.merge(ejer.getGrupoMuscular()); // RECONECTA LA ENTIDAD AL CONTEXTO DEL EM
-				this.gm.getEjercicios().add(ejer); // AÑADE EL EJERCICIO AL ATRIBUTO LISTA DEL LA ENTIDAD GM
-				gmAntiguo = this.manager.merge(gmAntiguo);
-				gmAntiguo.getEjercicios().remove(ejer);
-			}
+//			if (paramEjer.gm != null) {
+//				this.gm = this.manager.merge(ejer.getGrupoMuscular()); // RECONECTA LA ENTIDAD AL CONTEXTO DEL EM
+//				this.gm.getEjercicios().add(ejer); // AÑADE EL EJERCICIO AL ATRIBUTO LISTA DEL LA ENTIDAD GM
+//				gmAntiguo = this.manager.merge(gmAntiguo);
+//				gmAntiguo.getEjercicios().remove(ejer);
+//			}
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ ERROR ] > El ejercicio %d actualizado correctamente!%n", ejer.getIdEjercicio());
@@ -184,9 +187,8 @@ public class EjercicioServicio {
 			this.manager.getTransaction().begin();
 			ejercicio = this.manager.merge(ejercicio);
 			this.ejerDao.eliminarEntidadEjercicio(this.manager, ejercicio);
-			//this.desenlazarEntidadALista(this.manager, ejercicio); // ELIMINA EL OBJETO DE LA LISTA RELACIONAL DE GM
-			this.gm = this.manager.merge(ejercicio.getGrupoMuscular()); // RECONECTA LA ENTIDAD AL CONTEXTO DEL EM
-			this.gm.getEjercicios().remove(ejercicio); // ELIMINA EL EJERCICIO DEL ATRIBUTO LISTA DE LA ENTIDAD GM
+//			this.gm = this.manager.merge(ejercicio.getGrupoMuscular()); // RECONECTA LA ENTIDAD AL CONTEXTO DEL EM
+//			this.gm.getEjercicios().remove(ejercicio); // ELIMINA EL EJERCICIO DEL ATRIBUTO LISTA DE LA ENTIDAD GM
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El ejercicio %d eliminado correctamente!%n", id);
 		} catch (Exception e) {
@@ -197,18 +199,4 @@ public class EjercicioServicio {
 			this.manager.close();
 		}
 	}
-
-	// METODOS DESCONTINUADOS
-	
-//	// ENLAZA UN OBJETO PERSISTIDO A LA LISTA RELACIONAL DE OTRA ENTIDAD PADRE
-//	private void enlazarEntidadALista(EntityManager em, Ejercicio ejer) {	
-//		GrupoMuscular gm = em.merge(ejer.getGrupoMuscular()); // RECONECTA LA ENTIDAD AL CONTEXTO DEL EM
-//		gm.getEjercicios().add(ejer); // AÑADE EL EJERCICIO AL ATRIBUTO LISTA DEL LA ENTIDAD GM
-//	}
-//	
-//	// DESENLAZA UN OBJETO PERSISTIDO DE LA LISTA RELACIONAL DE OTRA ENTIDAD PADRE
-//	private void desenlazarEntidadALista(EntityManager em, Ejercicio ejer) {
-//		GrupoMuscular gm = em.merge(ejer.getGrupoMuscular()); // RECONECTA LA ENTIDAD AL CONTEXTO DEL EM
-//		gm.getEjercicios().remove(ejer); // ELIMINA EL EJERCICIO DEL ATRIBUTO LISTA DE LA ENTIDAD GM
-//	}
 }

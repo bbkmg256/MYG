@@ -21,6 +21,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+//import jakarta.persistence.OneToMany;
 
 // MODULOS JPA PARA GENERACIONES DE ID, VALORES DE GENERACION DE ID Y FORMA DE GENERACION DE ID
 import jakarta.persistence.Id;
@@ -36,7 +37,6 @@ import jakarta.persistence.TemporalType;
  * 
  * NOTA:
  * 
- * NO DESCOMENTES LAS RELACIONES TODAVIA
  * 
  */
 
@@ -57,8 +57,6 @@ public class Seguimiento {
 	private int cantSerieRealizado;
 	@Column(name = "cantidad_repeticiones_realizadas")
 	private int cantRepeticionesRealizado;
-	@Column(name = "ejercicio_realizado")
-	private String ejercicioRealizado; // POR EL MOMENTO SE QUEDA EN UN STRING, DESPUES VERÉ SI ES ENCESARIO CAMBIARLO A UNA ENTIDAD EJERCICIO (Y SI, CREO QUE ES LO LOGICO)
 	@Column(name = "peso_trabajado")
 	private double pesoTrabajado;
 	
@@ -71,17 +69,23 @@ public class Seguimiento {
 	@JoinColumn(name = "entrenamiento_id")
 	private Entrenamiento entrenamiento; // FK'S DE ENTRENAMIENTO
 	
+	// ATRIBUTO RELACION CON CLASE EJERCICIO
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ejercicio_realizado")
+	private Ejercicio ejercicioRealizado;
+	
 	// CONTRUCTOR
 	public Seguimiento() {}
 	
-	public Seguimiento(int paramIdSeg, LocalDate paramFechaHoy, int paramCantSeries, int paramCantRep,
-						String paramEjer, double paramPesoTrabajado, Entrenamiento paramEntrenamiento) {
+	public Seguimiento(LocalDate paramFechaHoy, Ejercicio paramEjercicio,
+		int paramCantSeries, int paramCantRep,
+		double paramPesoTrabajado,
+		Entrenamiento paramEntrenamiento) {
 		
-		this.idSeguimiento = paramIdSeg;
 		this.fechaHoy = paramFechaHoy;
+		this.ejercicioRealizado = paramEjercicio;
 		this.cantSerieRealizado = paramCantSeries;
 		this.cantRepeticionesRealizado = paramCantRep;
-		this.ejercicioRealizado = paramEjer;
 		this.pesoTrabajado = paramPesoTrabajado;
 		this.entrenamiento = paramEntrenamiento;
 	}
@@ -103,8 +107,8 @@ public class Seguimiento {
 		this.cantRepeticionesRealizado = valCantRepeticionRealizado;
 	}
 	
-	public void setEjercicioRealizado(String valEjercicioRealizado) {
-		this.ejercicioRealizado = valEjercicioRealizado;
+	public void setEjercicioRealizado(Ejercicio paramEjercicioRealizado) {
+		this.ejercicioRealizado = paramEjercicioRealizado;
 	}
 	
 	public void setPesoTrabajado(double valPesoTrabajado) {
@@ -132,7 +136,7 @@ public class Seguimiento {
 		return this.cantRepeticionesRealizado;
 	}
 	
-	public String getEjercicioRealizado() {
+	public Ejercicio getEjercicioRealizado() {
 		return this.ejercicioRealizado;
 	}
 	

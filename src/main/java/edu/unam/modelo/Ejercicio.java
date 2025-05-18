@@ -9,12 +9,13 @@
 
 
 // PAQUETES
+
 package edu.unam.modelo;
 
 // LIBRERIAS
 // VARIOS
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
 import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
 import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
@@ -27,16 +28,17 @@ import jakarta.persistence.GenerationType;
 
 // MODULOS JPA DE MAPEADO DE RELACIONES
 import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.OneToMany;
 // import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ManyToMany;
+//import jakarta.persistence.CascadeType;
+// import jakarta.persistence.ManyToMany;
 
 
 /*
  * 
- * NOTA:
+ * NOTAS:
  * 
  * JoinColumn -> SIRVE PARA DETALLAR DATOS REPSECTO A LA COLUMNA DE UAN ENTIDAD
  * QUE ALMACENA LAS CLAVER FORANEAS DE OTRA ENTIDAD.
@@ -55,6 +57,22 @@ import jakarta.persistence.ManyToMany;
  * 
  * VARIOS EJERCICIOS SE RELACIONA CON VARIAS RUTINAS.
  * 
+ * 
+ * 	// ATRIBUTO RELACIONADO CON CLASE RUTINA (LISTA)
+ *	// @OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL)
+ *	// private List<Rutina> rutina = new ArrayList<>();
+ *	
+ *	// ATRIBUTO RELACIONADO CON CLASE RUTINA (LISTA) [NO TERMINADO]
+ *	@ManyToMany(mappedBy = "ejercicios", cascade = CascadeType.ALL)
+ *	private List<Rutina> rutina = new ArrayList<>();
+ *
+ *	
+ *	POR EL MOMENTO VOY A RELACIONAR A LA INVERSA DEL DIAGRAMA POR CUESTIONES DE INSTANCIACION (NO TIENE MUCHO SENTIDO COMO VENIA HACIENDO)
+ *	// ATRIBUTO RELACIONADO CON CLASE RUTINA
+ *	@ManyToOne(fetch = FetchType.LAZY)
+ *	@JoinColum(name = "rutina_id")
+ *	private Rutina rutina; // FK'S DE RUTINA
+ * 
  */
 
 
@@ -66,35 +84,23 @@ import jakarta.persistence.ManyToMany;
 public class Ejercicio {
 	// ATRIBUTOS
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ejercicio")
 	private int idEjercicio;
 	
 	@Basic
 	@Column(name = "nombre_ejercicio")
-	private String nombreEjercicio;
+	private String nombreEjercicio; // PROBABLEMENTE PODRIA HACERLO UNIQUE PARA EVITAR CARGAR EJERCICIO CON NOMBRE IGUALES
 	
 	// ATRIBUTO RELACIONADO CON CLASE GM
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "grupo_muscular_id") // ESPECIFICA QUE ESTA COLUMNA ES LA RELACIONAL ENTRE LA TABLA EJERCICIO Y GM
 	private GrupoMuscular GM; // FK'S DE GRUPO MUSCULAR
 	
-	// ATRIBUTO RELACIONADO CON CLASE RUTINA (LISTA)
-	// @OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL)
-	// private List<Rutina> rutina = new ArrayList<>();
-	
-	// ATRIBUTO RELACIONADO CON CLASE RUTINA (LISTA) [NO TERMINADO]
-	@ManyToMany(mappedBy = "ejercicios", cascade = CascadeType.ALL)
-	private List<Rutina> rutina = new ArrayList<>();
+	// ATRIBUTO RELACION CON CLASE RUTINAEJERCICIO
+//	@OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL)
+//	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
 
-	
-	/* POR EL MOMENTO VOY A RELACIONAR A LA INVERSA DEL DIAGRAMA POR CUESTIONES DE INSTANCIACION (NO TIENE MUCHO SENTIDO COMO VENIA HACIENDO)
-	// ATRIBUTO RELACIONADO CON CLASE RUTINA
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColum(name = "rutina_id")
-	private Rutina rutina; // FK'S DE RUTINA
-	*/
-	
 	// CONSTRUCTOR
 	public Ejercicio() {}
 	
@@ -116,9 +122,9 @@ public class Ejercicio {
 		this.GM = paramGM;
 	}
 	
-	public void setRutinas(List<Rutina> listRutina) {
-		this.rutina = listRutina;
-	}
+//	public void setRutinaEjercicio(List<RutinaEjercicio> listRutinaEjercicio) {
+//		this.rutinaEjercicio = listRutinaEjercicio;
+//	}
 	
 	// GET
 	public int getIdEjercicio(){
@@ -133,7 +139,7 @@ public class Ejercicio {
 		return this.GM;
 	}
 	
-	public List<Rutina> getRutinas(){
-		return this.rutina;
-	}
+//	public List<RutinaEjercicio> getRutinaEjercicio() {
+//		return this.rutinaEjercicio;
+//	}
 }

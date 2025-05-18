@@ -11,8 +11,8 @@
 package edu.unam.modelo;
 
 // LIBRERIAS
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
 import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
 import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
@@ -24,8 +24,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 // MODULOS JPA DE MAPEADO DE RELACIONES
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
+//import jakarta.persistence.OneToMany;
+//import jakarta.persistence.CascadeType;
 
 
 /*
@@ -53,7 +53,7 @@ import jakarta.persistence.CascadeType;
 */
 @Entity
 public class GrupoMuscular {
-	// Atributos
+	// ATRIBUTOS
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "id_gm")
@@ -64,8 +64,8 @@ public class GrupoMuscular {
 	private String nombreGrupo;
 	
 	// ATRIBUTO RELACION CON CLASE EJERCICIO (LISTA)
-	@OneToMany(mappedBy = "GM", cascade = CascadeType.ALL)
-	private List<Ejercicio> ejercicios = new ArrayList<>();
+//	@OneToMany(mappedBy = "GM", cascade = CascadeType.ALL)
+//	private List<Ejercicio> ejercicios = new ArrayList<>();
 	
 	// CONTRUCTOR
 	public GrupoMuscular() {}
@@ -83,9 +83,9 @@ public class GrupoMuscular {
 		this.nombreGrupo = valNombreGrupo;
 	}
 	
-	public void setEjercicios(List<Ejercicio> listaEjercicios) {
-		this.ejercicios = listaEjercicios;
-	}
+//	public void setEjercicios(List<Ejercicio> listaEjercicios) {
+//		this.ejercicios = listaEjercicios;
+//	}
 	
 	// GET
 	public int getIdGM(){
@@ -96,7 +96,7 @@ public class GrupoMuscular {
 		return this.nombreGrupo;
 	}
 	
-	public List<Ejercicio> getEjercicios(){
-		return this.ejercicios;
-	}
+//	public List<Ejercicio> getEjercicios(){
+//		return this.ejercicios;
+//	}
 }

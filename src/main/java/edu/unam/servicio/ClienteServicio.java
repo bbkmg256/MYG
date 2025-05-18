@@ -63,6 +63,36 @@ public class ClienteServicio {
 			return; // SI EL OBJETO YA ESTÁ EN LA BD, MUESTRA EL MENSAJE Y SALE DEL METODO.
 		}
 		
+		if (cliente.getNombre() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene un nombre asignado o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getApellido() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene un apellido asignado o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getFechaNacimiento() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene una fecha de nacimiento asignada o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getCiudad() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene una ciudad asignada o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getProvincia() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene una provincia asignada o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getFechaIngreso() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene una fecha de ingreso asignada o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
 		// MODIFICA TODOS LOS VALORES TEXTUALES QUE TENGA EL OBJETO, A MINUSCULA.
 		cliente.setNombre(cliente.getNombre().toLowerCase());
 		cliente.setApellido(cliente.getApellido().toLowerCase());
@@ -96,14 +126,6 @@ public class ClienteServicio {
 	 * Recibe un primitivo de tipo int, retorna un objeto de tipo Cliente.
 	 */
 	public Cliente obtenerCliente(int dni) {
-		// CODIGO VIEJO
-//		Cliente cli = cjpac.obtenerEntidadCliente(dni);
-//		if (cli == null) {
-//			System.out.printf("[ ERROR ] > El cliente %d no se encuentra en el sistema!%n", dni);
-//		}
-//		
-//		return cli;
-
 		Cliente regCliente = null;
 		// ADMINISTRADOR DE ENTIDADES
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
@@ -124,15 +146,7 @@ public class ClienteServicio {
 	/**
 	 * No recibe parametros, retorna una lista de tipo Cliente.
 	 */
-	public List<Cliente> obtenerTodosLosClientes(){
-		// CODIGO VIEJO
-//		List<Cliente> cli = cjpac.obtenerEntidadesCliente();
-//		if (cli == null) {
-//			System.out.printf("[ ERROR ] > No hay clientes en el sistema!%n");
-//		}
-//		
-//		return cli;
-		
+	public List<Cliente> obtenerTodosLosClientes(){		
 		String consulta = String.format("SELECT %c FROM %s %c", 'c', "Cliente", 'c'); // Consulta JPQL
 		List<Cliente> regClientes = null;
 		
@@ -211,9 +225,6 @@ public class ClienteServicio {
 		} finally {
 			this.manager.close();
 		}
-		
-		// CODIGO VIEJO
-		// cjpac.actualizarEstadoCliente(cli);
 	}
 	
 	// Da de baja a un cliente del sistema
@@ -246,8 +257,6 @@ public class ClienteServicio {
 		} finally {
 			this.manager.close();
 		}
-		
-		// cjpac.eliminarEntidadCliente(cli);
 	}
 
 
@@ -261,10 +270,10 @@ public class ClienteServicio {
 
 	// YOU DO TOO MANY SEARCHES, BILLY!
 	private void egg(Cliente cli) {
-		if (cli.getFechaNacimiento() != LocalDate.of(2001, 12, 05)) {
+		if (cli.getNombre() == "juan" && cli.getApellido() == "salvo") {
 			System.out.println(
-					"[ ! ] > SOLO EXISTEN 2 POSIBILIDADES, O ESTA PERSONA NACIÓ EL MISMO DÍA QUE EL DESARROLLADOR, " +
-					"O DIRECTAMENTE ESTA PERSONA ES EL DESARROLLADOR XD, CASUALIDADES DE LA VIDA!"
+					"[ ! ] > El héroe verdadero es el héroe en grupo, el héroe solidario. " +
+					"Nunca el héroe individual, el héroe solo..."
 			);
 		}
 	}
