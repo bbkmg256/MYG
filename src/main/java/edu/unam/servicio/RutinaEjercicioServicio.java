@@ -18,7 +18,7 @@ import utilidades.ParametrosRutinaEjercicio;
 
 // ENTIDAD
 import edu.unam.modelo.RutinaEjercicio;
-import edu.unam.modelo.Ejercicio;
+//import edu.unam.modelo.Ejercicio;
 import edu.unam.modelo.Rutina;
 
 
@@ -26,7 +26,7 @@ import edu.unam.modelo.Rutina;
  * 
  * NOTA:
  * 
- * ESTO FUNCIONA!
+ * SOLO SE DEJA FUNCIONANDO LA RELACION BIDIRECCIONAL CON RUTINA
  * 
  */
 
@@ -40,7 +40,7 @@ public class RutinaEjercicioServicio {
 	private RutinaEjercicioDAO reDao;
 	private EntityManager manager;
 	private Rutina rt;
-	private Ejercicio ejer;
+//	private Ejercicio ejer;
 	private RutinaServicio srt;
 	private EjercicioServicio sej;
 	
@@ -53,12 +53,7 @@ public class RutinaEjercicioServicio {
 	}
 
 	// Crear y cargar una RutinaEjercicio al sistema
-	public void crearRE(RutinaEjercicio re) {		
-		if (this.obtenerRE(re.getId()) != null) {
-			System.out.printf("[ ERROR ] > El registro %d ya se encuentra en el sistema!%n", re.getId());
-			return;
-		}
-		
+	public void crearRE(RutinaEjercicio re) {
 		// COMPRUEBA QUE LA ENTIDAD NO SE HAYA INTANCIADO VACIA O CON ATRIBUTOS ERRONEOS
 		if (re.getRutina() == null || this.srt.obtenerRutina(re.getRutina().getIdRutina()) == null) {
 			System.out.println("[ ERROR ] > La entidad no tiene rutina asignada, es null o no existe en la BD!");
@@ -67,16 +62,6 @@ public class RutinaEjercicioServicio {
 		
 		if (re.getEjercicio() == null || this.sej.obtenerEjercicio(re.getEjercicio().getIdEjercicio()) == null) {
 			System.out.println("[ ERROR ] > La entidad no tiene ejercicio asignado, es null, o no existe en la BD!");
-			return;
-		}
-		
-		if (re.getSerie() == 0) {
-			System.out.print("[ ERROR ] > La entidad no tiene serie asignada!");
-			return;
-		}
-		
-		if (re.getRepeticion() == 0) {
-			System.out.print("[ ERROR ] > La entidad no tiene repeticion asignada!");
 			return;
 		}
 		
@@ -91,8 +76,8 @@ public class RutinaEjercicioServicio {
 			this.rt.getRutinaEjercicio().add(re);
 			
 			// ENLACE CON EJERCICIO
-			this.ejer = this.manager.merge(re.getEjercicio());
-			this.ejer.getRutinaEjercicio().add(re);
+//			this.ejer = this.manager.merge(re.getEjercicio());
+//			this.ejer.getRutinaEjercicio().add(re);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La entidad %d cargada correctamente!%n", re.getId());
@@ -147,7 +132,8 @@ public class RutinaEjercicioServicio {
 	// EN REALIDAD FUNCIONA POR QUE HIBERNATE ACTUALIZA O HACE ALGUNA MAMADA ASÍ CON LAS ENTIDADES AL CERRAR EL "EM" EN UNA TRANSACCION.
 	public void actualizarEstadoRutina(int id, ParametrosRutinaEjercicio paramRE) {
 		RutinaEjercicio regRE = this.obtenerRE(id);
-		Rutina rtAntigua = null; Ejercicio ejerAntigua = null;
+		Rutina rtAntigua = null;
+//		Ejercicio ejerAntigua = null;
 		
 		if (regRE == null) {
 			System.out.printf("[ ERROR ] > La entidad %d no se encuentra en el sistema!%n", id);
@@ -155,7 +141,8 @@ public class RutinaEjercicioServicio {
 		}
 		
 		// ALMACENA LOS OBJETOS ANTIGUOS
-		rtAntigua = regRE.getRutina(); ejerAntigua = regRE.getEjercicio();
+		rtAntigua = regRE.getRutina();
+//		ejerAntigua = regRE.getEjercicio();
 		
 		// MODIFICACION DE ATRIBUTOS
 		if (paramRE.rutina != null) {
@@ -197,15 +184,15 @@ public class RutinaEjercicioServicio {
 				rtAntigua = this.manager.merge(rtAntigua);
 				rtAntigua.getRutinaEjercicio().remove(regRE);
 			}
-			
-			if (paramRE.ejercicio != null) {
-				// ENLACE EJERCICIO NUEVO
-				this.ejer = this.manager.merge(regRE.getEjercicio());
-				this.ejer.getRutinaEjercicio().add(regRE);
-				// DESENLACE EJERCICIO VIEJO
-				ejerAntigua = this.manager.merge(ejerAntigua);
-				ejerAntigua.getRutinaEjercicio().remove(regRE);
-			}
+//			
+//			if (paramRE.ejercicio != null) {
+//				// ENLACE EJERCICIO NUEVO
+//				this.ejer = this.manager.merge(regRE.getEjercicio());
+//				this.ejer.getRutinaEjercicio().add(regRE);
+//				// DESENLACE EJERCICIO VIEJO
+//				ejerAntigua = this.manager.merge(ejerAntigua);
+//				ejerAntigua.getRutinaEjercicio().remove(regRE);
+//			}
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La entidad %d actualizada correctamente!%n", id);
@@ -239,8 +226,8 @@ public class RutinaEjercicioServicio {
 			this.rt.getRutinaEjercicio().remove(regRE);
 			
 			// DESENLACE EJERCICIO
-			this.ejer = this.manager.merge(regRE.getEjercicio());
-			this.ejer.getRutinaEjercicio().remove(regRE);
+//			this.ejer = this.manager.merge(regRE.getEjercicio());
+//			this.ejer.getRutinaEjercicio().remove(regRE);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La entidad %d eliminada correctamente!%n", id);

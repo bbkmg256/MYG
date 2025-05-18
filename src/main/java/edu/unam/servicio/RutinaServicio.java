@@ -34,13 +34,7 @@ public class RutinaServicio {
 	}
 	
 	// Crear y cargar una Rutina al sistema
-	public void crearRutina(Rutina rutina) {		
-		// VERIFICA QUE LA RUTINA NO EXISTA EN LA BD (COMO NO SE INGRESA EL ID MANUALMENTE, CREO QUE ESTO NO VA)
-		if (this.obtenerRutina(rutina.getIdRutina()) != null) {
-			System.out.printf("[ ERROR ] > La rutina %d ya se encuentra en el sistema!%n", rutina.getIdRutina());
-			return;
-		}
-		
+	public void crearRutina(Rutina rutina) {
 		// COMPRUEBA EL ATRIBUTO DE NOMBRERUTINA
 		if (rutina.getNombreRutina() == null) {
 			System.out.println("[ ERROR ] > La rutina no tiene nombre, no se persistirá!");

@@ -40,8 +40,8 @@ public class GMServicio {
 	
 	// Cargar Grupo Muscular al sistema
 	public void cargarGM(GrupoMuscular gm) {		
-		if (this.obtenerGM(gm.getIdGM()) != null) {
-			System.out.printf("[ ERROR ] > El GM %d ya se encuentra en el sistema!%n", gm.getIdGM());
+		if (gm.getNombreGrupo() == null) {
+			System.out.printf("[ ERROR ] > El GM %d no tiene un nombre asignado o este es nulo!%n", gm.getIdGM());
 			return;
 		}
 		

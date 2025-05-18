@@ -63,6 +63,36 @@ public class ClienteServicio {
 			return; // SI EL OBJETO YA ESTÁ EN LA BD, MUESTRA EL MENSAJE Y SALE DEL METODO.
 		}
 		
+		if (cliente.getNombre() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene un nombre asignado o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getApellido() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene un apellido asignado o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getFechaNacimiento() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene una fecha de nacimiento asignada o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getCiudad() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene una ciudad asignada o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getProvincia() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene una provincia asignada o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
+		if (cliente.getFechaIngreso() == null) {
+			System.out.printf("[ ERROR ] > El cliente %d no tiene una fecha de ingreso asignada o este es nulo!%n", cliente.getDni());
+			return;
+		}
+		
 		// MODIFICA TODOS LOS VALORES TEXTUALES QUE TENGA EL OBJETO, A MINUSCULA.
 		cliente.setNombre(cliente.getNombre().toLowerCase());
 		cliente.setApellido(cliente.getApellido().toLowerCase());
@@ -240,10 +270,10 @@ public class ClienteServicio {
 
 	// YOU DO TOO MANY SEARCHES, BILLY!
 	private void egg(Cliente cli) {
-		if (cli.getFechaNacimiento() != LocalDate.of(2001, 12, 05)) {
+		if (cli.getNombre() == "juan" && cli.getApellido() == "salvo") {
 			System.out.println(
-					"[ ! ] > SOLO EXISTEN 2 POSIBILIDADES, O ESTA PERSONA NACIÓ EL MISMO DÍA QUE EL DESARROLLADOR, " +
-					"O DIRECTAMENTE ESTA PERSONA ES EL DESARROLLADOR XD, CASUALIDADES DE LA VIDA!"
+					"[ ! ] > El héroe verdadero es el héroe en grupo, el héroe solidario. " +
+					"Nunca el héroe individual, el héroe solo..."
 			);
 		}
 	}

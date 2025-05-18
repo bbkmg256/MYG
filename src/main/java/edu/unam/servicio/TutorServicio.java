@@ -9,7 +9,7 @@ import edu.unam.repositorio.TutorDAO;
 import jakarta.persistence.EntityManager;
 
 // Varios
-import java.time.LocalDate;
+// import java.time.LocalDate;
 import java.util.List;
 
 import utilidades.EMFSingleton;
@@ -36,11 +36,37 @@ public class TutorServicio {
 	
 	// Registra un tutor en el sistema
 	public void cargarTutor(Tutor tutor) {
+		// VERIFICA QUE NO EXISTA YA UN TUTOR CON EL MISMO DNI
 		if (this.obtenerTutor(tutor.getDni()) != null) {
 			System.out.printf("[ ERROR ] > El tutor %d ya se encuentra en el sistema!%n", tutor.getDni());
 			return;
 		}
-	
+		
+		if (tutor.getNombre() == null) {
+			System.out.printf("[ ERROR ] > El tutor %d no tiene un nombre asignado o este es nulo!%n", tutor.getDni());
+			return;
+		}
+		
+		if (tutor.getApellido() == null) {
+			System.out.printf("[ ERROR ] > El tutor %d no tiene un apellido asignado o este es nulo!%n", tutor.getDni());
+			return;
+		}
+		
+		if (tutor.getFechaNacimiento() == null) {
+			System.out.printf("[ ERROR ] > El tutor %d no tiene una fecha de namcimiento asignada o este es nulo!%n", tutor.getDni());
+			return;
+		}
+		
+		if (tutor.getCiudad() == null) {
+			System.out.printf("[ ERROR ] > El tutor %d no tiene una ciudad asignada o este es nulo!%n", tutor.getDni());
+			return;
+		}
+		
+		if (tutor.getProvincia() == null) {
+			System.out.printf("[ ERROR ] > El tutor %d no tiene una ciudad asignada o este es nulo!%n", tutor.getDni());
+			return;
+		}
+		
 		// MODIFICA TODOS LOS VALORES TEXTUALES QUE TENGA EL OBJETO, A MINUSCULA.
 		tutor.setNombre(tutor.getNombre().toLowerCase());
 		tutor.setApellido(tutor.getApellido().toLowerCase());
@@ -106,44 +132,6 @@ public class TutorServicio {
 	
 	// Actualiza la informacion de un tutor en el sistema
 	public void actualizarEstadoTutor(int dni, ParametrosClienteTutor paramTutor) {
-//		Tutor tutor = tjpac.obtenerEntidadTutor(dni);
-//		
-//		if (tutor == null) {
-//			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni);
-//			return;
-//		}
-//
-//		// CONDICIONES PARA VERIFICAR CUALES ATRIBUTOS SE MODIFICAN, Y CUALES NO
-//		if (paramTutor.nombre != null) {
-//			tutor.setNombre(paramTutor.nombre.toLowerCase());
-//		}
-//		
-//		if (paramTutor.apellido != null) {
-//			tutor.setApellido(paramTutor.apellido.toLowerCase());
-//		}
-//		
-//		if (paramTutor.sexo != 'x') {
-//			tutor.setSexo(Character.toLowerCase(paramTutor.sexo));
-//		}
-//		
-//		if (paramTutor.ciudad != null) {
-//			tutor.setCiudad(paramTutor.ciudad.toLowerCase());
-//		}
-//		
-//		if (paramTutor.provincia != null) {
-//			tutor.setProvicia(paramTutor.provincia.toLowerCase());
-//		}
-//		
-//		if (paramTutor.codigoPostal != 0) {
-//			tutor.setCodigoPostal(paramTutor.codigoPostal);
-//		}
-//		
-//		if (paramTutor.fechaNacimiento != null) {
-//			tutor.setFechaNacimiento(paramTutor.fechaNacimiento);
-//		}
-//		
-//		tjpac.actualizarEstadoTutor(tutor);
-		
 		Tutor tutor = this.obtenerTutor(dni);
 		
 		if (tutor == null) {
@@ -198,16 +186,7 @@ public class TutorServicio {
 	}
 	
 	// Da de baja a un tutor del sistema
-	public void eliminarTutor(int dni) {
-//		Tutor tutor = tjpac.obtenerEntidadTutor(dni);
-//		
-//		if (tutor == null) {
-//			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni);
-//			return;
-//		}
-//		
-//		tjpac.eliminarEntidadTutor(tutor);
-		
+	public void eliminarTutor(int dni) {		
 		Tutor tutor = this.obtenerTutor(dni);
 		
 		if (tutor == null) {

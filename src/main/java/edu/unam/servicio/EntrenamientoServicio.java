@@ -26,55 +26,48 @@ import edu.unam.modelo.Tutor;
 public class EntrenamientoServicio {
 	private EntrenamientoDAO entreDao;
 	private EntityManager manager;
-	private Cliente cli;
-	private Tutor tutor;
-	private Rutina rutina;
+//	private Cliente cli;
+//	private Tutor tutor;
+//	private Rutina rutina;
+	private ClienteServicio scli;
+	private TutorServicio stutor;
+	private RutinaServicio srut;
 	
 	// Constructor
 	public EntrenamientoServicio() {
-		entreDao = new EntrenamientoDAO();
+		this.entreDao = new EntrenamientoDAO();
+		this.scli = new ClienteServicio();
+		this.stutor = new TutorServicio();
+		this.srut = new RutinaServicio();
 	}
 	
 	// Cargar Entrenamiento
-	public void cargarEntrenamiento(Entrenamiento entrenamiento) {		
-		// MANEJO DE FALLO [ ENTIDAD EXISTENTE EN LA BD ] (CREO QUE NO HACE FALTA ESTO POR QUE NO SE CARGA ID MANUALMENTE)
-		if (this.obtenerEntrenamiento(entrenamiento.getIdEntrenamiento()) != null) {
-			System.out.printf("[ ERROR ] > El entrenamiento %d ya se encuentra en el sistema!%n", entrenamiento.getIdEntrenamiento());
-			return;
-		}
-		
+	public void cargarEntrenamiento(Entrenamiento entrenamiento) {				
 		// MANEJO DE FALLO [ ATRIBUTOS SIN CONTENIDO O NULOS ]
-		if (entrenamiento.getCliente() == null) {
+		if (entrenamiento.getCliente() == null || scli.obtenerCliente(entrenamiento.getCliente().getDni()) == null) {
 			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene cliente asignado o este es nulo!%n", entrenamiento.getIdEntrenamiento());
 			return;
 		}
 		
-		if (entrenamiento.getTutor() == null) {
+		if (entrenamiento.getTutor() == null || stutor.obtenerTutor(entrenamiento.getTutor().getDni()) == null) {
 			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene tutor asignado o este es nulo!%n", entrenamiento.getIdEntrenamiento());
 			return;
 		}
 		
-		if (entrenamiento.getRutina() == null) {
+		if (entrenamiento.getRutina() == null || srut.obtenerRutina(entrenamiento.getRutina().getIdRutina()) == null) {
 			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene rutina asignada o este es nulo!%n", entrenamiento.getIdEntrenamiento());
 			return;
 		}
 		
 		if (entrenamiento.getFechaInicio() == null) {
-			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene fecha de inicio asignada o este es nulo!%n", entrenamiento.getIdEntrenamiento());
+			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene una fecha de inicio asignada o este es nulo!%n", entrenamiento.getIdEntrenamiento());
 			return;
 		}
 		
 		if (entrenamiento.getFechaFin() == null) {
-			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene fecha de finalización asignada o este es nulo!%n", entrenamiento.getIdEntrenamiento());
+			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene una fecha de finalización asignada o este es nulo!%n", entrenamiento.getIdEntrenamiento());
 			return;
 		}
-		
-		// NO SE COMPRUEBA VOLUMEN DE ENTRENAMIENTO Y PUNTAJE POR QUE AL CREAR EL ENTRENAMIENTO
-		// ESO NO DEBERIA ESTAR DEFINIDO TODAVIA.
-		
-//		// NOTA -> SIEMPRE ES ENCESARIO TENER UN CLIENTE Y TUTOR PARA CREAR UN ENTRENAMIENTO
-//		// CARGA EL OBJETO A LA BD
-//		ejpac.crearEntidadEntrenamiento(entrenamiento);
 		
 		// ADMINISTRADOR DE ENTIDADES
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
@@ -84,16 +77,16 @@ public class EntrenamientoServicio {
 			this.entreDao.crearEntidadEntrenamiento(this.manager, entrenamiento);
 			
 			// ENLACE A ENTIDAD CLIENTE
-			this.cli = this.manager.merge(entrenamiento.getCliente());
-			this.cli.getEntrenamientos().add(entrenamiento);
+//			this.cli = this.manager.merge(entrenamiento.getCliente());
+//			this.cli.getEntrenamientos().add(entrenamiento);
 			
 			// ENLACE A ENTIDAD TUTOR
-			this.tutor = this.manager.merge(entrenamiento.getTutor());
-			this.tutor.getEntrenamientos().add(entrenamiento);
+//			this.tutor = this.manager.merge(entrenamiento.getTutor());
+//			this.tutor.getEntrenamientos().add(entrenamiento);
 			
 			// ENLACE A ENTIDAD RUTINA
-			this.rutina = this.manager.merge(entrenamiento.getRutina());
-			this.rutina.getEntrenamientos().add(entrenamiento);
+//			this.rutina = this.manager.merge(entrenamiento.getRutina());
+//			this.rutina.getEntrenamientos().add(entrenamiento);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El entrenamiento %d cargado correctamente!%n", entrenamiento.getIdEntrenamiento());
@@ -145,17 +138,12 @@ public class EntrenamientoServicio {
 		return entr;
 	}
 
-	
-	// int id, int puntaje, LocalDate fechaInicio, LocalDate fechaFin
-	// Actualizar Entrenamiento (NO TERMINADO)
+	// Actualizar Entrenamiento
 	public void actualizarEstadoEntrenamiento(int id, ParametrosEntrenamiento paramEntre) {		
 		Entrenamiento entrenamiento = this.obtenerEntrenamiento(id);
-		ClienteServicio scli = new ClienteServicio();
-		TutorServicio stutor = new TutorServicio();
-		RutinaServicio srutina = new RutinaServicio();
-		Cliente clienteAntiguo = null;
-		Tutor tutorAntiguo = null;
-		Rutina rutinaAntigua = null;
+//		Cliente clienteAntiguo = null;
+//		Tutor tutorAntiguo = null;
+//		Rutina rutinaAntigua = null;
 		
 		// MANEJO DE FALLO [ ENTIDAD NO EXISTENTE EN LA BD ]
 		if (entrenamiento == null) {
@@ -164,20 +152,32 @@ public class EntrenamientoServicio {
 		}
 		
 		// ALMACENA LOS OBJETOS ANTIGUAMENTE RELACIONADOS CON LA ENTIDAD
-		clienteAntiguo = entrenamiento.getCliente();
-		tutorAntiguo = entrenamiento.getTutor();
-		rutinaAntigua = entrenamiento.getRutina();
+//		clienteAntiguo = entrenamiento.getCliente();
+//		tutorAntiguo = entrenamiento.getTutor();
+//		rutinaAntigua = entrenamiento.getRutina();
 		
 		// SE MODIFICA EL OBJETO
-		if (paramEntre.cliente != null && scli.obtenerCliente(paramEntre.cliente.getDni()) != null) {
+		if (paramEntre.cliente != null) {
+			if (scli.obtenerCliente(paramEntre.cliente.getDni()) == null) {
+				System.out.println("[ ERROR ] > El parámetro cliente no es válido!");
+				return;
+			}
 			entrenamiento.setCliente(paramEntre.cliente);
 		}
 		
-		if (paramEntre.tutor != null && stutor.obtenerTutor(paramEntre.tutor.getDni()) != null) {
+		if (paramEntre.tutor != null) {
+				if (stutor.obtenerTutor(paramEntre.tutor.getDni()) == null) {
+					System.out.println("[ ERROR ] > El parámetro tutor no es válido!");
+					return;
+			}
 			entrenamiento.setTutor(paramEntre.tutor);
 		}
 		
-		if (paramEntre.rutina != null && srutina.obtenerRutina(paramEntre.rutina.getIdRutina()) != null) {
+		if (paramEntre.rutina != null) {
+			if (srut.obtenerRutina(paramEntre.rutina.getIdRutina()) == null) {
+				System.out.println("[ ERROR ] > El parámetro rutina no es válido!");
+				return;
+			}
 			entrenamiento.setRutina(paramEntre.rutina);
 		}
 		
@@ -189,13 +189,15 @@ public class EntrenamientoServicio {
 			entrenamiento.setFechaInicio(paramEntre.fechaInicio);
 		}
 		
+		// EL LIMITE INFERIOR SERIA 1 (PEOR VALOR)
 		if (paramEntre.puntaje != 0) {
 			entrenamiento.setPuntaje(paramEntre.puntaje);
 		}
 		
-		if (paramEntre.volumenEntrenamiento != 0) {
-			entrenamiento.setVolumenEntrenamiento(paramEntre.volumenEntrenamiento);
-		}
+		//  QUTAR ESTO MAS TARDE (TANTO DE LA CLASE DE PARAMETROS, COMO DE LA ENTIDAD)
+//		if (paramEntre.volumenEntrenamiento != 0) {
+//			entrenamiento.setVolumenEntrenamiento(paramEntre.volumenEntrenamiento);
+//		}
 		
 		// ADMINISTRADOR DE ENTIDADES
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
@@ -206,47 +208,47 @@ public class EntrenamientoServicio {
 			entrenamiento = this.entreDao.actualizarEntidadEntrenamiento(this.manager, entrenamiento);
 			// System.out.println("A");
 			
-			if (paramEntre.cliente != null) {
-				// ENLAZADO A CLIENTE NUEVO
-				cli = this.manager.merge(entrenamiento.getCliente());
-				cli.getEntrenamientos().add(entrenamiento);
-				
-				// System.out.println("B");
-				
-				// DESENLAZADO DE CLIENTE VIEJO
-				clienteAntiguo = this.manager.merge(clienteAntiguo);
-				clienteAntiguo.getEntrenamientos().remove(entrenamiento);
-				
-				// System.out.println("C");
-			}
-			
-			if (paramEntre.tutor != null) {
-				// ENLAZADO A TUTOR NUEVO
-				tutor = this.manager.merge(entrenamiento.getTutor());
-				tutor.getEntrenamientos().add(entrenamiento);
-				
-				// System.out.println("D");
-				
-				// DESENLAZADO DE TUTOR VIEJO
-				tutorAntiguo = this.manager.merge(tutorAntiguo);
-				tutorAntiguo.getEntrenamientos().remove(entrenamiento);
-				
-				// System.out.println("F");
-			}
-			
-			if (paramEntre.rutina != null) {
-				// ENLAZADO A RUTINA NUEVA
-				rutina = this.manager.merge(entrenamiento.getRutina());
-				rutina.getEntrenamientos().add(entrenamiento);
-				
-				// System.out.println("G");
-				
-				// DESENLAZADO DE RUTINA VIEJA
-				rutinaAntigua = this.manager.merge(rutinaAntigua);
-				rutinaAntigua.getEntrenamientos().remove(entrenamiento);
-				
-				// System.out.println("H");
-			}
+//			if (paramEntre.cliente != null) {
+//				// ENLAZADO A CLIENTE NUEVO
+//				this.cli = this.manager.merge(entrenamiento.getCliente());
+//				this.cli.getEntrenamientos().add(entrenamiento);
+//				
+//				// System.out.println("B");
+//				
+//				// DESENLAZADO DE CLIENTE VIEJO
+//				clienteAntiguo = this.manager.merge(clienteAntiguo);
+//				clienteAntiguo.getEntrenamientos().remove(entrenamiento);
+//				
+//				// System.out.println("C");
+//			}
+//			
+//			if (paramEntre.tutor != null) {
+//				// ENLAZADO A TUTOR NUEVO
+//				this.tutor = this.manager.merge(entrenamiento.getTutor());
+//				this.tutor.getEntrenamientos().add(entrenamiento);
+//				
+//				// System.out.println("D");
+//				
+//				// DESENLAZADO DE TUTOR VIEJO
+//				tutorAntiguo = this.manager.merge(tutorAntiguo);
+//				tutorAntiguo.getEntrenamientos().remove(entrenamiento);
+//				
+//				// System.out.println("F");
+//			}
+//			
+//			if (paramEntre.rutina != null) {
+//				// ENLAZADO A RUTINA NUEVA
+//				this.rutina = this.manager.merge(entrenamiento.getRutina());
+//				this.rutina.getEntrenamientos().add(entrenamiento);
+//				
+//				// System.out.println("G");
+//				
+//				// DESENLAZADO DE RUTINA VIEJA
+//				rutinaAntigua = this.manager.merge(rutinaAntigua);
+//				rutinaAntigua.getEntrenamientos().remove(entrenamiento);
+//				
+//				// System.out.println("H");
+//			}
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El entrenamiento %d actualizado correctamente!%n", id);
@@ -278,16 +280,16 @@ public class EntrenamientoServicio {
 			this.entreDao.eliminarEntidadEntrenamiento(this.manager, entrenamiento);
 			
 			// DESENLACE CLIENTE
-			this.cli = this.manager.merge(entrenamiento.getCliente());
-			this.cli.getEntrenamientos().remove(entrenamiento);
+//			this.cli = this.manager.merge(entrenamiento.getCliente());
+//			this.cli.getEntrenamientos().remove(entrenamiento);
 			
 			// DESENLACE TUTOR
-			this.tutor = this.manager.merge(entrenamiento.getTutor());
-			this.tutor.getEntrenamientos().remove(entrenamiento);
+//			this.tutor = this.manager.merge(entrenamiento.getTutor());
+//			this.tutor.getEntrenamientos().remove(entrenamiento);
 			
 			// DESENLACE RUTINA
-			this.rutina = this.manager.merge(entrenamiento.getRutina());
-			this.rutina.getEntrenamientos().remove(entrenamiento);
+//			this.rutina = this.manager.merge(entrenamiento.getRutina());
+//			this.rutina.getEntrenamientos().remove(entrenamiento);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El entrenamiento %d eliminado correctamente!%n", id);
