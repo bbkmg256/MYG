@@ -81,7 +81,7 @@ public class ControladorVistaTodoCliente {
     	this.asignarValoresColumnas(columnaFDI, "fechaIngreso");
     }
     
-
+    @FXML
     public void initialize() {
 		this.actualizarTabla();
     }

@@ -1,5 +1,5 @@
 /*
- * CLASE CONTROLADORA PARA VISTA DE CARGA CLIENTE
+ * VISTA DE CARGA DE CLIENTE
  * 
  * (ODIO EL FRONTEND)
  */
@@ -12,10 +12,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
+//import javafx.scene.input.KeyEvent; // NO REQUERIDO
+import javafx.util.converter.IntegerStringConverter;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import java.time.LocalDate;
+import java.util.function.UnaryOperator;
 
 import edu.unam.modelo.Cliente;
 import edu.unam.servicio.ClienteServicio;
@@ -59,72 +65,85 @@ public class ControladorVistaCargaCliente {
     
     private ClienteServicio scli = new ClienteServicio();
 
+    // EVITA QUE SE MARQUE MAS DE UN RADIO BUTTON
     private void radioButtons() {
-    	// RADIO BUTTON
     	ToggleGroup grupo = new ToggleGroup();
-    	this.RBFemenino.setToggleGroup(grupo);
-    	this.RBMasculino.setToggleGroup(grupo);    	
+    	this.RBFemenino.setToggleGroup(grupo); // ES UNO
+    	this.RBMasculino.setToggleGroup(grupo); // U OTRO, NO AMBOS XD.
+    }
+    
+    // EVITA QUE SE INGRESEN CARACTERES NO NUMERICOS EN UN TEXTFIELD (SI, LO COPIE, Y QUE??, QUE TE PASA??!!)
+    private void limitarATextoNumerico(TextField textField) {
+        UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*")) {
+                return change;
+            }
+            return null;
+        };
+
+        TextFormatter<Integer> textFormatter = new TextFormatter<>(new IntegerStringConverter(), null, integerFilter);
+
+        textField.setTextFormatter(textFormatter);
     }
     
     @FXML
-    private void leerYCargarDatos(ActionEvent event) {
-//    	System.out.println("Si, el boton funciona!");
-//    	System.out.println(this.txtNombre.getText());
-//    	System.out.println(this.RBMasculino.isSelected());
-    	
+    private void eventoBTFinalizar(ActionEvent event) {
     	String nombre, apellido, ciudad, provincia;
-    	int DNI, codPost;
+    	int dni, codPost;
     	char sexo;
     	LocalDate fechaNac, fechaIng;
+    	int camposIncompletos = 0;
     	
     	if (this.txtDNI.getText().isBlank()) {
-    		System.out.println("A");
-    		return;
+    		camposIncompletos++;
     	}
     	
     	if (this.txtNombre.getText().isBlank()) {
-    		System.out.println("B");
-    		return;
+    		camposIncompletos++;
     	}
     	
     	if (this.txtApellido.getText().isBlank()) {
-    		System.out.println("C");
-    		return;
+    		camposIncompletos++;
     	}
     	
     	// SE NECESITA ALMENOS 1 DE LOS 2 RADIOBUTTON PRESIONADOS
     	if (!this.RBMasculino.isSelected() && !this.RBFemenino.isSelected()) {
-    		System.out.println("D");
-    		return;
+    		camposIncompletos++;
     	}
     	
     	if (this.txtCiudad.getText().isBlank()) {
-    		System.out.println("G");
-    		return;
+    		camposIncompletos++;
     	}
     	
     	if (this.txtProvincia.getText().isBlank()) {
-    		System.out.println("H");
-    		return;
+    		camposIncompletos++;
     	}
     	
     	if (this.txtCodigoPostal.getText().isBlank()) {
-    		System.out.println("I");
-    		return;
+    		camposIncompletos++;
     	}
     	
     	if (this.DPFechaNac.getValue() == null) {
-    		System.out.println("J");
-    		return;
+    		camposIncompletos++;
     	}
     	
     	if (this.DPFechaIng.getValue() == null) {
-    		System.out.println("K");
+    		camposIncompletos++;
+    	}
+    	
+    	if (camposIncompletos > 0) {
+    		System.out.println("[ ERROR ] > Faltan campos que completar!");
+    		Alert alerta = new Alert(AlertType.ERROR);
+    		alerta.setTitle("Alerta de subnormal!");
+    		alerta.setHeaderText("ERROR!");
+    		alerta.setContentText("Faltan campos que completar...");
+    		alerta.showAndWait();
     		return;
     	}
     	
-    	// MOMENTANEAMENTE CASTEAREMOS ASI, LA IDEA ES USAR TEXTFORMATTER MAS ADELANTE
-    	DNI = Integer.parseInt(this.txtDNI.getText().replaceAll(" ", ""));
+    	// CASTEO DE CADENAS A ENTEROS
+    	dni = Integer.parseInt(this.txtDNI.getText().replaceAll(" ", ""));
     	codPost = Integer.parseInt(this.txtCodigoPostal.getText().replaceAll(" ", ""));
     	
     	nombre = this.txtNombre.getText();
@@ -142,10 +161,9 @@ public class ControladorVistaCargaCliente {
     	fechaNac = this.DPFechaNac.getValue();
     	fechaIng = this.DPFechaIng.getValue();
     	
-//    	System.out.println("Ponele que carga el cliente, todavía faltan los datepicker...");
-    	
+    	// CREA Y CARGA UN CLIENTE A LA BD
     	this.scli.cargarCliente(new Cliente(
-    			DNI,
+    			dni,
     			nombre,
     			apellido,
     			fechaNac,
@@ -158,7 +176,15 @@ public class ControladorVistaCargaCliente {
     }
     
     @FXML
-    public void initialize() {
+    private void eventoBTCancelar(ActionEvent event) {
+    	
+    }
+
+    
+    @FXML
+    private void initialize() {
     	this.radioButtons();
+    	this.limitarATextoNumerico(txtDNI);
+    	this.limitarATextoNumerico(txtCodigoPostal);
     }
 }
