@@ -31,11 +31,6 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.orm.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-hikaricp</artifactId>
-			<version>${hibernate.orm.version}</version>
-		</dependency>
 		
 		<!-- Dependencias Jakarta EE (JPA) -->
 		<dependency>
