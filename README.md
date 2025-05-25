@@ -21,6 +21,7 @@ Requerimientos:
 - maven-compiler-plugin 3.13.0
 - javafx-maven-plugin 0.0.8
 
+---
 
 Para trabajar, probar y modificar:
 
@@ -37,6 +38,7 @@ mvn clean javafx:run
 O bien desde la IDE que se esté usando, lanzándolo mediante maven, configurando la forma de ejecución y agregando "clean javafx:run" como comando de ejecución...
 ![Ejemplo de ejecución configurada](./assets/eclipse-ejemplo.png)
 
+---
 
 Ramas:
 
