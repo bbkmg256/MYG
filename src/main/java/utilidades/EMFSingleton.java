@@ -19,6 +19,13 @@ import jakarta.persistence.EntityManagerFactory;
  * NO HAY PROBLEMA CON DEFINIR LA INSTANCIACION DE LA CLASE SI PREVIAMENTE NO HABÍA UNA, POR QUE EN ESTE CASO QUEREMOS
  * QUE LA CLASE SE INSTANCIE APENAS SE INICIE LA APLICACION, NO NECESARIAMENTE EN ALGUN PUNTO ESPECIFICIO.
  * 
+ * 
+ * "private static final EMFSingleton instancia = new EMFSingleton();"
+ * 
+ * Privado -> Para que no se acceda desde fuera de la clase.
+ * Estatico -> Para que pertenezca a la clase, no a una instanciacion, y podes usarlo sin requerir del constructor.
+ * Final -> Para que el atributo sea constante, impideando re instanciarla o cambiar su valor de alguna forma.
+ * 
  */
 
 
@@ -34,7 +41,7 @@ public class EMFSingleton {
 	private final String UNIDADPERSISTENCIA = "persistencia";
 	
 	// CONSTRUCTOR
-	// CONSTRUCTOR PRIVADO PARA EVITAR INSTANCIACION DESDE AFUERA
+	// PRIVADO PARA EVITAR INSTANCIACION DESDE AFUERA
 	private EMFSingleton() {}
 	
 	// SET
@@ -55,17 +62,7 @@ public class EMFSingleton {
 //	}
 	
 	// INSTANCIA EL OBJETO SOLO SI EL ATRIBUTO EMF ES NULO
-	public EntityManagerFactory getEMF() {
-		// BORRAR DESPUES
-//		if (this.emf == null) {
-//			try {
-//				this.emf = Persistence.createEntityManagerFactory("persistencia");				
-//				System.out.println("[ EXITO ] > EMF iniciado correctamente!");
-//			} catch (Exception e) {
-//				System.out.println(e);
-//			}
-//		}
-		
+	public EntityManagerFactory getEMF() {		
 		return this.emf;
 	}
 	
