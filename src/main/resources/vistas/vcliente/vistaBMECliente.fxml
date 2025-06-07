@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.Controlador.ControladorVistaBMECliente">
+   <children>
+      <Button fx:id="BTBuscar" layoutX="415.0" layoutY="18.0" mnemonicParsing="false" onAction="#eventoBTBuscar" text="Buscar" />
+      <TextField fx:id="txtDNI" layoutX="205.0" layoutY="18.0" prefHeight="24.0" prefWidth="191.0" promptText="Ingrese el DNI del cliente" />
+      <TableView layoutX="14.0" layoutY="53.0" prefHeight="301.0" prefWidth="572.0">
+        <columns>
+          <TableColumn fx:id="colDNI" prefWidth="75.0" text="DNI" />
+          <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
+            <TableColumn fx:id="colApellido" prefWidth="75.0" text="Apellido" />
+            <TableColumn fx:id="colFechaNacimiento" prefWidth="75.0" text="Fecha Nac." />
+            <TableColumn fx:id="colSexo" prefWidth="75.0" text="Sexo" />
+            <TableColumn fx:id="colProvincia" prefWidth="75.0" text="Provincia" />
+            <TableColumn fx:id="colCiudad" prefWidth="75.0" text="Ciudad" />
+            <TableColumn fx:id="colCodigoPostal" prefWidth="75.0" text="Codigo Pos." />
+            <TableColumn fx:id="colFechaIngreso" prefWidth="75.0" text="Fecha Ing." />
+        </columns>
+      </TableView>
+      <Button fx:id="BTEliminar" layoutX="331.0" layoutY="362.0" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="24.0" prefWidth="78.0" text="Eliminar" />
+      <Button fx:id="BTModificar" layoutX="420.0" layoutY="362.0" mnemonicParsing="false" onAction="#eventoBTModificar" text="Modificar" />
+      <Button fx:id="BTCancelar" layoutX="508.0" layoutY="362.0" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="24.0" prefWidth="78.0" text="Cancelar" />
+   </children>
+</AnchorPane>
