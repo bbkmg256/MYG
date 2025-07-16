@@ -44,7 +44,7 @@ import jakarta.persistence.FetchType;
  * 
  * NOTA:
  * 
- * NO HAY XD
+ * NADA
  * 
  */
 
@@ -57,7 +57,7 @@ import jakarta.persistence.FetchType;
 public class Entrenamiento {
 	// ATRIBUTOS
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_entrenamiento")
 	private int idEntrenamiento;
 	
@@ -92,8 +92,10 @@ public class Entrenamiento {
 	// CONTRUCTOR
 	public Entrenamiento() {}
 	
-	public Entrenamiento(LocalDate paramFechaInicio, LocalDate paramFechaFin,
-		Cliente paramCli, Tutor paramTutor, Rutina paramRutina) {
+	public Entrenamiento(
+			Cliente paramCli, Tutor paramTutor, Rutina paramRutina,
+			LocalDate paramFechaInicio, LocalDate paramFechaFin
+	) {
 		
 		this.puntaje = 0; // AL INICIO ES 0 HASTA QUE EL CLIENTE LO PUNTUE DESPUES DE 5 SEMANAS DEL ENTRENAMIENTO
 		this.fechaInicio = paramFechaInicio;

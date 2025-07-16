@@ -37,6 +37,14 @@ import jakarta.persistence.TemporalType;
  * 
  * NOTA:
  * 
+ * PARA OBTENER EL VOLUMEN DE ENTRENAMIENTO SEMANAL, DEBERÍA TENER COMO ATRIBUTO
+ * UNA INSTANCIA DE Ejercicio. EN BASE A ESTE SE PUEDE CALCULAR EL VOLUMEN DE
+ * ENTRENAMIENTO SEMANAL, ADEMAS DE QUE ESTA ENTIDAD DEBERÍA ALMACENAR QUE EJERCICIO
+ * TRABAJÓ EN EL DÍA.
+ * 
+ * RECORDATORIO: TRANQUI VIEJO, LA ENTIDAD ESTÁ BIEN, SE SUPONE QUE ALMACENA TODOS
+ * LOS SEGUIMIENTOS COMO EN CRUDO, EN EL FRONT SE LO VA A MOLDEAR PARA PRESENTARLO
+ * DE FORMA ENTENDIBLE AL USUARIO.
  * 
  */
 
@@ -49,7 +57,7 @@ import jakarta.persistence.TemporalType;
 public class Seguimiento {
 	//ATRIBUTOS
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idSeguimiento;
 	
 	@Basic
@@ -77,10 +85,12 @@ public class Seguimiento {
 	// CONTRUCTOR
 	public Seguimiento() {}
 	
-	public Seguimiento(LocalDate paramFechaHoy, Ejercicio paramEjercicio,
-		int paramCantSeries, int paramCantRep,
-		double paramPesoTrabajado,
-		Entrenamiento paramEntrenamiento) {
+	public Seguimiento(
+			LocalDate paramFechaHoy, Ejercicio paramEjercicio,
+			int paramCantSeries, int paramCantRep,
+			double paramPesoTrabajado,
+			Entrenamiento paramEntrenamiento
+	) {
 		
 		this.fechaHoy = paramFechaHoy;
 		this.ejercicioRealizado = paramEjercicio;

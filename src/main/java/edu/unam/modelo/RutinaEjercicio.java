@@ -61,8 +61,10 @@ public class RutinaEjercicio {
 	// CONSTRUCTOR
 	public RutinaEjercicio() {}
 	
-	public RutinaEjercicio(Rutina paramRutina, Ejercicio paramEjercicio,
-		int paramSerie, int paramRepeticion) {
+	public RutinaEjercicio(
+			Rutina paramRutina, Ejercicio paramEjercicio,
+			int paramSerie, int paramRepeticion
+	) {
 		
 		this.rutina = paramRutina;
 		this.ejercicio = paramEjercicio;
