@@ -1,11 +1,19 @@
 /*
- * COMPRUEBA SI HAY CONEXIÓN CON LA BD
+ * COMPRUEBA SI HAY CONEXIÓN CON LA BD (CLASE OBSOLETA, LA MISMA FUE MOVIDA A EMFSingleton)
  */
 
-package utilidades;
+package utilidades.bd;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+
+/*
+ * 
+ * NOTA:
+ * 
+ * VERIFICAR QUE ESTO ESTE CORRECTO Y NO INCLUYA ALGUN PROBLEMA RESPECTO A LA CONEXION A BD
+ * 
+ */
 
 public class ComprobarConexionBD {
 	private static EntityManager em;

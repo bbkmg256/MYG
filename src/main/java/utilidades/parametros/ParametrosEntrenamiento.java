@@ -5,7 +5,7 @@
  * 
  */
 
-package utilidades;
+package utilidades.parametros;
 
 // LIBRERIAS
 // VARIOS
@@ -23,5 +23,5 @@ public class ParametrosEntrenamiento {
 	public Tutor tutor = null;
 	public Rutina rutina = null;
 	public int puntaje = 0;
-	public int volumenEntrenamiento = 0;
+//	public int volumenEntrenamiento = 0;
 }

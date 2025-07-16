@@ -4,7 +4,7 @@
  * BASICAMENTE POR QUE SON SIMILARES RESPECTO A LOS PARAMETROS.
  */
 
-package utilidades;
+package utilidades.parametros;
 
 // LIBRERIAS
 // VARIOS
@@ -14,7 +14,7 @@ public class ParametrosClienteTutor {
 	public int dni = 0; // MODIFICAR CON CUIDADO
 	public String nombre = null;
 	public String apellido = null;
-	public char sexo = 'x'; // ASUMIENDO 'X' COMO VALOR NULO PARA ESTE ATRIBUTO
+	public char sexo = ' '; // ASUMIENDO 'X' COMO VALOR NULO PARA ESTE ATRIBUTO
 	public String ciudad = null;
 	public String provincia = null;
 	public int codigoPostal = 0; // ASUMIENDO QUE NO EXISTA UN CODIGO POSTAL 0, XD

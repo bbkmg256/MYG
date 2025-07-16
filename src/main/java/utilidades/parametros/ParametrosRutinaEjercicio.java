@@ -3,14 +3,14 @@
  * LA ENTIDAD, EN SU RESPECTIVO SERVICIO.
  */
 
-package utilidades;
+package utilidades.parametros;
 
 // ENTIDADES
 import edu.unam.modelo.Ejercicio;
-import edu.unam.modelo.Rutina;
+//import edu.unam.modelo.Rutina;
 
 public class ParametrosRutinaEjercicio {
 	public int serie = 0, repeticion = 0;
 	public Ejercicio ejercicio = null;
-	public Rutina rutina = null;
+//	public Rutina rutina = null;
 }
