@@ -120,6 +120,11 @@ public class EjercicioDAO {
 		
 		return em.find(Ejercicio.class, dni);
 	}
+
+	// LEER ENTIDAD (SOBREESCRITA -> RETORNA LA ENTIDAD + SUS OBJETOS ASOCIADOS)
+	public Ejercicio obtenerEntidadEjercicio(EntityManager em, int id, String consulta) {		
+		return em.createQuery(consulta, Ejercicio.class).setParameter("id", id).getSingleResult();
+	}
 	
 	// LEER ENTIDADES
 	public List<Ejercicio> obtenerEntidadesEjercicio(EntityManager em, String consulta) {

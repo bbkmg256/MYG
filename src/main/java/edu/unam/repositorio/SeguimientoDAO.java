@@ -32,8 +32,14 @@ public class SeguimientoDAO {
 		return em.find(Seguimiento.class, id);
 	}
 	
+	// LEER ENTIDAD
+	public Seguimiento obtenerEntidadSeguimiento(EntityManager em, int id, String consulta) {		
+//		return em.find(Seguimiento.class, id);
+		return em.createQuery(consulta, Seguimiento.class).setParameter("id", id).getSingleResult();
+	}
+	
 	// LEER ENTIDADES
-	public List<Seguimiento> obtenerEntidadesSeguimiento(EntityManager em, String consulta) {	
+	public List<Seguimiento> obtenerEntidadesSeguimiento(EntityManager em, String consulta) {
 		return em.createQuery(consulta, Seguimiento.class).getResultList();
 	}
 	

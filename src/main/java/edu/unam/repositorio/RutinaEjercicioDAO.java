@@ -25,7 +25,7 @@ import edu.unam.modelo.RutinaEjercicio;
  */
 
 
-/**
+/*
 *
 * @Autor: BBKMG
 */
@@ -43,9 +43,21 @@ public class RutinaEjercicioDAO {
 		return em.find(RutinaEjercicio.class, id);
 	}
 	
+	// LEER ENTIDAD (CON OBJETOS)
+	public RutinaEjercicio obtenerEntidadRutinaEjercicio(EntityManager em, int id, String consulta) {		
+//		return em.find(RutinaEjercicio.class, id);
+		return em.createQuery(consulta, RutinaEjercicio.class).setParameter("id", id).getSingleResult();
+		
+	}
+
 	// LEER ENTIDADES
-	public List<RutinaEjercicio> obtenerEntidadesRutinaEjercicio(EntityManager em, String consulta) {		
+	public List<RutinaEjercicio> obtenerEntidadesRutinaEjercicio(EntityManager em, String consulta) {
 		return em.createQuery(consulta, RutinaEjercicio.class).getResultList();
+	}
+	
+	// LEER ENTIDADES (CON OBJETOS)
+	public List<RutinaEjercicio> obtenerEntidadesRutinaEjercicio(EntityManager em, String consulta, int idRut) {		
+		return em.createQuery(consulta, RutinaEjercicio.class).setParameter("idRutina", idRut).getResultList();
 	}
 	
 	// ACTUALIZAR ENTIDAD

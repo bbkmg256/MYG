@@ -69,6 +69,12 @@ public class EntrenamientoDAO{
 		
 		return em.find(Entrenamiento.class, id);
 	}
+
+	// LEER ENTIDAD (CON OBJETOS)
+	public Entrenamiento obtenerEntidadEntrenamiento(EntityManager em, int id, String consulta) {		
+//		return em.find(Entrenamiento.class, id);
+		return em.createQuery(consulta, Entrenamiento.class).setParameter("id", id).getSingleResult();
+	}
 	
 	// LEER ENTIDADES
 	public List<Entrenamiento> obtenerEntidadesEntrenamiento(EntityManager em, String consulta) {
