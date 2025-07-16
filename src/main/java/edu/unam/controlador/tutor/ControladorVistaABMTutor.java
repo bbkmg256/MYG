@@ -1,12 +1,8 @@
 /*
- * CLASE CONTROLADORA PARA VISTA ALTA - MODIFICAR - ELIMINAR CLIENTE
- * LAS 3 OPERACIONES SE PUEDEN HACER EN LA MISMA VISTA.
- * 
- * HAY QUE MODIFICAR LA VISTA DE ESTO, AGREGANDO EL BOTON DE AÑADIR ENTIDAD O ALGO ASI
- * 
+ * CLASE CONTROLADORA PARA VISTA ALTA - MODIFICAR - ELIMINAR TUTOR
  */
 
-package edu.unam.controlador.cliente;
+package edu.unam.controlador.tutor;
 
 // LIBRERIAS
 import javafx.event.ActionEvent;
@@ -26,7 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 //import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import utilidades.RutasVistas;
-//import utilidades.bd.EMFSingleton;
+import utilidades.bd.EMFSingleton;
 
 //import java.io.IOException;
 import java.time.LocalDate;
@@ -34,40 +30,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
-import edu.unam.modelo.Cliente;
-import edu.unam.servicio.ClienteServicio;
+import edu.unam.modelo.Tutor;
+import edu.unam.servicio.TutorServicio;
 import utilidades.NavegadorDeVistas;
 
 /*
  * 
  * NOTAS:
  * 
- * A LA VISTA CREAR_CLIENTE HAY QUE CAMBIARLE EL NOMBRE, YA QUE SE USA TAMBIEN PARA
- * MODIFICAR A LOS CLIENTES. [RESUELTO]
+ * ESTE CONTROLADOR ES LITERALMENTE IGUAL AL DE CLIENTE.
  * 
- * EL METODO DEL BOTON MODIFICAR NO ESTA TERMINADO, FALTA OBTENER EL OBJETO DEL REGISTRO
- * DE LA TABLA DE DATOS (DEL TABLEVIEW) [TERMINADO]
- * 
- * HAY QUE VER COMO SE PUEDE SELECCIONAR UN REGISTRO PARA PODER ELEMINAR AL OBJETO QUE
- * REFERENCIA EN LA BD (OSEA, HAY QUE VER COMO OBTENER EL OBJETO DEL REGISTRO DEL TABLEVIEW) [TERMINADO]
- * 
- * BUSCAR UNA FORMA DE INHABILITAR EL BOTON DE "MODIFICAR" HASTA QUE SE SELECCIONE
- * UNO DE LOS REGISTROS DEL "TABLEVIEW". [RESULTO - NO SE INHABILITA EL BOTON, PERO SE AVISA QUE NO HAY REG. SELECCIONADO]
- * 
- * FALTA TERMINAR EL APARTADO DE CONFIRMACION O NEGACION DE ELIMINACION DE CLIENTE (LINEA 224) [TERMINADO]
+ * HAY QUE MODIFICAR ESTE CONTROLADOR PARA ADAPTARLO A LA ENTIDAD TUTOR.
  * 
  * FUNCIONALIDAD DE BUSCAR, DESACTIVADA.
  * 
  */
 
-public class ControladorVistaABMCliente {
+public class ControladorVistaABMTutor {
 	// ATRIBUTOS, NODOS Y ELEMENTOS DE ESCENA //
 //    @FXML
 //    private Button BTBuscar;
 
 	@FXML
 	private Button BTCrear;
-	
+  
     @FXML
     private Button BTAtras;
 
@@ -78,41 +64,38 @@ public class ControladorVistaABMCliente {
     private Button BTModificar;
     
     @FXML
-    private TableView<Cliente> TVTablaClientes;
+    private TableView<Tutor> TVTablaTutores;
 
     @FXML
-    private TableColumn<Cliente, String> colApellido;
+    private TableColumn<Tutor, String> colApellido;
 
     @FXML
-    private TableColumn<Cliente, String> colCiudad;
+    private TableColumn<Tutor, String> colCiudad;
 
     @FXML
-    private TableColumn<Cliente, Integer> colCodigoPostal;
+    private TableColumn<Tutor, Integer> colCodigoPostal;
 
     @FXML
-    private TableColumn<Cliente, Integer> colDNI;
+    private TableColumn<Tutor, Integer> colDNI;
 
     @FXML
-    private TableColumn<Cliente, LocalDate> colFechaIngreso;
+    private TableColumn<Tutor, LocalDate> colFechaNacimiento;
 
     @FXML
-    private TableColumn<Cliente, LocalDate> colFechaNacimiento;
+    private TableColumn<Tutor, String> colNombre;
 
     @FXML
-    private TableColumn<Cliente, String> colNombre;
+    private TableColumn<Tutor, String> colProvincia;
 
     @FXML
-    private TableColumn<Cliente, String> colProvincia;
-
-    @FXML
-    private TableColumn<Cliente, Character> colSexo;
+    private TableColumn<Tutor, Character> colSexo;
 
 //    @FXML
 //    private TextField txtDNI;
     
-    private ClienteServicio cs = new ClienteServicio();
+    private TutorServicio ts = new TutorServicio();
     
-    private List<Cliente> clientes = new ArrayList<>();
+    private List<Tutor> tutores = new ArrayList<>();
 
 
     // METODOS Y EVENTOS //
@@ -127,27 +110,25 @@ public class ControladorVistaABMCliente {
     	return alerta.showAndWait();
     }
     
-    // SE DELEGAN LA DEFINICION DE LOS GENERICOS DE TableColumn AL POSTERIOR LLAMADO DE ESTE METODO
+    // ASIGNA CONTENIDO A CADA COLUMNA
     private <S, T> void asignarValoresColumnas(TableColumn<S, T> columna, String valor) {
     	columna.setCellValueFactory(new PropertyValueFactory<>(valor));
     }
 
     // LA LISTA DE ENTIDADES LA TOMA CADA VEZ QUE SE LLAMA A ESTE METODO.
-    private void actualizarTabla(List<Cliente> listaClientes) {
-    	TVTablaClientes.getItems().clear(); // Limpia los items de la tabla
-    	TVTablaClientes.getItems().addAll(listaClientes); // Añade items en la lista de la tabla
-//    	TVTablaClientes.refresh();
-    	
-    	// Esta verga no busca atributos, busca getters de los atributos de las clases!!! >:(
+    private void actualizarTabla(List<Tutor> listaClientes) {
+    	TVTablaTutores.getItems().clear(); // Limpia los items de la tabla
+    	TVTablaTutores.getItems().addAll(listaClientes); // Muestra items en la tabla
+    	TVTablaTutores.refresh();
+
     	this.asignarValoresColumnas(this.colDNI, "dni");
     	this.asignarValoresColumnas(this.colNombre, "nombre");
     	this.asignarValoresColumnas(this.colApellido, "apellido");
     	this.asignarValoresColumnas(this.colSexo, "sexo");
     	this.asignarValoresColumnas(this.colCiudad, "ciudad");
     	this.asignarValoresColumnas(this.colProvincia, "provincia");
-    	this.asignarValoresColumnas(this.colCodigoPostal,"codPost"); // <-- Esta mierda está dando error y no entiendo por que!! (Ahora funciona, estaba pasando mal el nombre del getter)
+    	this.asignarValoresColumnas(this.colCodigoPostal,"codPost");
     	this.asignarValoresColumnas(this.colFechaNacimiento, "fechaNacimiento");
-    	this.asignarValoresColumnas(this.colFechaIngreso, "fechaIngreso");
     }
     
     // EVITA QUE SE INGRESEN CARACTERES NO NUMERICOS EN UN TEXTFIELD
@@ -172,7 +153,7 @@ public class ControladorVistaABMCliente {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-	    			RutasVistas.VISTA_CARGA_CLIENTE
+	    			RutasVistas.VISTA_CARGAR_TUTOR
 			);
     	NavegadorDeVistas
     		.getInstancia()
@@ -182,29 +163,28 @@ public class ControladorVistaABMCliente {
     		);
     }
     
-    // ESTE METODO ESTÁ MEDIO RARO, PERO POR EL MOMENTO SE QUEDA ASÍ
+//    // ESTE METODO ESTÁ MEDIO RARO, PERO POR EL MOMENTO SE QUEDA ASÍ
 //    @FXML
 //    private void eventoBTBuscar(ActionEvent event) {
-//    	Cliente cl = null;
+//    	Tutor cl = null;
 //    	String contenido = this.txtDNI.getText();
 //    	
 //    	if (contenido.isEmpty()) {
 //    		System.out.println("[ ! ] > El campo está vacio!");
-//    		this.actualizarTabla(this.cs.obtenerTodosLosClientes());
+//    		this.actualizarTabla(this.ts.obtenerTodosLosTutores());
 //    		return;
 //    	}
 //    	
-//    	cl = this.cs.obtenerCliente(Integer.parseInt(contenido), true);
+//    	cl = this.ts.obtenerTutor(Integer.parseInt(contenido), true);
 //    	
-//    	// PARA SOBRE-ESCRIBIR LA LISTA DE CLIENTES (MEDIO CUALQUIERA)
-//    	this.clientes.clear(); this.clientes.add(cl);  	
+//    	// PARA SOBRE-ESCRIBIR LA LISTA DE TUTORES (MEDIO CUALQUIERA)
+//    	this.tutores.clear(); this.tutores.add(cl);  	
 //    	
-//    	this.actualizarTabla(this.clientes);
+//    	this.actualizarTabla(this.tutores);
 //    }
 
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-//    	this.cambiarVista(RutasVistas.VISTA_INICIO, "Inicio");
     	NavegadorDeVistas
     		.getInstancia()
     		.cargarNuevaVista(
@@ -221,21 +201,22 @@ public class ControladorVistaABMCliente {
 
     @FXML
     private void eventoBTEliminar(ActionEvent event) {
-    	Cliente regCli = this.TVTablaClientes.getSelectionModel().getSelectedItem();
+    	Tutor regTu = this.TVTablaTutores.getSelectionModel().getSelectedItem();
 
-    	if (regCli == null) {
+    	if (regTu == null) {
     		this.lanzarMensaje(
     				AlertType.ERROR, "Error!", "OPERACION FALLIDA",
-    				"Seleccione un cliente..."
+    				"Seleccione un tutor..."
     		);
     		System.out.println("[ ERROR ] > No se ah seleccionado un registro!"); // LOG
     		return;
     	}
     	
+    	
     	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
     	Optional<ButtonType> resultado =  this.lanzarMensaje(
-    			AlertType.CONFIRMATION, "Eliminacion de cliente",
-    			"OPERACION ELIMINAR", "Realmente desea eliminar el cliente?"
+    			AlertType.CONFIRMATION, "Eliminacion de tutor",
+    			"OPERACION ELIMINAR", "Realmente desea eliminar el tutor?"
     	);
     	
     	// CONFIRMAR O DENEGAR OPERACION
@@ -244,39 +225,39 @@ public class ControladorVistaABMCliente {
         	return;
     	}
     	
-    	// VERIFICA QUE LA BD ESTE ACTIVA
-//    	if (!EMFSingleton.getInstancia().hayConexion()) {
-//			this.lanzarMensaje(
-//					AlertType.ERROR, "Error!",
-//					"ERROR DE CONEXION A BASE DE DATOS!",
-//					"Problemas de conexión con la BD!"
-//			);
-//    		return;
-//    	}
-    	
-    	System.out.println("[ ! ] > Se eliminará el cliente!"); // LOG
-    	this.cs.eliminarCliente(regCli.getDni());
-    	
-    	// SI TODAVIA SE ENCUENTRA LA ENTIDAD, LA OPERACION FALLO
-    	if (this.cs.obtenerCliente(regCli.getDni(), false) != null) {
+    	// VERIFICA QUE LA BD ESTE ACTIVA (ESTOY EMPEZANDO A PENSAR QUE NO ES MUY NECESARIO)
+    	if (!EMFSingleton.getInstancia().hayConexion()) {
 			this.lanzarMensaje(
-					AlertType.ERROR, "Error!", "OPERACION FALLIDA",
-					"La operacion de eliminación no se ejecuto correctamente..."
+					AlertType.ERROR, "Error!",
+					"ERROR DE CONEXION A BASE DE DATOS!",
+					"Problemas de conexión con la BD!"
 			);
     		return;
     	}
     	
-    	this.actualizarTabla(this.cs.obtenerTodosLosClientes());
+    	System.out.println("[ ! ] > Se eliminará el tutor!"); // LOG
+    	this.ts.eliminarTutor(regTu.getDni());
+    	
+    	// SI TODAVIA SE ENCUENTRA LA ENTIDAD, LA OPERACION FALLO
+    	if (this.ts.obtenerTutor(regTu.getDni(), false) != null) {
+			this.lanzarMensaje(
+					AlertType.ERROR, "Error!", "OPERACION FALLIDA",
+					"La operacion de eliminacion no se ejecuto correctamente..."
+			);
+    		return;
+    	}
+    	
+    	this.actualizarTabla(this.ts.obtenerTodosLosTutores());
     }
 
     @FXML
     private void eventoBTModificar(ActionEvent event) {
-    	Cliente regCli = this.TVTablaClientes.getSelectionModel().getSelectedItem();
+    	Tutor regTu = this.TVTablaTutores.getSelectionModel().getSelectedItem();
     	
-    	if (regCli == null) {
+    	if (regTu == null) {
     		this.lanzarMensaje(
-    				AlertType.ERROR, "Error!", "OPERACION FALLIDA",
-    				"Seleccione un cliente antes de modificar..."
+    				AlertType.ERROR, "Error", "OPERACION FALLIDA",
+    				"Seleccione un tutor antes de modificar..."
     		);
     		System.out.println("[ ERROR ] > No se ah seleccionado un registro!"); // LOG
     		return;
@@ -286,29 +267,24 @@ public class ControladorVistaABMCliente {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_MODIFICAR_CLIENTE
+    				RutasVistas.VISTA_MODIFICAR_TUTOR
     		);
     	
-    	// OBTIENE EL CONTROLADOR DE LA VISTA SIGUIENTE Y PASA //
-    	// EL OBJETO CLIENTE EXTRAIDO DE LA TABLA DE DATOS     //
-    	ControladorVistaModificarCliente controladorModificarCliente =
-    			NavegadorDeVistas
-    				.getInstancia()
-    				.obtenerControladorDeNuevaVista();
-    	
-    	controladorModificarCliente.establecerClienteParaModificar(regCli);
+    	// OBTIENE EL CONTROLADOR DE LA VISTA SIGUIENTE Y PASA EL OBJETO TUTORES EXTRAIDO DE LA TABLA DE DATOS
+    	ControladorVistaModificarTutor controladorModificarTutor = NavegadorDeVistas.getInstancia().obtenerControladorDeNuevaVista();
+    	controladorModificarTutor.establecerTutorParaModificar(regTu);
     	
     	NavegadorDeVistas
     		.getInstancia()
     		.cambiarVista(
     				BTModificar,
-    				"Modificar cliente"
+    				"Modificar tutor"
     		);
     }
     
     @FXML
     private void initialize() {
-    	this.actualizarTabla(this.cs.obtenerTodosLosClientes());
+    	this.actualizarTabla(this.ts.obtenerTodosLosTutores());
 //    	this.limitarATextoNumerico(txtDNI);
     }
 }
@@ -377,3 +353,5 @@ public class ControladorVistaABMCliente {
 //		RutasVistas.VISTA_CARGA_CLIENTE,
 //		"Cargar cliente"
 //);
+
+//this.cambiarVista(RutasVistas.VISTA_INICIO, "Inicio");

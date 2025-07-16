@@ -4,7 +4,7 @@
  * (ODIO EL FRONTEND)
  */
 
-package edu.unam.controlador.cliente;
+package edu.unam.controlador.tutor;
 
 // LIBRERIAS
 import javafx.fxml.FXML;
@@ -22,39 +22,27 @@ import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import java.time.LocalDate;
 import java.util.function.UnaryOperator;
-import edu.unam.modelo.Cliente;
-import edu.unam.servicio.ClienteServicio;
+import edu.unam.modelo.Tutor;
+import edu.unam.servicio.TutorServicio;
 import utilidades.NavegadorDeVistas;
 import utilidades.RutasVistas;
-//import utilidades.bd.ComprobarConexionBD;
-//import utilidades.bd.EMFSingleton;
+import utilidades.bd.ComprobarConexionBD;
+import utilidades.bd.EMFSingleton;
 
 /*
  * 
  * NOTA:
  * 
- * EN EL BOTON DE FINALIZAR FALTAN ALGUNAS LLAMAR A ALGUNA VERIFICACION QUE DE AVISO DE QUE
- * SI EL DNI YA ESTA, ENTONCES NO LO AGREGUE Y SE LO INFORME AL USUARIO (ESTO YA ESTA EN EL BACKEND, PERO
- * HAY QUE LLAMARLO O USARLO ACA).
- * 
- * TAMBIEN A QUE HACER USO DE ALGUNA FORMA DE VERIFICACION PARA CUANDO SE CARGA EL CLIENTE, ASI SE LE DA AVISO
- * AL USUARIO DE QUE LA CREACION/CARGA FUE EXITOSA Y SE VALIDAD QUE ESTE EL CLIENTE CARGADO REALMENTE.
- * 
- * HAY QUE COMPROBAR QUE NO HAYA INCONSISTENCIA ENTRE LA FECHA DE NACIMIENTO Y LA DE INGRESO AL GYM, SIEMPRE
- * LA DE NACIMIENTO SERA MENOR A LA DEL INGRESO.
  * 
  */
 
-public class ControladorVistaCargaCliente {
+public class ControladorVistaCargaTutor {
 	// ATRIBUTOS, NODOS Y ELEMENTOS DE ESCENA //
 	@FXML
     private Button BTCancelar;
 
     @FXML
     private Button BTFinalizar;
-
-    @FXML
-    private DatePicker DPFechaIng;
 
     @FXML
     private DatePicker DPFechaNac;
@@ -86,7 +74,7 @@ public class ControladorVistaCargaCliente {
     // PARA OBTENER EL OBJETO DEL TABLEVIEW Y PASARLO A LA VISTA DE MODIFICACION
 //    private Cliente cliObj = null;
     
-    private ClienteServicio scli = new ClienteServicio();
+    private TutorServicio stutor = new TutorServicio();
 
     
     // METODOS Y EVENTOS //
@@ -129,7 +117,7 @@ public class ControladorVistaCargaCliente {
     	String nombre, apellido, ciudad, provincia;
     	int dni, codPost;
     	char sexo;
-    	LocalDate fechaNac, fechaIng;
+    	LocalDate fechaNac;
     	boolean camposIncompletos = false;
     	
     	if (this.txtDNI.getText().isBlank()) {
@@ -165,14 +153,10 @@ public class ControladorVistaCargaCliente {
     		camposIncompletos = true;
     	}
     	
-    	if (this.DPFechaIng.getValue() == null) {
-    		camposIncompletos = true;
-    	}
-    	
     	if (camposIncompletos) {
     		this.lanzarMensaje(
     				AlertType.ERROR, "Error!",
-    				"ERROR DE CAMPOS",
+    				"ERROR DE CAMPOS!",
     				"Faltan campos que completar..."
     		);
     		System.out.println("[ ERROR ] > Faltan campos que completar!"); // LOG
@@ -180,20 +164,20 @@ public class ControladorVistaCargaCliente {
     	}
     	
     	// LOG
-//    	LocalDate fIng = this.DPFechaIng.getValue(), fNac = this.DPFechaNac.getValue();
+//    	LocalDate fNac = this.DPFechaNac.getValue();
 //    	System.out.printf("Fecha nac: %td/%tm/%tY %nFecha ing: %td/%tm/%tY%n", fIng, fIng, fIng, fNac, fNac, fNac);
     	
     	// EVITA QUE SE INGRESE UNA FECHA DE NACIMIENTO POSTERIOR A LA DEL INGRESO AL GYM
-    	if (!this.DPFechaNac.getValue().isBefore(this.DPFechaIng.getValue())) {
-    		this.lanzarMensaje(
-    				AlertType.ERROR, "Error!",
-    				"ERROR DE CAMPOS",
-    				"La fecha de ingreso no puede ser menor a la de nacimiento..."
-    		);
-    		// LOG
-    		System.out.println("[ ERROR ] > Incoherencia en fecha de nacimiento y de ingreso!");
-    		return;
-    	}
+//    	if (!this.DPFechaNac.getValue().isBefore(this.DPFechaIng.getValue())) {
+//    		this.lanzarMensaje(
+//    				AlertType.ERROR, "Error!",
+//    				"ERROR DE CAMPOS!",
+//    				"La fecha de ingreso no puede ser menor a la de nacimiento..."
+//    		);
+//    		// LOG
+//    		System.out.println("[ ERROR ] > Incoherencia en fecha de nacimiento y de ingreso!");
+//    		return;
+//    	}
     	
     	// CASTEO DE CADENAS A ENTEROS
     	dni = Integer.parseInt(
@@ -216,25 +200,25 @@ public class ControladorVistaCargaCliente {
     	}
     	
     	fechaNac = this.DPFechaNac.getValue();
-    	fechaIng = this.DPFechaIng.getValue();
+//    	fechaIng = this.DPFechaIng.getValue();
     	
     	// POR SI FALLA LA CONEXION CON LA BD POR X MOTIVO (NO CREO QUE HAGA FALTA)
-//    	if (!ComprobarConexionBD.hayConexion(EMFSingleton.getInstancia().getEMF())) {
-//			this.lanzarMensaje(
-//					AlertType.ERROR, "Error!",
-//					"ERROR DE CONEXION A BASE DE DATOS",
-//					"No se encuentra una base de datos activa..."
-//			);
-//			// LOG
-//			System.out.println(
-//					"[ ERROR ] > No hay conexión a una BD o la misma está caida!"
-//			);
-//			return;
-//		}
+    	if (!ComprobarConexionBD.hayConexion(EMFSingleton.getInstancia().getEMF())) {
+			this.lanzarMensaje(
+					AlertType.ERROR, "Error!",
+					"ERROR DE CONEXION A BASE DE DATOS!",
+					"No se encuentra una base de datos activa..."
+			);
+			// LOG
+			System.out.println(
+					"[ ERROR ] > No hay conexión a una BD o la misma está caida!"
+			);
+			return;
+		}
     	
     	// CREA Y CARGA UN CLIENTE A LA BD
-    	this.scli.cargarCliente(
-    			new Cliente(
+    	this.stutor.cargarTutor(
+    			new Tutor(
 	    			dni,
 	    			nombre,
 	    			apellido,
@@ -242,39 +226,37 @@ public class ControladorVistaCargaCliente {
 	    			sexo,
 	    			ciudad,
 	    			provincia,
-	    			codPost,
-	    			fechaIng
+	    			codPost
     	));
     	
     	// POR SI OCURREN ALGUN PROBLEMA DESPUES DE HABER HECHO LA TRANSACCION
-    	if (scli.obtenerCliente(dni, false) == null) {
+    	if (stutor.obtenerTutor(dni, false) == null) {
     		this.lanzarMensaje(
     				AlertType.ERROR, "Error!",
-    				"ERROR DE OPERACION",
-    				"Algo falló al cargar el cliente..."
+    				"ERROR DE OPERACION!",
+    				"Algo falló al cargar el tutor..."
     		);
-    		System.out.println("[ ERROR ] > Fallo al cargar el cliente!"); // LOG
     		return;
     	}
     	
     	this.lanzarMensaje(
 				AlertType.INFORMATION, "Exito!",
-				"OPERACION RELIZADA",
-				"El cliente fue cargado con exito..."
+				"OPERACION RELIZADA!",
+				"El Tutor fue cargado con exito..."
 		);
     	
     	NavegadorDeVistas
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_ABM_CLIENTE
+    				RutasVistas.VISTA_ABM_TUTOR
     		);
     	
     	NavegadorDeVistas
     		.getInstancia()
     		.cambiarVista(
     				BTFinalizar,
-    				"Cliente"
+    				"Tutor"
     		);
     }
     
@@ -284,13 +266,13 @@ public class ControladorVistaCargaCliente {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_ABM_CLIENTE
+    				RutasVistas.VISTA_ABM_TUTOR
     		);
     	NavegadorDeVistas
     		.getInstancia()
     		.cambiarVista(
     				BTCancelar,
-    				"Cliente"
+    				"Tutor"
     		);
     }
 
@@ -300,7 +282,6 @@ public class ControladorVistaCargaCliente {
     	this.limitarATextoNumerico(txtDNI);
     	this.limitarATextoNumerico(txtCodigoPostal);
     	
-    	this.DPFechaIng.setEditable(false);
     	this.DPFechaNac.setEditable(false);
     }
 }

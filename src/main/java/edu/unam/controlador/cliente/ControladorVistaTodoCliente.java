@@ -2,19 +2,23 @@
  * CONTROLADOR DE LA VISTA DE CLIENTES
  */
 
-package edu.unam.controlador;
+package edu.unam.controlador.cliente;
 
 // JavaFX
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+//import javafx.scene.control.TextField;
+//import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+//import javafx.util.converter.IntegerStringConverter;
 import javafx.scene.control.Label;
 // import javafx.event.ActionEvent;
 
 // Varios
 import java.time.LocalDate;
 import java.util.List;
+//import java.util.function.UnaryOperator;
 
 // Entidad
 import edu.unam.modelo.Cliente;
@@ -22,8 +26,14 @@ import edu.unam.modelo.Cliente;
 // Servicios
 import edu.unam.servicio.ClienteServicio;
 
+/*
+ * 
+ * NOTA: clase/controlador sin uso!
+ * 
+ */
 
 public class ControladorVistaTodoCliente {
+	// ATRIBUTOS, NODOS Y ELEMENTOS DE ESCENA //
 	@FXML
 	private Label etiquetaClientes;
 	
@@ -58,9 +68,12 @@ public class ControladorVistaTodoCliente {
     private TableColumn<Cliente, LocalDate> columnaFDN;
 
     private ClienteServicio cs = new ClienteServicio();
+    
     private List<Cliente> clientes = cs.obtenerTodosLosClientes();
 
-    private void asignarValoresColumnas(TableColumn columna, String valor) {
+    
+    // METODOS Y EVENTOS //
+    private <S, T> void asignarValoresColumnas(TableColumn<S, T> columna, String valor) {
     	columna.setCellValueFactory(new PropertyValueFactory<>(valor));
     }
 
