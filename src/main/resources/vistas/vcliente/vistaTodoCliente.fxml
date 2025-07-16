@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- FXML vista uno (prueba) -->
-<!-- ======================================================================= -->
-<!-- Librerias importadas -->
-
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<!-- Estructura principal -->
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="803.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.ControladorVistaCliente">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.ControladorVistaCliente">
    <children>
-      <TableView fx:id="tablaClientes" layoutX="17.0" layoutY="61.0" prefHeight="325.0" prefWidth="770.0">
-        <columns>
-          <TableColumn fx:id="columnaId" prefWidth="48.0" text="ID" />
-          <TableColumn fx:id="columnaNombre" prefWidth="89.0" text="Nombre" />
-            <TableColumn fx:id="columnaApellido" prefWidth="76.0" text="Apellido" />
-            <TableColumn fx:id="columnaFDN" prefWidth="116.0" text="Fecha de nac." />
-            <TableColumn fx:id="columnaSexo" prefWidth="46.0" text="Sexo" />
-            <TableColumn fx:id="columnaCiudad" prefWidth="83.0" text="Ciudad" />
-            <TableColumn fx:id="columnaProvincia" prefWidth="89.0" text="Provincia" />
-            <TableColumn fx:id="columnaCodPos" prefWidth="78.0" text="Cod.Post." />
-            <TableColumn fx:id="columnaFDI" prefWidth="144.0" text="Fecha de ingreso" />
-        </columns>
+      <TableView fx:id="tablaClientes" layoutX="19.0" layoutY="91.0" prefHeight="488.0" prefWidth="763.0">
+         <columns>
+            <TableColumn fx:id="columnaId" prefWidth="54.0" text="ID" />
+            <TableColumn fx:id="columnaNombre" prefWidth="99.0" text="Nombre" />
+            <TableColumn fx:id="columnaApellido" prefWidth="84.0" text="Apellido" />
+            <TableColumn fx:id="columnaFDN" prefWidth="129.0" text="Fecha de nac." />
+            <TableColumn fx:id="columnaSexo" prefWidth="51.0" text="Sexo" />
+            <TableColumn fx:id="columnaCiudad" prefWidth="92.0" text="Ciudad" />
+            <TableColumn fx:id="columnaProvincia" prefWidth="99.0" text="Provincia" />
+            <TableColumn fx:id="columnaCodPos" prefWidth="86.0" text="Cod.Post." />
+            <TableColumn fx:id="columnaFDI" prefWidth="160.0" text="Fecha de ingreso" />
+         </columns>
       </TableView>
-      <Label fx:id="etiquetaClientes" layoutX="375.0" layoutY="31.0" text="Clientes" />
+      <Label fx:id="etiquetaClientes" layoutX="358.0" layoutY="46.0" text="Clientes">
+         <font>
+            <Font name="System Bold Italic" size="22.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

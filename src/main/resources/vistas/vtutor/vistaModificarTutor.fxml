@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.tutor.ControladorVistaModificarTutor">
+   <children>
+      <VBox alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="572.0" prefWidth="772.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <Label text="Modificar Tutor">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="350.0" prefWidth="772.0" spacing="40.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="350.0" prefWidth="300.0" spacing="20.0">
+                     <children>
+                        <TextField fx:id="txtNombre" prefHeight="45.0" prefWidth="215.0" promptText="Nombre" />
+                        <TextField fx:id="txtApellido" prefHeight="45.0" prefWidth="215.0" promptText="Apellido" />
+                        <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="215.0" spacing="10.0">
+                           <children>
+                              <Label text="Sexo">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                 <children>
+                                    <RadioButton fx:id="RBMasculino" mnemonicParsing="false" text="Masculino">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="sexoGroup" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="RBFemenino" mnemonicParsing="false" text="Femenino" toggleGroup="$sexoGroup" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <TextField fx:id="txtCiudad" prefHeight="45.0" prefWidth="215.0" promptText="Ciudad" />
+                        <TextField fx:id="txtProvincia" prefHeight="45.0" prefWidth="215.0" promptText="Provincia" />
+                        <TextField fx:id="txtCodigoPostal" prefHeight="45.0" prefWidth="215.0" promptText="Código postal" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="300.0" spacing="20.0">
+                     <children>
+                        <DatePicker fx:id="DPFechaNac" prefHeight="45.0" prefWidth="215.0" promptText="Fecha de nacimiento" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="36.0" prefWidth="772.0" spacing="20.0">
+               <children>
+                  <Button fx:id="BTFinalizar" mnemonicParsing="false" onAction="#eventoBTFinalizar" prefHeight="36.0" prefWidth="120.0" text="Finalizar">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="BTCancelar" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="36.0" prefWidth="120.0" text="Cancelar">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</AnchorPane>
