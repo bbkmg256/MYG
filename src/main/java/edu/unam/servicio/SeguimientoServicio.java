@@ -11,10 +11,8 @@ import jakarta.persistence.EntityManager;
 // Varios
 import java.util.List;
 
-// SINGLETON EMF Y PARAMETROS PARA "ACTUALIZARESTADOSEGUIMIENTO()"
-import utilidades.EMFSingleton;
-import utilidades.ParametrosSeguimiento;
-
+import utilidades.bd.EMFSingleton;
+import utilidades.parametros.ParametrosSeguimiento;
 // Entidad
 import edu.unam.modelo.Seguimiento;
 import edu.unam.modelo.Entrenamiento;
@@ -106,6 +104,31 @@ public class SeguimientoServicio {
 		
 		try {
 			regSeg = this.segDao.obtenerEntidadSeguimiento(this.manager, id);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener el seguimiento!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return regSeg;
+	}
+	
+	// Obtener Seguimiento (CON SUS OBJETOS)
+	public Seguimiento obtenerSeguimientoYSusObjetos(int id) {		
+		Seguimiento regSeg = null;
+		String consulta = String.format(
+				"SELECT %c FROM %s %c " + 
+				"FETCH JOIN %c.entrenamiento " +
+				"WHERE %c.idSeguimiento = :id",
+				's', "Seguimiento", 's', 's', 's'
+		); // Consulta JPQL
+		
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			regSeg = this.segDao.obtenerEntidadSeguimiento(this.manager, id, consulta);
 		} catch (Exception e) {
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al obtener el seguimiento!");

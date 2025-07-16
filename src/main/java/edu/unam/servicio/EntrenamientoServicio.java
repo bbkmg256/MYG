@@ -7,17 +7,28 @@ package edu.unam.servicio;
 // JPA
 import edu.unam.repositorio.EntrenamientoDAO;
 import jakarta.persistence.EntityManager;
-import utilidades.EMFSingleton;
 
 // VARIOS
 import java.util.List;
-import utilidades.ParametrosEntrenamiento;
 
+import utilidades.bd.EMFSingleton;
+import utilidades.parametros.ParametrosEntrenamiento;
 // ENTIDAD
 import edu.unam.modelo.Entrenamiento;
 import edu.unam.modelo.Cliente;
 import edu.unam.modelo.Rutina;
 import edu.unam.modelo.Tutor;
+
+/*
+ * 
+ * NOTAS:
+ * 
+ * PROBABLEMENTE TENGA QUE MODIFICAR LAS VALIDACIONES RESPECTO A LA CLASE DE PARAMETROS
+ * EN EL METODO DE CARGA Y DE ACTUALIZACION, PARA QUEVALIDE SI NO SE INGRESA LO MISMO
+ * QUE YA CONTIENE EL OBJETO, COMO POR EJEMPLO: MISMO MISMO CLIENTE, MISMO TUTOR
+ * O COSAS SIMILARES.
+ * 
+ */
 
 /**
 *
@@ -26,9 +37,9 @@ import edu.unam.modelo.Tutor;
 public class EntrenamientoServicio {
 	private EntrenamientoDAO entreDao;
 	private EntityManager manager;
-//	private Cliente cli;
-//	private Tutor tutor;
-//	private Rutina rutina;
+	private Cliente cli;
+	private Tutor tutor;
+	private Rutina rutina;
 	private ClienteServicio scli;
 	private TutorServicio stutor;
 	private RutinaServicio srut;
@@ -44,12 +55,12 @@ public class EntrenamientoServicio {
 	// Cargar Entrenamiento
 	public void cargarEntrenamiento(Entrenamiento entrenamiento) {				
 		// MANEJO DE FALLO [ ATRIBUTOS SIN CONTENIDO O NULOS ]
-		if (entrenamiento.getCliente() == null || scli.obtenerCliente(entrenamiento.getCliente().getDni()) == null) {
+		if (entrenamiento.getCliente() == null || scli.obtenerCliente(entrenamiento.getCliente().getDni(), true) == null) {
 			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene cliente asignado o este es nulo!%n", entrenamiento.getIdEntrenamiento());
 			return;
 		}
 		
-		if (entrenamiento.getTutor() == null || stutor.obtenerTutor(entrenamiento.getTutor().getDni()) == null) {
+		if (entrenamiento.getTutor() == null || stutor.obtenerTutor(entrenamiento.getTutor().getDni(), true) == null) {
 			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene tutor asignado o este es nulo!%n", entrenamiento.getIdEntrenamiento());
 			return;
 		}
@@ -77,16 +88,16 @@ public class EntrenamientoServicio {
 			this.entreDao.crearEntidadEntrenamiento(this.manager, entrenamiento);
 			
 			// ENLACE A ENTIDAD CLIENTE
-//			this.cli = this.manager.merge(entrenamiento.getCliente());
-//			this.cli.getEntrenamientos().add(entrenamiento);
+			this.cli = this.manager.merge(entrenamiento.getCliente());
+			this.cli.getEntrenamientos().add(entrenamiento);
 			
 			// ENLACE A ENTIDAD TUTOR
-//			this.tutor = this.manager.merge(entrenamiento.getTutor());
-//			this.tutor.getEntrenamientos().add(entrenamiento);
+			this.tutor = this.manager.merge(entrenamiento.getTutor());
+			this.tutor.getEntrenamientos().add(entrenamiento);
 			
 			// ENLACE A ENTIDAD RUTINA
-//			this.rutina = this.manager.merge(entrenamiento.getRutina());
-//			this.rutina.getEntrenamientos().add(entrenamiento);
+			this.rutina = this.manager.merge(entrenamiento.getRutina());
+			this.rutina.getEntrenamientos().add(entrenamiento);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El entrenamiento %d cargado correctamente!%n", entrenamiento.getIdEntrenamiento());
@@ -117,6 +128,34 @@ public class EntrenamientoServicio {
 		
 		return regEntre;
 	}
+
+	// Buscar Entrenamiento (CON SUS OBJETOS)
+	public Entrenamiento obtenerEntrenamientoYSusObjetos(int id) {		
+		Entrenamiento regEntre = null;
+		String consulta = String.format(
+				"SELECT %c FROM %s %c " + 
+				"JOIN FETCH %c.cliente " + 
+				"JOIN FETCH %c.tutor " + 
+				"JOIN FETCH %c.rutina " + 
+				"WHERE %c.idEntrenamiento = :id",
+				'e', "Entrenamiento", 'e', 'e',
+				'e', 'e', 'e'
+		); // Consulta JPQL
+		
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			regEntre = this.entreDao.obtenerEntidadEntrenamiento(this.manager, id, consulta);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener el entrenamiento!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return regEntre;
+	}
 	
 	// Obtiene todos los Entrenamientos del sistema
 	public List<Entrenamiento> obtenerTodosLosEntrenamientos() {		
@@ -138,37 +177,64 @@ public class EntrenamientoServicio {
 		return entr;
 	}
 
+	// Obtiene todos los Entrenamientos del sistema (CON TODOS SUS OBJETOS)
+	public List<Entrenamiento> obtenerTodosLosEntrenamientosYSusObjetos() {		
+		List<Entrenamiento> entr = null;
+		String consulta = String.format(
+				"SELECT %c FROM %s %c " + 
+				"JOIN FETCH %c.cliente " + 
+				"JOIN FETCH %c.tutor " + 
+				"JOIN FETCH %c.rutina ",
+				'e', "Entrenamiento", 'e',
+				'e', 'e', 'e'
+		); // Consulta JPQL
+
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			entr = this.entreDao.obtenerEntidadesEntrenamiento(this.manager, consulta);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener los entrenamiento!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return entr;
+	}
+
 	// Actualizar Entrenamiento
-	public void actualizarEstadoEntrenamiento(int id, ParametrosEntrenamiento paramEntre) {		
-		Entrenamiento entrenamiento = this.obtenerEntrenamiento(id);
-//		Cliente clienteAntiguo = null;
-//		Tutor tutorAntiguo = null;
-//		Rutina rutinaAntigua = null;
+	public boolean actualizarEstadoEntrenamiento(int id, ParametrosEntrenamiento paramEntre) {		
+		Entrenamiento entrenamiento = this.obtenerEntrenamientoYSusObjetos(id);
+		Cliente clienteAntiguo = null;
+		Tutor tutorAntiguo = null;
+		Rutina rutinaAntigua = null;
 		
 		// MANEJO DE FALLO [ ENTIDAD NO EXISTENTE EN LA BD ]
 		if (entrenamiento == null) {
 			System.out.printf("[ ERROR ] > El entrenamiento %d no se encuentra en el sistema!%n", id);
-			return;
+			return false;
 		}
 		
 		// ALMACENA LOS OBJETOS ANTIGUAMENTE RELACIONADOS CON LA ENTIDAD
-//		clienteAntiguo = entrenamiento.getCliente();
-//		tutorAntiguo = entrenamiento.getTutor();
-//		rutinaAntigua = entrenamiento.getRutina();
+		clienteAntiguo = entrenamiento.getCliente();
+		tutorAntiguo = entrenamiento.getTutor();
+		rutinaAntigua = entrenamiento.getRutina();
 		
 		// SE MODIFICA EL OBJETO
 		if (paramEntre.cliente != null) {
-			if (scli.obtenerCliente(paramEntre.cliente.getDni()) == null) {
+			if (scli.obtenerCliente(paramEntre.cliente.getDni(), true) == null) {
 				System.out.println("[ ERROR ] > El parámetro cliente no es válido!");
-				return;
+				return false;
 			}
 			entrenamiento.setCliente(paramEntre.cliente);
 		}
 		
 		if (paramEntre.tutor != null) {
-				if (stutor.obtenerTutor(paramEntre.tutor.getDni()) == null) {
-					System.out.println("[ ERROR ] > El parámetro tutor no es válido!");
-					return;
+			if (stutor.obtenerTutor(paramEntre.tutor.getDni(), true) == null) {
+				System.out.println("[ ERROR ] > El parámetro tutor no es válido!");
+				return false;
 			}
 			entrenamiento.setTutor(paramEntre.tutor);
 		}
@@ -176,7 +242,7 @@ public class EntrenamientoServicio {
 		if (paramEntre.rutina != null) {
 			if (srut.obtenerRutina(paramEntre.rutina.getIdRutina()) == null) {
 				System.out.println("[ ERROR ] > El parámetro rutina no es válido!");
-				return;
+				return false;
 			}
 			entrenamiento.setRutina(paramEntre.rutina);
 		}
@@ -208,54 +274,56 @@ public class EntrenamientoServicio {
 			entrenamiento = this.entreDao.actualizarEntidadEntrenamiento(this.manager, entrenamiento);
 			// System.out.println("A");
 			
-//			if (paramEntre.cliente != null) {
-//				// ENLAZADO A CLIENTE NUEVO
-//				this.cli = this.manager.merge(entrenamiento.getCliente());
-//				this.cli.getEntrenamientos().add(entrenamiento);
-//				
-//				// System.out.println("B");
-//				
-//				// DESENLAZADO DE CLIENTE VIEJO
-//				clienteAntiguo = this.manager.merge(clienteAntiguo);
-//				clienteAntiguo.getEntrenamientos().remove(entrenamiento);
-//				
-//				// System.out.println("C");
-//			}
-//			
-//			if (paramEntre.tutor != null) {
-//				// ENLAZADO A TUTOR NUEVO
-//				this.tutor = this.manager.merge(entrenamiento.getTutor());
-//				this.tutor.getEntrenamientos().add(entrenamiento);
-//				
-//				// System.out.println("D");
-//				
-//				// DESENLAZADO DE TUTOR VIEJO
-//				tutorAntiguo = this.manager.merge(tutorAntiguo);
-//				tutorAntiguo.getEntrenamientos().remove(entrenamiento);
-//				
-//				// System.out.println("F");
-//			}
-//			
-//			if (paramEntre.rutina != null) {
-//				// ENLAZADO A RUTINA NUEVA
-//				this.rutina = this.manager.merge(entrenamiento.getRutina());
-//				this.rutina.getEntrenamientos().add(entrenamiento);
-//				
-//				// System.out.println("G");
-//				
-//				// DESENLAZADO DE RUTINA VIEJA
-//				rutinaAntigua = this.manager.merge(rutinaAntigua);
-//				rutinaAntigua.getEntrenamientos().remove(entrenamiento);
-//				
-//				// System.out.println("H");
-//			}
+			if (paramEntre.cliente != null) {
+				// ENLAZADO A CLIENTE NUEVO
+				this.cli = this.manager.merge(entrenamiento.getCliente());
+				this.cli.getEntrenamientos().add(entrenamiento);
+				
+				// System.out.println("B");
+				
+				// DESENLAZADO DE CLIENTE VIEJO
+				clienteAntiguo = this.manager.merge(clienteAntiguo);
+				clienteAntiguo.getEntrenamientos().remove(entrenamiento);
+				
+				// System.out.println("C");
+			}
+			
+			if (paramEntre.tutor != null) {
+				// ENLAZADO A TUTOR NUEVO
+				this.tutor = this.manager.merge(entrenamiento.getTutor());
+				this.tutor.getEntrenamientos().add(entrenamiento);
+				
+				// System.out.println("D");
+				
+				// DESENLAZADO DE TUTOR VIEJO
+				tutorAntiguo = this.manager.merge(tutorAntiguo);
+				tutorAntiguo.getEntrenamientos().remove(entrenamiento);
+				
+				// System.out.println("F");
+			}
+			
+			if (paramEntre.rutina != null) {
+				// ENLAZADO A RUTINA NUEVA
+				this.rutina = this.manager.merge(entrenamiento.getRutina());
+				this.rutina.getEntrenamientos().add(entrenamiento);
+				
+				// System.out.println("G");
+				
+				// DESENLAZADO DE RUTINA VIEJA
+				rutinaAntigua = this.manager.merge(rutinaAntigua);
+				rutinaAntigua.getEntrenamientos().remove(entrenamiento);
+				
+				// System.out.println("H");
+			}
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El entrenamiento %d actualizado correctamente!%n", id);
+			return true;
 		} catch (Exception e) {
 			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al actualizar el entrenamiento!");
+			return false;
 		} finally {
 			this.manager.close();
 		}
@@ -263,7 +331,7 @@ public class EntrenamientoServicio {
 
 	// Eliminar Entrenamiento
 	public void eliminarEntrenamiento(int id) {		
-		Entrenamiento entrenamiento = this.obtenerEntrenamiento(id);
+		Entrenamiento entrenamiento = this.obtenerEntrenamientoYSusObjetos(id);
 		
 		// MANEJO DE FALLO [ ENTIDAD NO EXISTENTE EN LA BD ]
 		if (entrenamiento == null) {
@@ -280,16 +348,16 @@ public class EntrenamientoServicio {
 			this.entreDao.eliminarEntidadEntrenamiento(this.manager, entrenamiento);
 			
 			// DESENLACE CLIENTE
-//			this.cli = this.manager.merge(entrenamiento.getCliente());
-//			this.cli.getEntrenamientos().remove(entrenamiento);
+			this.cli = this.manager.merge(entrenamiento.getCliente());
+			this.cli.getEntrenamientos().remove(entrenamiento);
 			
 			// DESENLACE TUTOR
-//			this.tutor = this.manager.merge(entrenamiento.getTutor());
-//			this.tutor.getEntrenamientos().remove(entrenamiento);
+			this.tutor = this.manager.merge(entrenamiento.getTutor());
+			this.tutor.getEntrenamientos().remove(entrenamiento);
 			
 			// DESENLACE RUTINA
-//			this.rutina = this.manager.merge(entrenamiento.getRutina());
-//			this.rutina.getEntrenamientos().remove(entrenamiento);
+			this.rutina = this.manager.merge(entrenamiento.getRutina());
+			this.rutina.getEntrenamientos().remove(entrenamiento);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El entrenamiento %d eliminado correctamente!%n", id);

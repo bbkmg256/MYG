@@ -10,9 +10,7 @@ import edu.unam.repositorio.RutinaDAO;
 
 // JPA
 import jakarta.persistence.EntityManager;
-
-// EMF Singleton
-import utilidades.EMFSingleton;
+import utilidades.bd.EMFSingleton;
 
 // VARIOS
 import java.util.List;
@@ -98,12 +96,12 @@ public class RutinaServicio {
 	}
 	
 	// Actualizar datos de una Rutina del sistema
-	public void actualizarEstadoRutina(int id, String nombreRutina) {		
+	public boolean actualizarEstadoRutina(int id, String nombreRutina) {		
 		Rutina rutina = this.obtenerRutina(id);
 		
 		if (rutina == null) {
 			System.out.printf("[ ERROR ] > La rutina %d no se encuentra en el sistema!%n", id);
-			return;
+			return false;
 		}
 		
 		// EL ATRIBUTO SE FORMATEA A MINUSCULA
@@ -117,10 +115,12 @@ public class RutinaServicio {
 			this.rutinaDao.actualizarEntidadRutina(this.manager, rutina);
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La rutina %d actualizada correctamente!%n", id);
+			return true;
 		} catch (Exception e) {
 			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al actualizar la entidad!");
+			return false;
 		} finally {
 			this.manager.close();
 		}
