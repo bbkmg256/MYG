@@ -140,9 +140,33 @@ public class SeguimientoServicio {
 	}
 	
 	// Obtiene todos los Seguimientos del sistema
-	public List<Seguimiento> obtenerTodosLosSeguimientos(){		
+	public List<Seguimiento> obtenerTodosLosSeguimientos() {		
 		List<Seguimiento> segList= null;
 		String consulta = String.format("SELECT %c FROM %s %c", 's', "Seguimiento", 's'); // Consulta JPQL
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			segList = this.segDao.obtenerEntidadesSeguimiento(this.manager, consulta);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener los seguimientos!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return segList;
+	}
+	
+	// Obtiene todos los Seguimientos del sistema (CON SUS OBJETOS)
+	public List<Seguimiento> obtenerTodosLosSeguimientosYSusObjetos() {
+		List<Seguimiento> segList= null;
+		String consulta = String.format(
+				"SELECT %c FROM %s %c " +
+				"JOIN FETCH %c.entrenamiento "+
+				"JOIN FETCH %c.ejercicioRealizado",
+				's', "Seguimiento", 's', 's', 's'
+		); // Consulta JPQL
 		
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		

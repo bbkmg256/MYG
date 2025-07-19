@@ -204,6 +204,36 @@ public class EntrenamientoServicio {
 		return entr;
 	}
 
+	// SOBRECARGADO PARA USAR EN EL CONTROLADOR "ControladorVistaEntSeg" //
+	// PARA LA VISTA DE SELECCION DE ENTRENAMIENTO EN SEGUIMIENTO.		 //
+	// Obtiene todos los Entrenamientos del sistema (CON TODOS SUS OBJETOS)
+	public List<Entrenamiento> obtenerTodosLosEntrenamientosYSusObjetos(Cliente cli) {		
+		List<Entrenamiento> entr = null;
+		String consulta = String.format(
+				"SELECT %c FROM %s %c " + 
+				"JOIN FETCH %c.cliente " + 
+				"JOIN FETCH %c.tutor " + 
+				"JOIN FETCH %c.rutina " +
+				"WHERE %c.cliente = :cliente",
+				'e', "Entrenamiento", 'e',
+				'e', 'e', 'e', 'e'
+		); // Consulta JPQL
+
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			entr = this.entreDao.obtenerEntidadesEntrenamiento(this.manager, consulta, cli);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener los entrenamiento!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return entr;
+	}
+
 	// Actualizar Entrenamiento
 	public boolean actualizarEstadoEntrenamiento(int id, ParametrosEntrenamiento paramEntre) {		
 		Entrenamiento entrenamiento = this.obtenerEntrenamientoYSusObjetos(id);
