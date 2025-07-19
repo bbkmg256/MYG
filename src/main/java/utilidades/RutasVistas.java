@@ -54,8 +54,8 @@ public class RutasVistas {
 	
 	// RUTAS VISTAS SEGUIMIENTO
 	private static final String RUTA_VSEG = "/vistas/vseguimiento/";
-	public static final String VISTA_ABM_SEG = RUTA_VSEG + "vistaABMSeguimiento.fxml";
-	public static final String VISTA_CARGA_MODIF_SEG = RUTA_VSEG + "vistaCargaModifSeguimiento.fxml";
 	public static final String VISTA_CLI_SEG = RUTA_VSEG + "vistaClienteSeguimiento.fxml";
 	public static final String VISTA_ENT_SEG = RUTA_VSEG + "vistaEntrenamientoSeguimiento.fxml";
+	public static final String VISTA_ABM_SEG = RUTA_VSEG + "vistaABMSeguimiento.fxml";
+	public static final String VISTA_CARGA_MODIF_SEG = RUTA_VSEG + "vistaCargarModifSeguimiento.fxml";
 }
