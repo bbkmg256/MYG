@@ -44,10 +44,10 @@
             </TableView>
             <HBox alignment="BOTTOM_RIGHT" prefHeight="44.0" prefWidth="536.0" spacing="15.0">
                <children>
-                  <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCargar" prefHeight="40.0" prefWidth="120.0" text="Crear" />
-                  <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="120.0" text="Modificar" />
-                  <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="120.0" text="Eliminar" />
-                  <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="120.0" text="Atras" />
+                  <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCargar" prefHeight="40.0" prefWidth="141.0" text="Agregar" />
+                  <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="141.0" text="Modificar" />
+                  <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="141.0" text="Eliminar" />
+                  <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="141.0" text="Atras" />
                </children>
             </HBox>
          </children>

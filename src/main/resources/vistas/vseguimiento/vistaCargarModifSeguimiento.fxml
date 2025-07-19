@@ -13,46 +13,46 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="572.0" prefWidth="772.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="59.0" prefHeight="62.0" prefWidth="772.0">
          <children>
-            <Label text="Seguimiento de Ejercicio">
+            <Label fx:id="LBTitulo" text="Label">
                <font>
-                  <Font name="System Bold Italic" size="24.0" />
+                  <Font name="System Bold Italic" size="36.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER" prefHeight="250.0" prefWidth="772.0" spacing="40.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="250.0" prefWidth="250.0" spacing="20.0">
-                     <children>
-                        <TextField prefHeight="45.0" prefWidth="250.0" promptText="Series" />
-                        <TextField prefHeight="45.0" prefWidth="250.0" promptText="Repeticiones" />
-                        <TextField prefHeight="45.0" prefWidth="250.0" promptText="Peso trabajado" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="250.0" prefWidth="250.0" spacing="20.0">
-                     <children>
-                        <ComboBox prefHeight="45.0" prefWidth="264.0" promptText="Ejercicio" />
-                        <DatePicker prefHeight="45.0" prefWidth="264.0" promptText="Fecha del dia" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="400.0" spacing="20.0">
-               <children>
-                  <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" text="Finalizar">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" text="Cancelar">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
          </children>
-      </VBox>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="175.0" prefHeight="250.0" prefWidth="772.0" spacing="40.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="250.0" prefWidth="250.0" spacing="20.0">
+               <children>
+                  <TextField fx:id="txtSeries" prefHeight="45.0" prefWidth="250.0" promptText="Series" />
+                  <TextField fx:id="txtRep" prefHeight="45.0" prefWidth="250.0" promptText="Repeticiones" />
+                  <TextField fx:id="txtPeso" prefHeight="45.0" prefWidth="250.0" promptText="Peso trabajado" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="250.0" prefWidth="250.0" spacing="20.0">
+               <children>
+                  <ComboBox fx:id="CBEjercicio" prefHeight="45.0" prefWidth="264.0" promptText="Ejercicio" />
+                  <DatePicker fx:id="DPFecha" prefHeight="45.0" prefWidth="264.0" promptText="Fecha del dia" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox alignment="BOTTOM_RIGHT" layoutX="386.0" layoutY="541.0" prefHeight="45.0" prefWidth="400.0" spacing="20.0">
+         <children>
+            <Button fx:id="BTCancelar" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="36.0" prefWidth="120.0" text="Cancelar">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="BTFinalizar" mnemonicParsing="false" onAction="#eventoBTFinalizar" prefHeight="36.0" prefWidth="120.0" text="Finalizar">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

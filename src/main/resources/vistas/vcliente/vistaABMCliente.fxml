@@ -38,12 +38,12 @@
                   <TableColumn fx:id="colFechaIngreso" prefWidth="95.0" text="Fecha Ing." />
                </columns>
             </TableView>
-            <HBox alignment="CENTER_RIGHT" spacing="10.0">
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="66.0" prefWidth="773.0" spacing="10.0">
                <children>
-                  <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCargar" prefHeight="36.0" prefWidth="100.0" text="Crear" />
-                  <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="36.0" prefWidth="100.0" text="Eliminar" />
-                  <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="36.0" prefWidth="100.0" text="Modificar" />
-                  <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="36.0" prefWidth="100.0" text="Atrás" />
+                  <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCargar" prefHeight="40.0" prefWidth="141.0" text="Agregar" />
+                  <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="141.0" text="Eliminar" />
+                  <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="141.0" text="Modificar" />
+                  <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="141.0" text="Atrás" />
                </children>
             </HBox>
          </children>

@@ -11,13 +11,17 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.ControladorVistaInicio">
    <children>
-      <HBox alignment="CENTER" layoutX="13.0" layoutY="19.0" prefHeight="70.0" prefWidth="773.0">
+      <HBox layoutX="13.0" layoutY="19.0" prefHeight="70.0" prefWidth="773.0">
          <children>
-            <Label text="Inicio" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold Italic" size="45.0" />
-               </font>
-            </Label>
+            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="231.0">
+               <children>
+                  <Label prefHeight="55.0" prefWidth="145.0" text="Inicio" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="DejaVu Sans Bold" size="45.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </HBox>
       <Label fx:id="LBEGG" layoutX="506.0" layoutY="555.0" text="¡No deberías estar viendo esto!" visible="false" />

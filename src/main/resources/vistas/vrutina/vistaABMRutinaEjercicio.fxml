@@ -12,19 +12,27 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.rutina.ControladorVistaABMRutinaEjercicio">
    <children>
-      <Label alignment="CENTER" layoutX="75.0" layoutY="21.0" prefHeight="58.0" prefWidth="652.0" text="Gestión de la Rutina" textAlignment="CENTER" wrapText="true">
-         <font>
-            <Font name="System Bold Italic" size="24.0" />
-         </font>
-      </Label>
-      <HBox layoutX="12.0" layoutY="93.0" prefHeight="497.0" prefWidth="777.0">
+      <HBox layoutX="14.0" layoutY="14.0" prefHeight="61.0" prefWidth="777.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="50.0" prefWidth="314.0" text="Gestión de la Rutina" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox layoutX="12.0" layoutY="81.0" prefHeight="509.0" prefWidth="777.0">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="265.0" prefWidth="149.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCrear" prefHeight="40.0" prefWidth="149.0" text="Agregar" />
                   <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="149.0" text="Modificar" />
                   <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="149.0" text="Eliminar" />
-                  <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="149.0" text="Atras" />
+                  <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="149.0" text="Atras" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
             <TableView fx:id="TVRE" prefHeight="486.0" prefWidth="588.0" HBox.hgrow="ALWAYS">

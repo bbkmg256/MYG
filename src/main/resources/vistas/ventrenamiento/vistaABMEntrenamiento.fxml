@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.entrenamiento.ControladorVistaABMEntrenamiento">
    <children>
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="13.0" prefHeight="77.0" prefWidth="772.0">
+      <HBox layoutX="14.0" layoutY="13.0" prefHeight="57.0" prefWidth="772.0">
          <children>
             <Label alignment="CENTER" prefHeight="35.0" prefWidth="344.0" text="Lista de entrenamientos" textAlignment="CENTER" wrapText="true">
                <font>
@@ -20,7 +20,7 @@
             </Label>
          </children>
       </HBox>
-      <TableView fx:id="TVEntrenamiento" layoutX="10.0" layoutY="101.0" prefHeight="414.0" prefWidth="780.0">
+      <TableView fx:id="TVEntrenamiento" layoutX="10.0" layoutY="83.0" prefHeight="432.0" prefWidth="780.0">
          <columns>
             <TableColumn fx:id="TCID" prefWidth="79.0" text="ID" />
             <TableColumn fx:id="TCCli" prefWidth="118.0" text="Cliente" />
@@ -31,9 +31,9 @@
             <TableColumn fx:id="TCPT" prefWidth="122.0" text="Puntaje Tutor" />
          </columns>
       </TableView>
-      <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="524.0" prefHeight="66.0" prefWidth="780.0" spacing="10.0">
+      <HBox alignment="BOTTOM_RIGHT" layoutX="10.0" layoutY="524.0" prefHeight="66.0" prefWidth="780.0" spacing="10.0">
          <children>
-            <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCrear" prefHeight="40.0" prefWidth="141.0" text="Crear" />
+            <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCrear" prefHeight="40.0" prefWidth="141.0" text="Agregar" />
             <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="141.0" text="Modificar" />
             <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="141.0" text="Eliminar" />
             <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="141.0" text="Atras" />

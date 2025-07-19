@@ -10,30 +10,42 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.seguimiento.ControladorVistaEntSeg">
    <children>
-      <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="572.0" prefWidth="772.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+      <HBox layoutX="14.0" layoutY="14.0" prefHeight="50.0" prefWidth="772.0">
          <children>
-            <Label text="Lista de Entrenamientos del Cliente">
+            <Label text="Lista de entrenamientos del cliente:">
                <font>
                   <Font name="System Bold Italic" size="24.0" />
                </font>
             </Label>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="txtCliente" text="Label">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="72.0" prefHeight="514.0" prefWidth="772.0" spacing="20.0">
+         <children>
             <TableView fx:id="TVEntrenamiento" prefHeight="432.0" prefWidth="763.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="TCID" prefWidth="60.0" text="ID" />
-                  <TableColumn fx:id="TCCli" prefWidth="100.0" text="Cliente" />
-                  <TableColumn fx:id="TCTu" prefWidth="100.0" text="Tutor" />
-                  <TableColumn fx:id="TCRu" prefWidth="100.0" text="Rutina" />
-                  <TableColumn fx:id="TCFI" prefWidth="110.0" text="Fecha Inicio" />
-                  <TableColumn fx:id="TCFf" prefWidth="110.0" text="Fecha Fin" />
-                  <TableColumn fx:id="TCPT" prefWidth="100.0" text="Puntaje Tutor" />
+                  <TableColumn fx:id="TCID" prefWidth="112.0" text="ID" />
+                  <TableColumn fx:id="TCTu" prefWidth="127.0" text="Tutor" />
+                  <TableColumn fx:id="TCRu" prefWidth="133.0" text="Rutina" />
+                  <TableColumn fx:id="TCFI" prefWidth="130.0" text="Fecha Inicio" />
+                  <TableColumn fx:id="TCFf" prefWidth="138.0" text="Fecha Fin" />
+                  <TableColumn fx:id="TCPT" prefWidth="131.0" text="Puntaje Tutor" />
                </columns>
             </TableView>
             <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="763.0" spacing="15.0">
                <children>
-                  <Button fx:id="BTAbrir" mnemonicParsing="false" onAction="#eventoBTAbrir" prefHeight="36.0" prefWidth="120.0" text="Abrir" />
                   <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="36.0" prefWidth="120.0" text="Atras" />
+                  <Button fx:id="BTAbrir" mnemonicParsing="false" onAction="#eventoBTAbrir" prefHeight="36.0" prefWidth="120.0" text="Abrir" />
                </children>
             </HBox>
          </children>

@@ -10,31 +10,39 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.seguimiento.ControladorVistaABMSeg">
    <children>
-      <Label alignment="CENTER" layoutX="20.0" layoutY="21.0" prefHeight="48.0" prefWidth="760.0" text="Lista de seguimientos" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="21.0">
-         <font>
-            <Font name="System Bold Italic" size="24.0" />
-         </font>
-      </Label>
+      <HBox layoutX="14.0" layoutY="14.0" prefHeight="64.0" prefWidth="772.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="46.0" prefWidth="309.0" text="Lista de seguimientos" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
       <HBox layoutX="15.0" layoutY="91.0" prefHeight="497.0" prefWidth="772.0">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="234.0" prefWidth="177.0" spacing="20.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCrear" prefHeight="40.0" prefWidth="129.0" text="Agregar" />
-                  <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="129.0" text="Modificar" />
                   <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="129.0" text="Eliminar" />
-                  <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="129.0" text="Atras" />
+                  <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="129.0" text="Modificar" visible="false" />
+                  <HBox alignment="BOTTOM_CENTER" prefHeight="133.0" prefWidth="179.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="129.0" text="Atras" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
-            <TableView prefHeight="494.0" prefWidth="591.0" HBox.hgrow="ALWAYS">
+            <TableView fx:id="TVSeguimiento" prefHeight="494.0" prefWidth="591.0" HBox.hgrow="ALWAYS">
                <columns>
-                  <TableColumn prefWidth="77.0" text="ID" />
-                  <TableColumn prefWidth="138.0" text="Ejercicio" />
-                  <TableColumn prefWidth="114.0" text="Repetición" />
-                  <TableColumn prefWidth="76.0" text="Serie" />
-                  <TableColumn prefWidth="79.0" text="Peso" />
-                  <TableColumn prefWidth="108.0" text="Fecha" />
+                  <TableColumn fx:id="TCID" prefWidth="77.0" text="ID" />
+                  <TableColumn fx:id="TCEjercicio" prefWidth="138.0" text="Ejercicio" />
+                  <TableColumn fx:id="TCRep" prefWidth="114.0" text="Repetición" />
+                  <TableColumn fx:id="TCSerie" prefWidth="76.0" text="Serie" />
+                  <TableColumn fx:id="TCPeso" prefWidth="79.0" text="Peso" />
+                  <TableColumn fx:id="TCFecha" prefWidth="108.0" text="Fecha" />
                </columns>
             </TableView>
          </children>
