@@ -8,20 +8,20 @@ package edu.unam.controlador;
 //import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+//import javafx.scene.control.Alert;
 //import javafx.fxml.FXMLLoader;
 //import javafx.scene.Parent;
 //import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+//import javafx.scene.control.ButtonType;
 //import javafx.scene.layout.AnchorPane;
 //import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
+//import javafx.scene.control.Alert.AlertType;
 import utilidades.RutasVistas;
 import utilidades.NavegadorDeVistas;
 import utilidades.NumeroDeVersion;
-import java.util.Optional;
+//import java.util.Optional;
 import edu.unam.servicio.GMServicio;
 import edu.unam.servicio.RutinaEjercicioServicio;
 import edu.unam.servicio.RutinaServicio;
@@ -65,35 +65,77 @@ public class ControladorVistaInicio {
     @FXML
     private Label LBBuildVer;
     
-    private GMServicio sgm = new GMServicio();
+    private GMServicio sgm;
     
-    private EjercicioServicio sejer = new EjercicioServicio();
+    private EjercicioServicio sejer;
     
-    private RutinaServicio srut = new RutinaServicio();
+    private RutinaServicio srut;
     
-    private EntrenamientoServicio sentre = new EntrenamientoServicio();
+    private EntrenamientoServicio sentre;
     
-    private ClienteServicio scli = new ClienteServicio();
+    private ClienteServicio scli;
     
-    private TutorServicio stutor = new TutorServicio();
+    private TutorServicio stutor;
     
-    private RutinaEjercicioServicio sre = new RutinaEjercicioServicio();
+    private RutinaEjercicioServicio sre;
     
     
     // METODOS Y EVENTOS //
+    private void inicializarDatos() {
+        sgm = new GMServicio();
+        sejer = new EjercicioServicio();
+        srut = new RutinaServicio();
+        sentre = new EntrenamientoServicio();
+        scli = new ClienteServicio();
+        stutor = new TutorServicio();
+        sre = new RutinaEjercicioServicio();    	
+    }
+    
     private void modificarEtiquetaVersionBuild() {
     	this.LBBuildVer.setText(NumeroDeVersion.version);
     }
 
-    private Optional<ButtonType> lanzarMensaje(
-    		AlertType tipoDeAlerta, String titulo,
-    		String cabecera, String contenido
-    ) {
-    	Alert alerta = new Alert(tipoDeAlerta);
-    	alerta.setTitle(titulo);
-    	alerta.setHeaderText(cabecera);
-    	alerta.setContentText(contenido);
-    	return alerta.showAndWait();
+//    private Optional<ButtonType> lanzarMensaje(
+//    		AlertType tipoDeAlerta, String titulo,
+//    		String cabecera, String contenido
+//    ) {
+//    	Alert alerta = new Alert(tipoDeAlerta);
+//    	alerta.setTitle(titulo);
+//    	alerta.setHeaderText(cabecera);
+//    	alerta.setContentText(contenido);
+//    	return alerta.showAndWait();
+//    }
+    
+    public void iniciar() {
+    	this.inicializarDatos();
+    	
+    	// ESTAS CONDICIONALES DESHABILITAN CIERTOS BOTONES SEGUN QUE //
+    	// DATOS FALTEN CARGAR PARA CADA APARTADO...				  //
+    	
+    	// SEGUIMIENTO
+    	if (this.sentre.obtenerTodosLosEntrenamientos().isEmpty()) {
+    		this.BTSeguimiento.setDisable(true);
+    	}
+    	
+    	// RUTINA
+    	if (this.sejer.obtenerTodosLosEjercicios().isEmpty()) {
+    		this.BTRutina.setDisable(true);
+    	}
+    	
+    	// ENTRENAMIENTO
+    	if (
+    			this.scli.obtenerTodosLosClientes().isEmpty() ||
+    			this.stutor.obtenerTodosLosTutores().isEmpty() ||
+    			this.srut.obtenerTodasLasRutinas().isEmpty() ||
+    			this.sre.obtenerTodasLasRutinaEjercicio().isEmpty()
+    		) {
+    		this.BTEntrenamiento.setDisable(true);
+    	}
+    	
+    	// EJERCICIO
+    	if (this.sgm.obtenerTodosLosGM().isEmpty()) {
+    		this.BTEjercicio.setDisable(true);
+    	}
     }
     
     @FXML
@@ -185,7 +227,18 @@ public class ControladorVistaInicio {
 
     @FXML
     private void eventoBTSeguimiento(ActionEvent event) {
-
+    	NavegadorDeVistas
+			.getInstancia()
+			.cargarNuevaVista(
+					this.getClass(),
+					RutasVistas.VISTA_CLI_SEG
+			);
+    	NavegadorDeVistas
+			.getInstancia()
+			.cambiarVista(
+					LBBuildVer,
+					"Seguimiento"
+			);
     }
 
     @FXML
@@ -220,34 +273,6 @@ public class ControladorVistaInicio {
 //    			contenedor.getHeight(),
 //    			contenedor.getWidth()
 //    	);
-
-    	// ESTAS CONDICIONALES DESHABILITAN CIERTOS BOTONES SEGUN QUE //
-    	// DATOS FALTEN CARGAR PARA CADA APARTADO...				  //
-    	
-    	// SEGUIMIENTO
-    	if (this.sentre.obtenerTodosLosEntrenamientos().isEmpty()) {
-    		this.BTSeguimiento.setDisable(true);
-    	}
-    	
-    	// RUTINA
-    	if (this.sejer.obtenerTodosLosEjercicios().isEmpty()) {
-    		this.BTRutina.setDisable(true);
-    	}
-    	
-    	// ENTRENAMIENTO
-    	if (
-    			this.scli.obtenerTodosLosClientes().isEmpty() ||
-    			this.stutor.obtenerTodosLosTutores().isEmpty() ||
-    			this.srut.obtenerTodasLasRutinas().isEmpty() ||
-    			this.sre.obtenerTodasLasRutinaEjercicio().isEmpty()
-    		) {
-    		this.BTEntrenamiento.setDisable(true);
-    	}
-    	
-    	// EJERCICIO
-    	if (this.sgm.obtenerTodosLosGM().isEmpty()) {
-    		this.BTEjercicio.setDisable(true);
-    	}
     }
 }
 

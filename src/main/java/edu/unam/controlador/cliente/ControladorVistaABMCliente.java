@@ -19,21 +19,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+//import javafx.scene.control.TextField;
+//import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 //import javafx.stage.Stage;
-import javafx.util.converter.IntegerStringConverter;
+//import javafx.util.converter.IntegerStringConverter;
 import utilidades.RutasVistas;
 //import utilidades.bd.EMFSingleton;
 
 //import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
+//import java.util.function.UnaryOperator;
 import edu.unam.modelo.Cliente;
 import edu.unam.servicio.ClienteServicio;
 import utilidades.NavegadorDeVistas;
@@ -110,12 +110,16 @@ public class ControladorVistaABMCliente {
 //    @FXML
 //    private TextField txtDNI;
     
-    private ClienteServicio cs = new ClienteServicio();
+    private ClienteServicio cs;
     
-    private List<Cliente> clientes = new ArrayList<>();
+//    private List<Cliente> clientes = new ArrayList<>();
 
 
     // METODOS Y EVENTOS //
+    private void inicializarDatos() {
+    	this.cs = new ClienteServicio();
+    }
+    
     private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
@@ -151,19 +155,24 @@ public class ControladorVistaABMCliente {
     }
     
     // EVITA QUE SE INGRESEN CARACTERES NO NUMERICOS EN UN TEXTFIELD
-    private void limitarATextoNumerico(TextField textField) {
-        // FILTRO
-    	UnaryOperator<TextFormatter.Change> integerFilter = change -> {
-            String newText = change.getControlNewText();
-            if (newText.matches("\\d*")) {
-                return change;
-            }
-            return null;
-        };
-
-        // CONVERSOR DE TIPOS
-        TextFormatter<Integer> textFormatter = new TextFormatter<>(new IntegerStringConverter(), null, integerFilter);
-        textField.setTextFormatter(textFormatter);
+//    private void limitarATextoNumerico(TextField textField) {
+//        // FILTRO
+//    	UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+//            String newText = change.getControlNewText();
+//            if (newText.matches("\\d*")) {
+//                return change;
+//            }
+//            return null;
+//        };
+//
+//        // CONVERSOR DE TIPOS
+//        TextFormatter<Integer> textFormatter = new TextFormatter<>(new IntegerStringConverter(), null, integerFilter);
+//        textField.setTextFormatter(textFormatter);
+//    }
+    
+    public void iniciar() {
+    	this.inicializarDatos();
+    	this.actualizarTabla(this.cs.obtenerTodosLosClientes());
     }
 
     @FXML
@@ -308,7 +317,7 @@ public class ControladorVistaABMCliente {
     
     @FXML
     private void initialize() {
-    	this.actualizarTabla(this.cs.obtenerTodosLosClientes());
+//    	this.actualizarTabla(this.cs.obtenerTodosLosClientes());
 //    	this.limitarATextoNumerico(txtDNI);
     }
 }

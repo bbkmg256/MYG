@@ -195,6 +195,8 @@ public class ControladorVistaCargaCliente {
     		return;
     	}
     	
+    	// VER DESPUES POR QUE CARAJO ESTOY REEMPLAZANDO CARACTERES  //
+    	// QUE CLARAMENTE NO SE PUEDEN INGRESAR POR EL FILTRO DEL TF //
     	// CASTEO DE CADENAS A ENTEROS
     	dni = Integer.parseInt(
     			this.txtDNI.getText().replaceAll(" ", "")
