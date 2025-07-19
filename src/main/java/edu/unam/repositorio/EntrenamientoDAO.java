@@ -13,6 +13,7 @@ import jakarta.persistence.EntityManager;
 
 // ENTIDADES
 import edu.unam.modelo.Entrenamiento;
+import edu.unam.modelo.Cliente;
 
 /**
 *
@@ -94,6 +95,14 @@ public class EntrenamientoDAO{
 //		return regEntidades;
 		
 		return em.createQuery(consulta, Entrenamiento.class).getResultList();
+	}
+
+	// SOBRECARGADO PARA USAR EL SERVICIO DE ENTRENAMIENTO		//
+	// EN EL CONTROLADOR "ControladorVistaEntSeg" PARA LA VISTA //
+	// DE SELECCION DE ENTRENAMIENTO EN SEGUIMIENTO.		 	//	
+	// LEER ENTIDADES
+	public List<Entrenamiento> obtenerEntidadesEntrenamiento(EntityManager em, String consulta, Cliente cli) {		
+		return em.createQuery(consulta, Entrenamiento.class).setParameter("cliente", cli).getResultList();
 	}
 	
 	// CODIGO VIEJO
