@@ -27,7 +27,11 @@ import edu.unam.modelo.Rutina;
  * 
  * NOTA:
  * 
- * SOLO SE DEJA FUNCIONANDO LA RELACION BIDIRECCIONAL CON RUTINA
+ * EN EL METODO DE ACTUALIZACION DE LA ENTIDAD, EL NUEVO ENLACE DE LO QUE
+ * SERÍA UNA NUEVA ENTIDAD RUTINA CON ESTA ENTIDAD, ESTÁ COMENTADA Y NO SE HACE,
+ * POR QUE EL USUARIO NO MODIFICA ESTE APARTADO, ES DECIR "O LO ASOCIA,
+ * O LO ELIMINA, PERO NO LO MODIFICA". LA RUTINA TOMARÍA NUEVAS HIJAS PARA
+ * ASOCIAR EJERCICIOS, PERO NO MODIFICA O CAMBIA DE HIJAS.
  * 
  */
 
@@ -99,7 +103,7 @@ public class RutinaEjercicioServicio {
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			regRE= this.reDao.obtenerEntidadRutinaEjercicio(this.manager, id);
+			regRE = this.reDao.obtenerEntidadRutinaEjercicio(this.manager, id);
 		} catch (Exception e) {
 			System.out.print(e);
 			System.out.println("[ ERROR ] > Falla al obtener el registro!");
@@ -126,7 +130,7 @@ public class RutinaEjercicioServicio {
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			regRE= this.reDao.obtenerEntidadRutinaEjercicio(this.manager, id, consulta);
+			regRE = this.reDao.obtenerEntidadRutinaEjercicio(this.manager, id, consulta);
 		} catch (Exception e) {
 			System.out.print(e);
 			System.out.println("[ ERROR ] > Falla al obtener el registro!");
@@ -138,7 +142,7 @@ public class RutinaEjercicioServicio {
 	}
 	
 	// Obtiene todos las RutinaEjejercicio del sistema
-	public List<RutinaEjercicio> obtenerTodasLasRutinaEjercicio(){		
+	public List<RutinaEjercicio> obtenerTodasLasRutinaEjercicio() {		
 		String consulta = String.format("SELECT %c FROM %s %c", 'r', "RutinaEjercicio", 'r'); // Consulta JPQL
 		List<RutinaEjercicio> reList = null;
 		
@@ -155,10 +159,31 @@ public class RutinaEjercicioServicio {
 		
 		return reList;
 	}
+
+	// SIN RELEVANCIA (BASURA)
+//	// Obtiene todos las RutinaEjejercicio del sistema
+//	public List<RutinaEjercicio> obtenerTodasLasRutinaEjercicioYSusObjetos() {		
+////		String consulta = String.format("SELECT %c FROM %s %c", 'r', "RutinaEjercicio", 'r'); // Consulta JPQL
+//		String consulta = "SELECT r FROM RutinaEjercicio r JOIN FETCH r.rutina JOIN FETCH r.ejercicio";
+//		List<RutinaEjercicio> reList = null;
+//		
+//		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+//		
+//		try {
+//			reList = this.reDao.obtenerEntidadesRutinaEjercicio(this.manager, consulta);
+//		} catch (Exception e) {
+//			System.out.println(e);
+//			System.out.println("[ ERROR ] > Falla al obtener las entidades!");
+//		} finally {
+//			this.manager.close();
+//		}
+//		
+//		return reList;
+//	}
 	
-	// OBTIENE TODO EL CONTENIDO DE LO QUE SERÍA UNA RUTINA (CON LOS EJERCICIOS)
-	public List<RutinaEjercicio> obtenerTodoElContenidoDesdeUnaRutina(int idRutina){
-		// TENER EN CUENTA QUE NO SE PUEDE HACER "getRutina()" POR QUE EXPLOTA TODO AL CARAJO
+	// OBTIENE TOD0 EL CONTENIDO DE LO QUE SERÍA UNA RUTINA (CON LOS EJERCICIOS)
+	public List<RutinaEjercicio> obtenerTodoElContenidoDesdeUnaRutina(int idRutina) {
+		// TENER EN CUENTA QUE NO SE PUEDE HACER "getRutina()" POR QUE EXPLOTA TOD0 AL CARAJO
 		String consulta = String.format(
 				"SELECT %c FROM %s %c " +
 				"JOIN FETCH %c.ejercicio " +

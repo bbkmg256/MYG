@@ -39,17 +39,17 @@ public class EntrenamientoServicio {
 	private EntityManager manager;
 	private Cliente cli;
 	private Tutor tutor;
-	private Rutina rutina;
+//	private Rutina rutina;
 	private ClienteServicio scli;
 	private TutorServicio stutor;
-	private RutinaServicio srut;
+//	private RutinaServicio srut;
 	
 	// Constructor
 	public EntrenamientoServicio() {
 		this.entreDao = new EntrenamientoDAO();
 		this.scli = new ClienteServicio();
 		this.stutor = new TutorServicio();
-		this.srut = new RutinaServicio();
+//		this.srut = new RutinaServicio();
 	}
 	
 	// Cargar Entrenamiento
@@ -65,10 +65,10 @@ public class EntrenamientoServicio {
 			return;
 		}
 		
-		if (entrenamiento.getRutina() == null || srut.obtenerRutina(entrenamiento.getRutina().getIdRutina()) == null) {
-			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene rutina asignada o este es nulo!%n", entrenamiento.getIdEntrenamiento());
-			return;
-		}
+//		if (entrenamiento.getRutina() == null || srut.obtenerRutina(entrenamiento.getRutina().getIdRutina()) == null) {
+//			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene rutina asignada o este es nulo!%n", entrenamiento.getIdEntrenamiento());
+//			return;
+//		}
 		
 		if (entrenamiento.getFechaInicio() == null) {
 			System.out.printf("[ ERROR ] > El entrenamiento %d no tiene una fecha de inicio asignada o este es nulo!%n", entrenamiento.getIdEntrenamiento());
@@ -96,8 +96,8 @@ public class EntrenamientoServicio {
 			this.tutor.getEntrenamientos().add(entrenamiento);
 			
 			// ENLACE A ENTIDAD RUTINA
-			this.rutina = this.manager.merge(entrenamiento.getRutina());
-			this.rutina.getEntrenamientos().add(entrenamiento);
+//			this.rutina = this.manager.merge(entrenamiento.getRutina());
+//			this.rutina.getEntrenamientos().add(entrenamiento);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El entrenamiento %d cargado correctamente!%n", entrenamiento.getIdEntrenamiento());
@@ -132,15 +132,21 @@ public class EntrenamientoServicio {
 	// Buscar Entrenamiento (CON SUS OBJETOS)
 	public Entrenamiento obtenerEntrenamientoYSusObjetos(int id) {		
 		Entrenamiento regEntre = null;
-		String consulta = String.format(
-				"SELECT %c FROM %s %c " + 
-				"JOIN FETCH %c.cliente " + 
-				"JOIN FETCH %c.tutor " + 
-				"JOIN FETCH %c.rutina " + 
-				"WHERE %c.idEntrenamiento = :id",
-				'e', "Entrenamiento", 'e', 'e',
-				'e', 'e', 'e'
-		); // Consulta JPQL
+//		String consulta = String.format(
+//				"SELECT %c FROM %s %c " + 
+//				"JOIN FETCH %c.cliente " + 
+//				"JOIN FETCH %c.tutor " + 
+//				"JOIN FETCH %c.rutina " + 
+//				"WHERE %c.idEntrenamiento = :id",
+//				'e', "Entrenamiento", 'e', 'e',
+//				'e', 'e', 'e'
+//		); // Consulta JPQL
+		
+		String consulta =
+				"SELECT e FROM Entrenamiento e " +
+				"JOIN FETCH e.cliente " +
+				"JOIN FETCH e.tutor " +
+				"WHERE e.idEntrenamiento = :id";
 		
 		// ADMINISTRADOR DE ENTIDADES
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
@@ -180,14 +186,19 @@ public class EntrenamientoServicio {
 	// Obtiene todos los Entrenamientos del sistema (CON TODOS SUS OBJETOS)
 	public List<Entrenamiento> obtenerTodosLosEntrenamientosYSusObjetos() {		
 		List<Entrenamiento> entr = null;
-		String consulta = String.format(
-				"SELECT %c FROM %s %c " + 
-				"JOIN FETCH %c.cliente " + 
-				"JOIN FETCH %c.tutor " + 
-				"JOIN FETCH %c.rutina ",
-				'e', "Entrenamiento", 'e',
-				'e', 'e', 'e'
-		); // Consulta JPQL
+//		String consulta = String.format(
+//				"SELECT %c FROM %s %c " + 
+//				"JOIN FETCH %c.cliente " + 
+//				"JOIN FETCH %c.tutor " + 
+//				"JOIN FETCH %c.rutina ",
+//				'e', "Entrenamiento", 'e',
+//				'e', 'e', 'e'
+//		); // Consulta JPQL
+		
+		String consulta =
+				"SELECT e FROM Entrenamiento e " +
+				"JOIN FETCH e.cliente " +
+				"JOIN FETCH e.tutor ";
 
 		// ADMINISTRADOR DE ENTIDADES
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
@@ -209,15 +220,21 @@ public class EntrenamientoServicio {
 	// Obtiene todos los Entrenamientos del sistema (CON TODOS SUS OBJETOS)
 	public List<Entrenamiento> obtenerTodosLosEntrenamientosYSusObjetos(Cliente cli) {		
 		List<Entrenamiento> entr = null;
-		String consulta = String.format(
-				"SELECT %c FROM %s %c " + 
-				"JOIN FETCH %c.cliente " + 
-				"JOIN FETCH %c.tutor " + 
-				"JOIN FETCH %c.rutina " +
-				"WHERE %c.cliente = :cliente",
-				'e', "Entrenamiento", 'e',
-				'e', 'e', 'e', 'e'
-		); // Consulta JPQL
+//		String consulta = String.format(
+//				"SELECT %c FROM %s %c " + 
+//				"JOIN FETCH %c.cliente " + 
+//				"JOIN FETCH %c.tutor " + 
+//				"JOIN FETCH %c.rutina " +
+//				"WHERE %c.cliente = :cliente",
+//				'e', "Entrenamiento", 'e',
+//				'e', 'e', 'e', 'e'
+//		); // Consulta JPQL
+		
+		String consulta =
+				"SELECT e FROM Entrenamiento e " +
+				"JOIN FETCH e.cliente " +
+				"JOIN FETCH e.tutor " +
+				"WHERE e.cliente = :cliente";
 
 		// ADMINISTRADOR DE ENTIDADES
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
@@ -239,7 +256,7 @@ public class EntrenamientoServicio {
 		Entrenamiento entrenamiento = this.obtenerEntrenamientoYSusObjetos(id);
 		Cliente clienteAntiguo = null;
 		Tutor tutorAntiguo = null;
-		Rutina rutinaAntigua = null;
+//		Rutina rutinaAntigua = null;
 		
 		// MANEJO DE FALLO [ ENTIDAD NO EXISTENTE EN LA BD ]
 		if (entrenamiento == null) {
@@ -250,7 +267,7 @@ public class EntrenamientoServicio {
 		// ALMACENA LOS OBJETOS ANTIGUAMENTE RELACIONADOS CON LA ENTIDAD
 		clienteAntiguo = entrenamiento.getCliente();
 		tutorAntiguo = entrenamiento.getTutor();
-		rutinaAntigua = entrenamiento.getRutina();
+//		rutinaAntigua = entrenamiento.getRutina();
 		
 		// SE MODIFICA EL OBJETO
 		if (paramEntre.cliente != null) {
@@ -269,13 +286,13 @@ public class EntrenamientoServicio {
 			entrenamiento.setTutor(paramEntre.tutor);
 		}
 		
-		if (paramEntre.rutina != null) {
-			if (srut.obtenerRutina(paramEntre.rutina.getIdRutina()) == null) {
-				System.out.println("[ ERROR ] > El parámetro rutina no es válido!");
-				return false;
-			}
-			entrenamiento.setRutina(paramEntre.rutina);
-		}
+//		if (paramEntre.rutina != null) {
+//			if (srut.obtenerRutina(paramEntre.rutina.getIdRutina()) == null) {
+//				System.out.println("[ ERROR ] > El parámetro rutina no es válido!");
+//				return false;
+//			}
+//			entrenamiento.setRutina(paramEntre.rutina);
+//		}
 		
 		if (paramEntre.fechaFin != null) {
 			entrenamiento.setFechaFin(paramEntre.fechaFin);
@@ -332,19 +349,19 @@ public class EntrenamientoServicio {
 				// System.out.println("F");
 			}
 			
-			if (paramEntre.rutina != null) {
-				// ENLAZADO A RUTINA NUEVA
-				this.rutina = this.manager.merge(entrenamiento.getRutina());
-				this.rutina.getEntrenamientos().add(entrenamiento);
-				
-				// System.out.println("G");
-				
-				// DESENLAZADO DE RUTINA VIEJA
-				rutinaAntigua = this.manager.merge(rutinaAntigua);
-				rutinaAntigua.getEntrenamientos().remove(entrenamiento);
-				
-				// System.out.println("H");
-			}
+//			if (paramEntre.rutina != null) {
+//				// ENLAZADO A RUTINA NUEVA
+//				this.rutina = this.manager.merge(entrenamiento.getRutina());
+//				this.rutina.getEntrenamientos().add(entrenamiento);
+//				
+//				// System.out.println("G");
+//				
+//				// DESENLAZADO DE RUTINA VIEJA
+//				rutinaAntigua = this.manager.merge(rutinaAntigua);
+//				rutinaAntigua.getEntrenamientos().remove(entrenamiento);
+//				
+//				// System.out.println("H");
+//			}
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El entrenamiento %d actualizado correctamente!%n", id);
@@ -386,8 +403,8 @@ public class EntrenamientoServicio {
 			this.tutor.getEntrenamientos().remove(entrenamiento);
 			
 			// DESENLACE RUTINA
-			this.rutina = this.manager.merge(entrenamiento.getRutina());
-			this.rutina.getEntrenamientos().remove(entrenamiento);
+//			this.rutina = this.manager.merge(entrenamiento.getRutina());
+//			this.rutina.getEntrenamientos().remove(entrenamiento);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El entrenamiento %d eliminado correctamente!%n", id);
