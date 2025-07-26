@@ -26,6 +26,8 @@ import edu.unam.servicio.GMServicio;
 import edu.unam.servicio.RutinaEjercicioServicio;
 import edu.unam.servicio.RutinaServicio;
 import edu.unam.servicio.TutorServicio;
+import edu.unam.controlador.cliente.ControladorVistaABMCliente;
+import edu.unam.controlador.entrenamiento.ControladorVistaABMEntrenamiento;
 import edu.unam.servicio.ClienteServicio;
 //import edu.unam.controlador.ejercicio.ControladorVistaCargaEjercicio;
 import edu.unam.servicio.EjercicioServicio;
@@ -146,6 +148,14 @@ public class ControladorVistaInicio {
     				this.getClass(),
     				RutasVistas.VISTA_ABM_CLIENTE
     		);
+    	
+    	ControladorVistaABMCliente CVABMC =
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABMC.iniciar();
+    	
     	NavegadorDeVistas
     		.getInstancia()
     		.cambiarVista(
@@ -185,6 +195,14 @@ public class ControladorVistaInicio {
 					this.getClass(),
 					RutasVistas.VISTA_ABM_ENT
 			);
+    	
+    	ControladorVistaABMEntrenamiento CVABME =
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABME.iniciar();
+    	
 		NavegadorDeVistas
 			.getInstancia()
 			.cambiarVista(
