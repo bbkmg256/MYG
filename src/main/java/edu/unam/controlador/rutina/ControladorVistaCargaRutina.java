@@ -1,5 +1,7 @@
 package edu.unam.controlador.rutina;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Rutina;
 import edu.unam.servicio.RutinaServicio;
@@ -7,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -39,7 +42,7 @@ public class ControladorVistaCargaRutina {
     
     
     // METODOS Y EVENTOS //
-    private void lanzarMensaje(
+    private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
     ) {
@@ -47,7 +50,7 @@ public class ControladorVistaCargaRutina {
     	alerta.setTitle(titulo);
     	alerta.setHeaderText(cabecera);
     	alerta.setContentText(contenido);
-    	alerta.showAndWait();
+    	return alerta.showAndWait();
     }
     
     // LIMITAR TF SOLO A TEXTO
@@ -77,6 +80,32 @@ public class ControladorVistaCargaRutina {
     		);
     		System.out.println("[ ERROR ] > Faltan campos que completar!"); // LOG
     		return;
+    	}
+    	
+    	// BLOQUE DE VERIFICACIÓN DE NOMBRES DUPLICADOS //
+    	List<Rutina> listaRu = this.srut.obtenerTodasLasRutinas();
+    	
+    	boolean rtConNombreRepetido = false;
+    	
+    	for (Rutina regRt : listaRu) {
+    		if (regRt.getNombreRutina().equals(nombreRutina)) {
+    			rtConNombreRepetido = true;
+    			break;
+    		}
+    	}
+    	
+    	if (rtConNombreRepetido) {
+        	Optional<ButtonType> resultado =  this.lanzarMensaje(
+        			AlertType.CONFIRMATION, "Atención!",
+        			"NOMBRES DUPLICADOS",
+        			"Ya existe una rutina con el mismo nombre, quiere continuar?"
+        	);
+        	
+        	// CONFIRMAR O DENEGAR OPERACION
+        	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+        		System.out.println("[ ! ] > Cancelado!"); // LOG
+            	return;
+        	}
     	}
     	
     	this.srut.crearRutina(this.rutina = new Rutina(nombreRutina));
