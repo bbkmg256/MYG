@@ -62,6 +62,13 @@ import jakarta.persistence.CascadeType; // DEFINE UNA PROPIEDAD DE RELACION ENTR
  *	//			inverseJoinColumns = @JoinColumn(name = "ejercicio_id") // COLUMNA ID DE ENTIDAD EJERCICIO
  *	//	)
  *	//	private List<Ejercicio> ejercicios = new ArrayList<>(); // FK'S DE EJERCICIO
+ *
+ *	IMPORTANTE: ADEMÁS DE QUE ME QUIERO PEGAR UN TIRO, DISEÑE ALGO MAL EN LA RELACIÓN DE LAS ENTIDADES
+ *	RUTINA Y ENTRENAMIENTO, TAS COMO ESTÁ, LA RELACION ACEPTA QUE UNA RUTINA ESTE EN VARIOS ENTRENAMIENTOS,
+ *	PERO QUE UN ENTRENAMIENTO SOLO PUEDA TENER UNA RUTINA, COSA QUE EN LA REALIDAD, ASÍ NO FUNCIONA, POR ENDE,
+ *	PARA TENER QUE SE PERMITA CARGAR VARIAS RUTINAS EN VARIOS ENTRENAMIENTOS, DE LO CONTRARIO NOS SE PUEDE.
+ *
+ *	EN RESUMEN, HAY QUE CREAR OTRA ENTIDAD INTERMEDIA ENTRE RUTINA Y ENTRENAMIENTO.
  * 
  */
 
@@ -87,8 +94,12 @@ public class Rutina {
 	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
 	
 	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO (LISTA)
+//	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
+//	private List<Entrenamiento> entrenamientos = new ArrayList<>();
+	
+	// ATRIBUTO RELACION CON CLASE RUTINAENTRENAMIENTO
 	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
-	private List<Entrenamiento> entrenamientos = new ArrayList<>();
+	private List<RutinaEntrenamiento> rutinaentrenamiento = new ArrayList<>();
 	
 	// CONTRUCTOR
 	public Rutina() {}
@@ -107,12 +118,16 @@ public class Rutina {
 		this.rutinaEjercicio = listRutinaEjercico;
 	}
 	
-	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
-		this.entrenamientos = listEntrenamientos;
-	}
+//	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
+//		this.entrenamientos = listEntrenamientos;
+//	}
 	
 	public void setNombreRutina(String valNombre) {
 		this.nombreRutina = valNombre;
+	}
+	
+	public void setRutinaEntrenamiento(List<RutinaEntrenamiento> paramRE) {
+		this.rutinaentrenamiento = paramRE;
 	}
 	
 	// GET
@@ -124,11 +139,15 @@ public class Rutina {
 		return this.rutinaEjercicio;
 	}
 	
-	public List<Entrenamiento> getEntrenamientos() {
-		return this.entrenamientos;
-	}
+//	public List<Entrenamiento> getEntrenamientos() {
+//		return this.entrenamientos;
+//	}
 	
 	public String getNombreRutina() {
 		return this.nombreRutina;
+	}
+	
+	public List<RutinaEntrenamiento> getRutinaEntrenamiento() {
+		return this.rutinaentrenamiento;
 	}
 }

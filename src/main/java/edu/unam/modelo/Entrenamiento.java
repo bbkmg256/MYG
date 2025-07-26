@@ -44,7 +44,16 @@ import jakarta.persistence.FetchType;
  * 
  * NOTA:
  * 
- * NADA
+ *	IMPORTANTE: ADEMÁS DE QUE ME QUIERO PEGAR UN TIRO, DISEÑE ALGO MAL EN LA RELACIÓN DE LAS ENTIDADES
+ *	RUTINA Y ENTRENAMIENTO, TAS COMO ESTÁ, LA RELACION ACEPTA QUE UNA RUTINA ESTE EN VARIOS ENTRENAMIENTOS,
+ *	PERO QUE UN ENTRENAMIENTO SOLO PUEDA TENER UNA RUTINA, COSA QUE EN LA REALIDAD, ASÍ NO FUNCIONA, POR ENDE,
+ *	PARA TENER QUE SE PERMITA CARGAR VARIAS RUTINAS EN VARIOS ENTRENAMIENTOS, DE LO CONTRARIO NOS SE PUEDE.
+ *
+ *	EN RESUMEN, HAY QUE CREAR OTRA ENTIDAD INTERMEDIA ENTRE RUTINA Y ENTRENAMIENTO.
+ *
+ *	VOY A TENER QUE MODIFICAR LA VISTA DE ENTRENAMIENTO PARA HACER ALGO MEDIO SIMILAR A LA VISTA QUE HAY PARA RUTINA,
+ *	DONDE SE CREA EL ENTRENAMIENTO, PARA DESPUES ABRIRLO Y EMPEZAR A CARGAR LAS RUTINAS AL MISMO, ASÍ HAY UN FUJO DE UI
+ *	MAS ENTENDIBLE PARA EL USUARIO.
  * 
  */
 
@@ -81,19 +90,36 @@ public class Entrenamiento {
 	private Tutor tutor; // FK'S DE TUTOR
 	
 	// ATRIBUTO RELACION A CLASE RUTINA (LISTA)
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "rutina_id")
-	private Rutina rutina;
-	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "rutina_id")
+//	private Rutina rutina;
+		
 	// ATRIBUTO RELACION A CLASE SEGUIMIENTO (LISTA)
 	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
 	private List<Seguimiento> seguimientos = new ArrayList<>();
 	
+	// ATRIBUTO RELACION A CLASE RUTINAENTRENAMIENTO
+	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
+	private List<RutinaEntrenamiento> rutinaentrenamiento = new ArrayList<>();
+	
 	// CONTRUCTOR
 	public Entrenamiento() {}
 	
+//	public Entrenamiento(
+//			Cliente paramCli, Tutor paramTutor, Rutina paramRutina,
+//			LocalDate paramFechaInicio, LocalDate paramFechaFin
+//	) {
+//		
+//		this.puntaje = 0; // AL INICIO ES 0 HASTA QUE EL CLIENTE LO PUNTUE DESPUES DE 5 SEMANAS DEL ENTRENAMIENTO
+//		this.fechaInicio = paramFechaInicio;
+//		this.fechaFin = paramFechaFin;
+//		this.cliente = paramCli;
+//		this.tutor = paramTutor;
+////		this.rutina = paramRutina;
+//	}
+	
 	public Entrenamiento(
-			Cliente paramCli, Tutor paramTutor, Rutina paramRutina,
+			Cliente paramCli, Tutor paramTutor,
 			LocalDate paramFechaInicio, LocalDate paramFechaFin
 	) {
 		
@@ -102,7 +128,6 @@ public class Entrenamiento {
 		this.fechaFin = paramFechaFin;
 		this.cliente = paramCli;
 		this.tutor = paramTutor;
-		this.rutina = paramRutina;
 	}
 	
 	// SET
@@ -135,8 +160,12 @@ public class Entrenamiento {
 		this.seguimientos = listSeguimiento;
 	}
 	
-	public void setRutina(Rutina valRutina) {
-		this.rutina = valRutina;
+//	public void setRutina(Rutina valRutina) {
+//		this.rutina = valRutina;
+//	}
+	
+	public void setRutinaEntrenamiento(List<RutinaEntrenamiento> paramRE) {
+		this.rutinaentrenamiento = paramRE;
 	}
 	
 	// GET
@@ -156,7 +185,6 @@ public class Entrenamiento {
 		return this.fechaFin;
 	}
 	
-	
 	public Cliente getCliente() {
 		return this.cliente;
 	}
@@ -169,7 +197,11 @@ public class Entrenamiento {
 		return this.seguimientos;
 	}
 	
-	public Rutina getRutina() {
-		return this.rutina;
+//	public Rutina getRutina() {
+//		return this.rutina;
+//	}
+	
+	public List<RutinaEntrenamiento> getRutinaEntrenamiento() {
+		return this.rutinaentrenamiento;
 	}
 }
