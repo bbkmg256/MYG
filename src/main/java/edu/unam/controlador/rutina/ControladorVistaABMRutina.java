@@ -14,6 +14,7 @@ import utilidades.RutasVistas;
 import java.util.List;
 import java.util.Optional;
 
+import edu.unam.controlador.ControladorVistaInicio;
 import edu.unam.modelo.Rutina;
 import edu.unam.servicio.RutinaServicio;
 
@@ -230,6 +231,14 @@ public class ControladorVistaABMRutina {
     				this.getClass(),
     				RutasVistas.VISTA_INICIO
     		);
+    	
+    	ControladorVistaInicio CVI = 
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVI.iniciar();
+    	
     	NavegadorDeVistas
     		.getInstancia()
     		.cambiarVista(

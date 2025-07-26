@@ -33,6 +33,8 @@ import java.time.LocalDate;
 //import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import edu.unam.controlador.ControladorVistaInicio;
 //import java.util.function.UnaryOperator;
 import edu.unam.modelo.Cliente;
 import edu.unam.servicio.ClienteServicio;
@@ -220,6 +222,14 @@ public class ControladorVistaABMCliente {
     				this.getClass(),
     				RutasVistas.VISTA_INICIO
     		);
+    	
+    	ControladorVistaInicio CVI = 
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVI.iniciar();
+    	
     	NavegadorDeVistas
     		.getInstancia()
     		.cambiarVista(

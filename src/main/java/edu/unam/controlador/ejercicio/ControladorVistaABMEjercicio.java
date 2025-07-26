@@ -22,6 +22,7 @@ import utilidades.RutasVistas;
 import java.util.List;
 import java.util.Optional;
 
+import edu.unam.controlador.ControladorVistaInicio;
 import edu.unam.modelo.Ejercicio;
 import edu.unam.servicio.EjercicioServicio;
 import edu.unam.modelo.GrupoMuscular;
@@ -118,6 +119,14 @@ public class ControladorVistaABMEjercicio {
 					this.getClass(),
 					RutasVistas.VISTA_INICIO
 			);
+    	
+    	ControladorVistaInicio CVI = 
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVI.iniciar();
+    	
     	NavegadorDeVistas
 			.getInstancia()
 			.cambiarVista(

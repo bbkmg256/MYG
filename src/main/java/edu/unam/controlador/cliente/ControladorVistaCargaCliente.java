@@ -272,6 +272,13 @@ public class ControladorVistaCargaCliente {
     				RutasVistas.VISTA_ABM_CLIENTE
     		);
     	
+    	ControladorVistaABMCliente CVABMC =
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABMC.iniciar();
+    	
     	NavegadorDeVistas
     		.getInstancia()
     		.cambiarVista(
@@ -288,6 +295,14 @@ public class ControladorVistaCargaCliente {
     				this.getClass(),
     				RutasVistas.VISTA_ABM_CLIENTE
     		);
+    	
+    	ControladorVistaABMCliente CVABMC =
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABMC.iniciar();
+    	
     	NavegadorDeVistas
     		.getInstancia()
     		.cambiarVista(

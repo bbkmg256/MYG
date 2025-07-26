@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
+
+import edu.unam.controlador.ControladorVistaInicio;
 import edu.unam.modelo.Tutor;
 import edu.unam.servicio.TutorServicio;
 import utilidades.NavegadorDeVistas;
@@ -191,6 +193,14 @@ public class ControladorVistaABMTutor {
     				this.getClass(),
     				RutasVistas.VISTA_INICIO
     		);
+    	
+    	ControladorVistaInicio CVI = 
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVI.iniciar();
+    	
     	NavegadorDeVistas
     		.getInstancia()
     		.cambiarVista(

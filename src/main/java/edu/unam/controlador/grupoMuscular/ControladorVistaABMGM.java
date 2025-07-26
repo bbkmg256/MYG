@@ -23,6 +23,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import utilidades.RutasVistas;
 import utilidades.NavegadorDeVistas;
 import java.util.Optional;
+
+import edu.unam.controlador.ControladorVistaInicio;
 import edu.unam.modelo.GrupoMuscular;
 import edu.unam.servicio.GMServicio;
 
@@ -162,10 +164,24 @@ public class ControladorVistaABMGM {
     private void eventoBTAtras(ActionEvent event) {
     	NavegadorDeVistas
 			.getInstancia()
-			.cargarNuevaVista(this.getClass(), RutasVistas.VISTA_INICIO);
+			.cargarNuevaVista(
+					this.getClass(), 
+					RutasVistas.VISTA_INICIO
+			);
+    	
+    	ControladorVistaInicio CVI = 
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVI.iniciar();
+    	
     	NavegadorDeVistas
 			.getInstancia()
-			.cambiarVista(BTAtras, "Inicio");
+			.cambiarVista(
+					BTAtras, 
+					"Inicio"
+			);
     }
     
     @FXML
