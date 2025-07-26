@@ -23,9 +23,9 @@ import edu.unam.modelo.Tutor;
 import edu.unam.servicio.ClienteServicio;
 import edu.unam.servicio.EntrenamientoServicio;
 import edu.unam.modelo.Entrenamiento;
-import edu.unam.servicio.RutinaServicio;
+//import edu.unam.servicio.RutinaServicio;
 import edu.unam.servicio.TutorServicio;
-import edu.unam.modelo.Rutina;
+//import edu.unam.modelo.Rutina;
 import java.time.LocalDate; 
 
 /*
@@ -43,8 +43,8 @@ public class ControladorVistaCargaEntrenamiento {
     @FXML
     private ComboBox<Cliente> CBCli;
 
-    @FXML
-    private ComboBox<Rutina> CBRu;
+//    @FXML
+//    private ComboBox<Rutina> CBRu;
 
     @FXML
     private ComboBox<Tutor> CBTu;
@@ -65,7 +65,7 @@ public class ControladorVistaCargaEntrenamiento {
     
     private TutorServicio stu = new TutorServicio();
     
-    private RutinaServicio sru = new RutinaServicio();
+//    private RutinaServicio sru = new RutinaServicio();
     
     private EntrenamientoServicio sentre = new EntrenamientoServicio();
     
@@ -112,6 +112,13 @@ public class ControladorVistaCargaEntrenamiento {
 	    			this.getClass(),
 	    			RutasVistas.VISTA_ABM_ENT
 	    	);
+    	
+    	ControladorVistaABMEntrenamiento CVABME =
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABME.iniciar();
 	
     	NavegadorDeVistas
 	    	.getInstancia()
@@ -125,7 +132,7 @@ public class ControladorVistaCargaEntrenamiento {
     private void eventoBTFinalizar(ActionEvent event) {
     	Cliente regCli = this.CBCli.getSelectionModel().getSelectedItem();
     	Tutor regTu = this.CBTu.getSelectionModel().getSelectedItem();
-    	Rutina regRu = this.CBRu.getSelectionModel().getSelectedItem();
+//    	Rutina regRu = this.CBRu.getSelectionModel().getSelectedItem();
     	
     	LocalDate fechaInicio, fechaFin;
     	fechaInicio = this.DPFI.getValue();
@@ -149,12 +156,12 @@ public class ControladorVistaCargaEntrenamiento {
     		); // LOG
     	}
     	
-    	if (!hayErrorDeCampos && regRu == null) {
-    		hayErrorDeCampos = true;
-    		System.err.println(
-    				"[ ERROR ] > Debe seleccionar una rutina para continuar!"
-    		); // LOG
-    	}
+//    	if (!hayErrorDeCampos && regRu == null) {
+//    		hayErrorDeCampos = true;
+//    		System.err.println(
+//    				"[ ERROR ] > Debe seleccionar una rutina para continuar!"
+//    		); // LOG
+//    	}
     	
     	if (!hayErrorDeCampos && fechaInicio == null) {
     		hayErrorDeCampos = true;
@@ -192,7 +199,9 @@ public class ControladorVistaCargaEntrenamiento {
     		return;
     	}
     	
-    	Entrenamiento ent = new Entrenamiento(regCli, regTu, regRu, fechaInicio, fechaFin);
+//    	Entrenamiento ent = new Entrenamiento(regCli, regTu, regRu, fechaInicio, fechaFin);
+    	
+    	Entrenamiento ent = new Entrenamiento(regCli, regTu, fechaInicio, fechaFin);
     	
     	this.sentre.cargarEntrenamiento(ent);
     	
@@ -220,11 +229,18 @@ public class ControladorVistaCargaEntrenamiento {
 	    			this.getClass(),
 	    			RutasVistas.VISTA_ABM_ENT
 	    	);
+    	
+    	ControladorVistaABMEntrenamiento CVABME =
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABME.iniciar();
 
 		NavegadorDeVistas
 	    	.getInstancia()
 	    	.cambiarVista(
-	    			this.BTCancelar,
+	    			this.BTFinalizar,
 	    			"Entrenamiento"
 	    	);
     }
@@ -246,11 +262,11 @@ public class ControladorVistaCargaEntrenamiento {
     			tu -> tu.getNombre()
     	);
     	
-    	this.actualizarCB(
-    			this.sru.obtenerTodasLasRutinas(),
-    			this.CBRu,
-    			ru -> ru.getNombreRutina()
-    	);
+//    	this.actualizarCB(
+//    			this.sru.obtenerTodasLasRutinas(),
+//    			this.CBRu,
+//    			ru -> ru.getNombreRutina()
+//    	);
     	
     	// PARA QUE EL USUARIO NO PUEDA DIGITAR //
     	// CUALQUIERA EN LOS DP.				//

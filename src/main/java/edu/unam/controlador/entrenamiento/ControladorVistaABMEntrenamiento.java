@@ -14,15 +14,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import utilidades.AlmacenadorDeEntidades;
 import utilidades.NavegadorDeVistas;
 import utilidades.RutasVistas;
 import edu.unam.modelo.Entrenamiento;
 import java.time.LocalDate;
 import java.util.Optional;
 import edu.unam.servicio.EntrenamientoServicio;
+import edu.unam.controlador.ControladorVistaInicio;
 import edu.unam.modelo.Cliente;
 import edu.unam.modelo.Tutor;
-import edu.unam.modelo.Rutina;
+//import edu.unam.modelo.Rutina;
 
 /*
  * 
@@ -48,6 +50,9 @@ public class ControladorVistaABMEntrenamiento {
 
     @FXML
     private Button BTModificar;
+    
+    @FXML
+    private Button BTAbrir;
 
     @FXML
     private TableView<Entrenamiento> TVEntrenamiento;
@@ -67,16 +72,20 @@ public class ControladorVistaABMEntrenamiento {
     @FXML
     private TableColumn<Entrenamiento, Integer> TCPT;
 
-    @FXML
-    private TableColumn<Entrenamiento, String> TCRu;
+//    @FXML
+//    private TableColumn<Entrenamiento, String> TCRu;
 
     @FXML
     private TableColumn<Entrenamiento, String> TCTu;
     
-    private EntrenamientoServicio sentre = new EntrenamientoServicio();
+    private EntrenamientoServicio sentre;
 
     
     // METODOS Y EVENTOS //
+    private void inicializarDatos() {
+    	sentre = new EntrenamientoServicio();
+    }
+    
     private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
@@ -123,10 +132,15 @@ public class ControladorVistaABMEntrenamiento {
     	});
     	
     	// RUTINA
-    	this.TCRu.setCellValueFactory(cellData -> {
-    		Rutina rut = cellData.getValue().getRutina();
-    		return (rut == null) ? null : new SimpleStringProperty(rut.getNombreRutina());
-    	});
+//    	this.TCRu.setCellValueFactory(cellData -> {
+//    		Rutina rut = cellData.getValue().getRutina();
+//    		return (rut == null) ? null : new SimpleStringProperty(rut.getNombreRutina());
+//    	});
+    }
+    
+    public void iniciar() {
+    	this.inicializarDatos();
+    	this.actualizarTabla();
     }
 
     @FXML
@@ -223,6 +237,7 @@ public class ControladorVistaABMEntrenamiento {
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
+    	// DESPUES ARREGLAR ESTO QUE ESTA HORRIBLE
     	CVCME.establecerEntrenamiento(regEnt);
     	
     	NavegadorDeVistas
@@ -230,6 +245,55 @@ public class ControladorVistaABMEntrenamiento {
 	    	.cambiarVista(
 	    			this.BTModificar,
 	    			"Modificar entrenamiento"
+	    	);
+    }
+    
+    @FXML
+    private void eventoBTAbrir(ActionEvent event) {
+    	Entrenamiento regEnt = TVEntrenamiento.getSelectionModel().getSelectedItem();
+    	
+    	if (regEnt == null) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR,
+    				"Error",
+    				"ERROR DE OPERACION",
+    				"Debe seleccionar un registo antes de modificar..."
+    		);
+    		System.err.println(
+    				"[ ERROR ] > Seleccione un registro para de modificar!"
+    		);
+    		return;
+    	}
+    	
+    	AlmacenadorDeEntidades.getInstancia().setEntrenamiento(regEnt);
+    	System.out.println(regEnt);
+    	
+//    	NavegadorDeVistas
+//	    	.getInstancia()
+//	    	.cargarNuevaVista(
+//	    			this.getClass(),
+//	    			RutasVistas.VISTA_ABM_RUT_ENT
+//	    	);
+    	
+    	NavegadorDeVistas
+	    	.getInstancia()
+	    	.cargarNuevaVista(
+	    			this.getClass(),
+	    			RutasVistas.VISTA_ABM_RUT_ENT_B
+	    	);
+	
+    	ControladorVistaABMRutinaEntrenamiento CVAMBRE = 
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVAMBRE.iniciar();
+		
+		NavegadorDeVistas
+	    	.getInstancia()
+	    	.cambiarVista(
+	    			this.BTAbrir,
+	    			"Gestion del entrenamiento"
 	    	);
     }
 
@@ -241,6 +305,14 @@ public class ControladorVistaABMEntrenamiento {
 	    			this.getClass(),
 	    			RutasVistas.VISTA_INICIO
 	    	);
+    	
+    	ControladorVistaInicio CVI = 
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVI.iniciar();
+    	
     	NavegadorDeVistas
 	    	.getInstancia()
 	    	.cambiarVista(
@@ -251,6 +323,6 @@ public class ControladorVistaABMEntrenamiento {
     
     @FXML
     private void initialize() {
-    	this.actualizarTabla();
+    
     }
 }

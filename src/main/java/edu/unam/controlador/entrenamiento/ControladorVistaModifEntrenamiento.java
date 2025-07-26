@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.function.Function;
 import edu.unam.modelo.Cliente;
 import edu.unam.modelo.Entrenamiento;
-import edu.unam.modelo.Rutina;
+//import edu.unam.modelo.Rutina;
 import edu.unam.modelo.Tutor;
 import edu.unam.servicio.ClienteServicio;
 import edu.unam.servicio.EntrenamientoServicio;
-import edu.unam.servicio.RutinaServicio;
+//import edu.unam.servicio.RutinaServicio;
 import edu.unam.servicio.TutorServicio;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,8 +41,8 @@ public class ControladorVistaModifEntrenamiento {
     @FXML
     private ComboBox<Cliente> CBCli;
 
-    @FXML
-    private ComboBox<Rutina> CBRu;
+//    @FXML
+//    private ComboBox<Rutina> CBRu;
 
     @FXML
     private ComboBox<Tutor> CBTu;
@@ -63,7 +63,7 @@ public class ControladorVistaModifEntrenamiento {
     
     private TutorServicio stu = new TutorServicio();
     
-    private RutinaServicio sru = new RutinaServicio();
+//    private RutinaServicio sru = new RutinaServicio();
     
     private EntrenamientoServicio sentre = new EntrenamientoServicio();
     
@@ -111,7 +111,7 @@ public class ControladorVistaModifEntrenamiento {
     	this.idEnt = entrenamiento.getIdEntrenamiento();
     	this.CBCli.setValue(entrenamiento.getCliente());
     	this.CBTu.setValue(entrenamiento.getTutor());
-    	this.CBRu.setValue(entrenamiento.getRutina());
+//    	this.CBRu.setValue(entrenamiento.getRutina());
     	this.DPFI.setValue(entrenamiento.getFechaInicio());
     	this.DPFF.setValue(entrenamiento.getFechaFin());
     	this.txtPuntaje.setText(Integer.toString(entrenamiento.getPuntaje()));
@@ -125,6 +125,13 @@ public class ControladorVistaModifEntrenamiento {
 	    			this.getClass(),
 	    			RutasVistas.VISTA_ABM_ENT
 	    	);
+
+    	ControladorVistaABMEntrenamiento CVABME =
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABME.iniciar();
 	
     	NavegadorDeVistas
 	    	.getInstancia()
@@ -138,7 +145,7 @@ public class ControladorVistaModifEntrenamiento {
     private void eventoBTFinalizar(ActionEvent event) {
     	this.paramEnt.cliente = this.CBCli.getSelectionModel().getSelectedItem();
     	this.paramEnt.tutor = this.CBTu.getSelectionModel().getSelectedItem();
-    	this.paramEnt.rutina = this.CBRu.getSelectionModel().getSelectedItem();
+//    	this.paramEnt.rutina = this.CBRu.getSelectionModel().getSelectedItem();
     	this.paramEnt.fechaInicio = this.DPFI.getValue();
     	this.paramEnt.fechaFin = this.DPFF.getValue();
     	
@@ -160,12 +167,12 @@ public class ControladorVistaModifEntrenamiento {
     		); // LOG
     	}
     	
-    	if (!hayErrorDeCampos && this.paramEnt.rutina == null) {
-    		hayErrorDeCampos = true;
-    		System.err.println(
-    				"[ ERROR ] > Debe seleccionar una rutina para continuar!"
-    		); // LOG
-    	}
+//    	if (!hayErrorDeCampos && this.paramEnt.rutina == null) {
+//    		hayErrorDeCampos = true;
+//    		System.err.println(
+//    				"[ ERROR ] > Debe seleccionar una rutina para continuar!"
+//    		); // LOG
+//    	}
     	
     	// NO ES NECESARIO POR QUE AL NO SER EDITABLE, //
     	// EL CAMPO NO PUEDE QUEDAR VACIO			   //
@@ -236,6 +243,13 @@ public class ControladorVistaModifEntrenamiento {
 	    			RutasVistas.VISTA_ABM_ENT
 	    	);
 
+    	ControladorVistaABMEntrenamiento CVABME =
+    			NavegadorDeVistas
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABME.iniciar();
+    	
 		NavegadorDeVistas
 	    	.getInstancia()
 	    	.cambiarVista(
@@ -261,11 +275,11 @@ public class ControladorVistaModifEntrenamiento {
     			tu -> tu.getNombre()
     	);
     	
-    	this.actualizarCB(
-    			this.sru.obtenerTodasLasRutinas(),
-    			this.CBRu,
-    			ru -> ru.getNombreRutina()
-    	);
+//    	this.actualizarCB(
+//    			this.sru.obtenerTodasLasRutinas(),
+//    			this.CBRu,
+//    			ru -> ru.getNombreRutina()
+//    	);
     	
     	// PARA QUE EL USUARIO NO PUEDA DIGITAR //
     	// CUALQUIERA EN LOS DP.				//
