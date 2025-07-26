@@ -8,18 +8,53 @@
  *	@Versión: -
  *	@Autor: BBKMG
  *
+
+	░ ▓▒█▒▒█▒                                   ▓█    ░▒ ███▒▒███▒▒▒▒▒░ ▓▓
+	 ▒████▓▓                   ░          ▓██▒▓▓████▓█      ████  ████▓▓  
+	██████░▓  █               █ ░    ▓████████▓█ ░           ▓▓   ███████░
+	 ▒▓█▓▓░               ▓▒███▓██   █▓█▓▓▒▒▓▓███▓▒░░▒▓██▓▓   ██ ▒▓▒██▒▓▓ 
+	███▒▓▒█   █   ████▒▓▒▒ ▓██░▒▒░      ▒▓█▓▓▓█▒██▓█████▓░░░▒▓ █ ░██▒▒███ 
+	▒██████     ██▒███▒░░▒██▓█▒██        ██░▒██████▓▓▓██▒████▒▒▒▓█▒██ ▓▓█ 
+	▓████▓    ▓███▒░  ░░░░░▒░█▓▓██      ▓▒▒▓▓▓▓██▓█▓█▓▓██▓▓▓▓░▓█████████▓░
+	███▒▓▓   ████ ░░░░░░░░░▒▓████░      ▓█████░███░▓░████▓▒▒░░████▓▓▓███░ 
+	 ▓████   ███▒░  ▓▓█▓▓▒███▓▓██    █ ▒   ██▓█▓▓▒█▓█▒░▒█▓███▓▓▓▓▒ ░ ░▓▓▓░
+	███▓█▓  ▒ ██▓   ▓█  ░███▒▒▓█   ▓▒▒▒▒███▒ ▒ █▒███▒▒█▒▒▒▒████ ▓▒▓▓  ▒ ░░
+	▓▓▓▒▒▒    ▒█▒░░▒██  █▓▒▓░▒▒    ████▓▓▓▒ █  ▒█▓███████▒█▒▒███▓▓▒▓ ░▓█▒█
+	▓████▓     ▓▓▓ ██▒▒▒░▓ ░█      ▓███████ ░▓   ▒▒▓▓▒░▓▒▓█▓███▓▓█░  ▓▓▓▓ 
+	 ▓█▓▓█     ░░█░██░░   ▓    ░█ ▓█▓██▓▓▓▓█░▓█▒    ▒▒▒▓▓▓█▓▓▒▒█████  █▒▒ 
+	 ▒▓███         ▓▓       ▓▓   ██▓▓█▓▓█▓███▓██████          ▓▓ █▓  ▓███░
+	█▓▓▒▓█▓ ░███▒█▓    ▒▒██    █▓█▒████▓▒█▒▒█████▓   ▒░▒▓██▓▓ ███▒▒   ███▓
+	 █████         ███████     ▒░▒▒░███████▓▓█████▓▓▒  █████▓█▓█▓░    ▓██▓
+	▒▓█▓     ▒   ▓▓███  ▓        ▓█████████▓▒▒▓█▓█░▓▓▓█▓ █   ▓▒▓░░▓  █  ▒ 
+	 ███  ▒     ██ ▓██▓░▓          ████ ░░▓█ ██ ▒░█▓▓▒░▒███▓███▒██   ▓█ ██
+	▓▓█▓█░▓░   ▒███▓▓▓▓▓              ▓▓██ ░████████  ██    ▒   █▓▓   ██▓ 
+	 ▓▒▒▒▒██▒▓█ █ ▓▒▓    ▓▒    ░▓     ▓▓▓▓ ███   █▓█ ██▒ ▓  ██   ▒███████▓
+	▓▓██████  ░█░▒█  ██       ▓▒   █   █▒▓ ▓  █ ██ █▒█ █ ▓██▓█████▒██▓████
+	▓█▓▓▓██▓ ░█▒███▓▒ ▓  ▒     ▓       ▓ ▒ █░ ▓▒ █ █▓▓▒▓ █▒▓▒▓▓░▒▓▓▓▓▓▓▒▓▒
+	░▓▓▓▒░▒▒  ▓░█░████░      ▓  ▓  ██ █▒█   ░  ▒░░░████ █████▓▓██████▒█▓█ 
+	 ▓▒▒▓███ █▓▒███▓░▓    ▒▒  █▓  █    ▓   ▓░   █  ████▓█▓█░░░███▓▒▓▓█▓▓█▓
+	 ██▓░  ██▓███████▓ ▓                    █   ▓  ▓ ▓ ░▓██████▓▓▓██▒▒░▒▒ 
+	▒███▒▒▒████▓▒▒▒█████ █                   █▒  ▒▒ ▒  ▒▓█▓▓░▓▓██▓▓▓▓███▓▒
+	▒█▓▓██▓▓█▓▓▓█▓▓▓███▓     ▒▓▓█▓█▒██▓▓▒▒▓█▓▓▓▓ ▓▓█▓▓██ ▓▒░▒░░▓██▓▓███▒░ 
+	  ▓████████▓██   ░░██▓▓ ░▓█████████████▓█▓▓░░▒▒█▒███▒▒██░▒▒▒░▒██▒████░
+	 ███▓██████▓░░▓██▓▓▓██▓▓██▒▓████▓ ░▓████▓▓█▓███████▓░░▓▓▒▒▓███▓█████▓█
+
+ *
  */
 
 package edu.unam.app;
 
+import edu.unam.controlador.ControladorVistaInicio;
 // LIBRERIAS
 import javafx.application.Application;
+//import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+//import utilidades.NavegadorDeVistas;
 import utilidades.NumeroDeVersion;
 import utilidades.RutasVistas;
 import utilidades.bd.EMFSingleton;
@@ -72,6 +107,7 @@ import utilidades.bd.EMFSingleton;
  * REGISTROS DE RutinaEjercicio, PUEDE LLEGAR A CONFUNDIR AL USUARIO, COMO NO ES ALGO REALMENTE RELEVANTE PARA EL
  * MISMO, HAY QUE ELIMINAR ESA COLUMNA.
  * 
+ * 
  */
 
 public class App extends Application {
@@ -97,15 +133,25 @@ public class App extends Application {
 		}
 		
 		// XD
-		if(this.getClass().getResource("/lulz/4xdwzu.jpg") == null) {
+		if (this.getClass().getResource("/lulz/4xdwzu.jpg") == null) {
 			System.out.println("[ ! ] > No toques a la papa!");
 //			System.out.println("[ ! ] > Funciona!");
 			return;
 		}
 		
+//		this.nuevaVista = new FXMLLoader(claseActual.getResource(rutaVista));
+//		Parent vista = this.nuevaVista.load();
+		
 		// MODIFICAR TODO ESTO PARA QUE UTILICE EL SINGLETON DE NAVEGACIÓN
-		AnchorPane raizVistaInicio = FXMLLoader.load(this.getClass().getResource(RutasVistas.VISTA_INICIO)); // LEE EL FICHERO FXML DE LA VISTA
-		Scene escenaInicio = new Scene(raizVistaInicio); // CREA UNA NUEVA ESCENA EN BASE AL CONTENEDOR RAIZ
+		FXMLLoader raizVistaInicio = new FXMLLoader(this.getClass().getResource(RutasVistas.VISTA_INICIO)); // LEE EL FICHERO FXML DE LA VISTA
+		AnchorPane vista = raizVistaInicio.load();
+		Scene escenaInicio = new Scene(vista); // CREA UNA NUEVA ESCENA EN BASE AL CONTENEDOR RAIZ		
+		
+		// SIEMPRE ES NECESESARIO QUE SE CASTEE EL RETORNO DEL CONTROLADOR, //
+		// POR QUE POR DEFECTO JAVA NO SABE QUE TIPO ES						//
+		ControladorVistaInicio lol = (ControladorVistaInicio) raizVistaInicio.getController();
+		lol.iniciar();
+		
 		ventana.setScene(escenaInicio); // ESTABLECE LA ESCENA EN LA VENTANA
 		ventana.setTitle("Inicio"); // ESTABLECE TITUTO A LA VENTANA
 		ventana.setResizable(false);
