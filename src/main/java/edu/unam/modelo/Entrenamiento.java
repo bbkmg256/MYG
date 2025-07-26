@@ -95,11 +95,13 @@ public class Entrenamiento {
 //	private Rutina rutina;
 		
 	// ATRIBUTO RELACION A CLASE SEGUIMIENTO (LISTA)
-	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
+//	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "entrenamiento")
 	private List<Seguimiento> seguimientos = new ArrayList<>();
 	
 	// ATRIBUTO RELACION A CLASE RUTINAENTRENAMIENTO
-	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
+//	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "entrenamiento")
 	private List<RutinaEntrenamiento> rutinaentrenamiento = new ArrayList<>();
 	
 	// CONTRUCTOR

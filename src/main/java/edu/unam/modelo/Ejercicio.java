@@ -100,7 +100,8 @@ public class Ejercicio {
 	private GrupoMuscular GM; // FK'S DE GRUPO MUSCULAR
 	
 	// ATRIBUTO RELACION CON CLASE RUTINAEJERCICIO
-	@OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL)
+//	@OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "ejercicio")
 	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
 
 	// CONSTRUCTOR

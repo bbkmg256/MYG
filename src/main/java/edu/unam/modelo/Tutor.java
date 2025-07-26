@@ -64,7 +64,8 @@ public class Tutor {
 	private LocalDate fechaNacimiento;
 	
 	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO (LISTA)
-	@OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
+//	@OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "tutor")
 	private List<Entrenamiento> entrenamientos = new ArrayList<>();
 		
 	// CONTRUCTOR

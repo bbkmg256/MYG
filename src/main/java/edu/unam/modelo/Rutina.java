@@ -90,7 +90,8 @@ public class Rutina {
 	private String nombreRutina; // PARA JUSTIFICAR UN POCO LA EXISTENCIA DE ESTA CLASE E IDENTIFICAR MEJOR CADA RUTINA XD
 	
 	// ATRIBUTO RELACION CON CLASE RUTINAEJERCICIO
-	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
+//	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "rutina")
 	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
 	
 	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO (LISTA)
@@ -98,7 +99,8 @@ public class Rutina {
 //	private List<Entrenamiento> entrenamientos = new ArrayList<>();
 	
 	// ATRIBUTO RELACION CON CLASE RUTINAENTRENAMIENTO
-	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
+//	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "rutina")
 	private List<RutinaEntrenamiento> rutinaentrenamiento = new ArrayList<>();
 	
 	// CONTRUCTOR

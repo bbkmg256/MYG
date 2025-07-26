@@ -67,7 +67,8 @@ public class GrupoMuscular {
 	private String nombreGrupo;
 	
 	// ATRIBUTO RELACION CON CLASE EJERCICIO (LISTA)
-	@OneToMany(mappedBy = "GM", cascade = CascadeType.ALL)
+//	@OneToMany(mappedBy = "GM", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "GM")
 	private List<Ejercicio> ejercicios = new ArrayList<>();
 	
 	// CONTRUCTOR
