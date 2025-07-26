@@ -18,7 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import utilidades.NavegadorDeVistas;
 import utilidades.RutasVistas;
 import edu.unam.modelo.Entrenamiento;
-import edu.unam.modelo.Rutina;
+//import edu.unam.modelo.Rutina;
 import edu.unam.modelo.Tutor;
 import edu.unam.servicio.EntrenamientoServicio;
 import java.util.List;
@@ -57,8 +57,8 @@ public class ControladorVistaEntSeg {
     @FXML
     private TableColumn<Entrenamiento, Integer> TCPT;
 
-    @FXML
-    private TableColumn<Entrenamiento, String> TCRu;
+//    @FXML
+//    private TableColumn<Entrenamiento, String> TCRu;
 
     @FXML
     private TableColumn<Entrenamiento, String> TCTu;
@@ -116,10 +116,10 @@ public class ControladorVistaEntSeg {
     	});
     	
     	// RUTINA
-    	this.TCRu.setCellValueFactory(cellData -> {
-    		Rutina rut = cellData.getValue().getRutina();
-    		return (rut == null) ? null : new SimpleStringProperty(rut.getNombreRutina());
-    	});
+//    	this.TCRu.setCellValueFactory(cellData -> {
+//    		Rutina rut = cellData.getValue().getRutina();
+//    		return (rut == null) ? null : new SimpleStringProperty(rut.getNombreRutina());
+//    	});
     }
     
 //    public void establecerCliente() {
