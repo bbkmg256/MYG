@@ -131,6 +131,30 @@ public class ControladorVistaCargaEjercicio {
     		return;
     	}
     	
+    	// BLOQUE DE VERIFICACIÓN DE NOMBRE REPETIDO //
+    	List<Ejercicio> listaEj = this.sejer.obtenerTodosLosEjercicios();
+    	
+    	boolean ejConNombreRepetido = false;
+    	for (Ejercicio regEj : listaEj) {
+    		if (regEj.getNombreEjercicio().equals(nombreEj)) {
+    			ejConNombreRepetido = true;
+    			break;
+    		}
+    	}
+    	
+    	if (ejConNombreRepetido) {
+        	Optional<ButtonType> resultado =  this.lanzarMensaje(
+        			AlertType.CONFIRMATION, "Atención!",
+        			"NOMBRES DUPLICADOS", "Ya existe un ejercicio con este nombre asociado a un grupo muscular, quiere continuar de todas formas?"
+        	);
+        	
+        	// CONFIRMAR O DENEGAR OPERACION
+        	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+        		System.out.println("[ ! ] > Cancelado!"); // LOG
+            	return;
+        	}
+    	}
+    	
     	Ejercicio ej = new Ejercicio(nombreEj, regGm);
     	
     	this.sejer.cargarEjercicio(ej);
