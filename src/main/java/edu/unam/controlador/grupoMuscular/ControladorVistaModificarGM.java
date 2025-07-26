@@ -1,21 +1,23 @@
 package edu.unam.controlador.grupoMuscular;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
-
 import edu.unam.modelo.GrupoMuscular;
 import edu.unam.servicio.GMServicio;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import utilidades.NavegadorDeVistas;
 import utilidades.RutasVistas;
-import utilidades.bd.ComprobarConexionBD;
-import utilidades.bd.EMFSingleton;
+//import utilidades.bd.ComprobarConexionBD;
+//import utilidades.bd.EMFSingleton;
 
 /*
  * 
@@ -43,21 +45,21 @@ public class ControladorVistaModificarGM {
     
     private GMServicio sgm = new GMServicio();
     
-    private GrupoMuscular gm = null;
+//    private GrupoMuscular gm = null;
     
     private int IDgm;
 
 
     // METODOS Y EVENTOS //
-    private void lanzarMensaje(
+    private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
     ) {
     	Alert alerta = new Alert(tipoDeAlerta);
-		alerta.setTitle(titulo);
-		alerta.setHeaderText(cabecera);
-		alerta.setContentText(contenido);
-		alerta.showAndWait();
+    	alerta.setTitle(titulo);
+    	alerta.setHeaderText(cabecera);
+    	alerta.setContentText(contenido);
+    	return alerta.showAndWait();
     }
     
     // EVITA QUE SE INGRESEN DIGITOS NUMERICOS EN UN TEXTFIELD
@@ -98,17 +100,42 @@ public class ControladorVistaModificarGM {
     	nombreGM = this.txtNombre.getText();
     	
     	// POR SI FALLA LA CONEXION CON LA BD POR X MOTIVO
-    	if (!ComprobarConexionBD.hayConexion(EMFSingleton.getInstancia().getEMF())) {
-			this.lanzarMensaje(
-					AlertType.ERROR, "Error!",
-					"ERROR DE CONEXION A BASE DE DATOS!",
-					"No se encuentra una base de datos activa..."
-			);
-			System.out.println(
-					"[ ERROR ] > No hay conexión a una BD o la misma está caida!"
-			);
-			return;
-		}
+//    	if (!ComprobarConexionBD.hayConexion(EMFSingleton.getInstancia().getEMF())) {
+//			this.lanzarMensaje(
+//					AlertType.ERROR, "Error!",
+//					"ERROR DE CONEXION A BASE DE DATOS!",
+//					"No se encuentra una base de datos activa..."
+//			);
+//			System.out.println(
+//					"[ ERROR ] > No hay conexión a una BD o la misma está caida!"
+//			);
+//			return;
+//		}
+    	
+    	// BLOQUE DE VERIFICACIÓN DE NOMBRES DUPLICADOS //
+    	List<GrupoMuscular> listaGM = this.sgm.obtenerTodosLosGM();
+    	
+    	boolean gmConNombreRepetido = false;
+    	
+    	for (GrupoMuscular regGM: listaGM) {
+    		if (regGM.getNombreGrupo().equals(nombreGM)) {
+    			gmConNombreRepetido = true;
+    			break;
+    		}
+    	}
+    	
+    	if (gmConNombreRepetido) {
+        	Optional<ButtonType> resultado =  this.lanzarMensaje(
+        			AlertType.CONFIRMATION, "Atención!",
+        			"NOMBRES DUPLICADOS", "Ya existe un GM con el mismo nombre, quiere continuar?"
+        	);
+        	
+        	// CONFIRMAR O DENEGAR OPERACION
+        	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+        		System.out.println("[ ! ] > Cancelado!"); // LOG
+            	return;
+        	}
+    	}
     	
     	boolean actualizacionCorrecta = this.sgm.actualizarEstadoGM(IDgm, nombreGM);
     	

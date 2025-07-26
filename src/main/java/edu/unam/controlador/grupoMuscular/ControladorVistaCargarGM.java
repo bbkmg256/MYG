@@ -4,11 +4,14 @@
 
 package edu.unam.controlador.grupoMuscular;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -17,8 +20,8 @@ import edu.unam.servicio.GMServicio;
 import edu.unam.modelo.GrupoMuscular;
 import utilidades.NavegadorDeVistas;
 import utilidades.RutasVistas;
-import utilidades.bd.ComprobarConexionBD;
-import utilidades.bd.EMFSingleton;
+//import utilidades.bd.ComprobarConexionBD;
+//import utilidades.bd.EMFSingleton;
 
 /*
  * 
@@ -48,15 +51,15 @@ public class ControladorVistaCargarGM {
 
 
     // METODOS Y EVENTOS //
-    private void lanzarMensaje(
+    private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
     ) {
     	Alert alerta = new Alert(tipoDeAlerta);
-		alerta.setTitle(titulo);
-		alerta.setHeaderText(cabecera);
-		alerta.setContentText(contenido);
-		alerta.showAndWait();
+    	alerta.setTitle(titulo);
+    	alerta.setHeaderText(cabecera);
+    	alerta.setContentText(contenido);
+    	return alerta.showAndWait();
     }
     
     // EVITA QUE SE INGRESEN DIGITOS NUMERICOS EN UN TEXTFIELD
@@ -89,23 +92,53 @@ public class ControladorVistaCargarGM {
     		return;
     	}
     	
+    	// BLOQUE DE VERIFICACIÓN DE NOMBRES DUPLICADOS //
+    	List<GrupoMuscular> listaGM = this.sgm.obtenerTodosLosGM();
+    	
+    	boolean gmConNombreRepetido = false;
+    	
+    	for (GrupoMuscular regGM : listaGM) {
+//    		System.out.printf("%s | %s%n", regGM.getNombreGrupo(), this.gm.getNombreGrupo());
+//    		gmConNombreRepetido = (regGM.getNombreGrupo() == this.gm.getNombreGrupo()) ? true : false;
+    		if (regGM.getNombreGrupo().equals(nombreGM)) {
+    			gmConNombreRepetido = true;
+    			break;
+    		}
+    	}
+    	
+    	if (gmConNombreRepetido) {
+        	Optional<ButtonType> resultado =  this.lanzarMensaje(
+        			AlertType.CONFIRMATION, "Atención!",
+        			"NOMBRES DUPLICADOS",
+        			"Ya existe un GM con el mismo nombre, quiere continuar?"
+        	);
+        	
+        	// CONFIRMAR O DENEGAR OPERACION
+        	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+        		System.out.println("[ ! ] > Cancelado!"); // LOG
+            	return;
+        	}
+    	}
+    	
+    	this.gm = new GrupoMuscular(nombreGM);
+
     	// nombreGM = this.txtNombre.getText();
     	
     	// POR SI FALLA LA CONEXION CON LA BD POR X MOTIVO
-    	if (!ComprobarConexionBD.hayConexion(EMFSingleton.getInstancia().getEMF())) {
-			this.lanzarMensaje(
-					AlertType.ERROR, "Error!",
-					"ERROR DE CONEXION A BASE DE DATOS!",
-					"No se encuentra una base de datos activa..."
-			);
-			System.out.println(
-					"[ ERROR ] > No hay conexión a una BD o la misma está caida!"
-			);
-			return;
-		}
+//    	if (!ComprobarConexionBD.hayConexion(EMFSingleton.getInstancia().getEMF())) {
+//			this.lanzarMensaje(
+//					AlertType.ERROR, "Error!",
+//					"ERROR DE CONEXION A BASE DE DATOS!",
+//					"No se encuentra una base de datos activa..."
+//			);
+//			System.out.println(
+//					"[ ERROR ] > No hay conexión a una BD o la misma está caida!"
+//			);
+//			return;
+//		}
     	
     	// PERSISTE EL OBJETO
-    	this.sgm.cargarGM(this.gm = new GrupoMuscular(nombreGM));
+    	this.sgm.cargarGM(this.gm);
     	
     	// SI NO ENCUENTRA EL GM PREVIAMENTE CARGADO, AL BUSCARLO RETORNA NULL, POR ENDE ENTRA EN LA CONDICON.
     	if (sgm.obtenerGM(gm.getIdGM(), false) == null) {
