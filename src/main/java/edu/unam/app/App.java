@@ -108,6 +108,10 @@ import utilidades.bd.EMFSingleton;
  * MISMO, HAY QUE ELIMINAR ESA COLUMNA.
  * 
  * 
+ * 
+ * POR EL MOMENTO LA UI NO ES RESPONSIVA :(
+ * 
+ * 
  */
 
 public class App extends Application {
