@@ -157,6 +157,31 @@ public class ControladorVistaCargarRutinaEjercicio {
     	serie = Integer.parseInt(this.txtSeries.getText());
     	rep = Integer.parseInt(this.txtRep.getText());
     	
+    	// BLOQUE DE VERIFICACION DE EJERCICIOS REPETIDOS //
+    	List<RutinaEjercicio> listaRE = 
+    			this.sre.obtenerTodoElContenidoDesdeUnaRutina(
+    					this.rutina.getIdRutina()
+    			);
+    	
+    	boolean reConEjRepetido = false;
+    	
+    	for (RutinaEjercicio regRE : listaRE) {
+    		if (regRE.getEjercicio().getIdEjercicio() == ej.getIdEjercicio()) {
+    			reConEjRepetido = true;
+    			break;
+    		}
+    	}
+    	
+    	if (reConEjRepetido) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, "Error!",
+    				"EJERCICIO DUPLICADO",
+    				"Este ejercicio ya está asociado a la rutina..."
+    		);
+    		System.err.println("[ ERROR ] > Entidades duplicadas!");
+    		return;
+    	}
+    	
     	RutinaEjercicio re = new RutinaEjercicio(this.rutina, ej, serie, rep);
     	
     	this.sre.crearRE(re);
