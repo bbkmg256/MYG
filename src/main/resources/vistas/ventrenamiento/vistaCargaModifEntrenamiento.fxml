@@ -27,7 +27,6 @@
                <children>
                   <ComboBox fx:id="CBCli" prefHeight="45.0" prefWidth="264.0" promptText="Cliente" />
                   <ComboBox fx:id="CBTu" prefHeight="45.0" prefWidth="264.0" promptText="Tutor" />
-                  <ComboBox fx:id="CBRu" prefHeight="45.0" prefWidth="264.0" promptText="Rutina" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="572.0" prefWidth="300.0" spacing="40.0">

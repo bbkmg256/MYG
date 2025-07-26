@@ -36,7 +36,6 @@
                <columns>
                   <TableColumn fx:id="TCID" prefWidth="112.0" text="ID" />
                   <TableColumn fx:id="TCTu" prefWidth="127.0" text="Tutor" />
-                  <TableColumn fx:id="TCRu" prefWidth="133.0" text="Rutina" />
                   <TableColumn fx:id="TCFI" prefWidth="130.0" text="Fecha Inicio" />
                   <TableColumn fx:id="TCFf" prefWidth="138.0" text="Fecha Fin" />
                   <TableColumn fx:id="TCPT" prefWidth="131.0" text="Puntaje Tutor" />
