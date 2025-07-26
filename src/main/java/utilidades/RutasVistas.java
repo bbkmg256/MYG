@@ -51,6 +51,8 @@ public class RutasVistas {
 	private static final String RUTA_VENT = "/vistas/ventrenamiento/";
 	public static final String VISTA_ABM_ENT = RUTA_VENT + "vistaABMEntrenamiento.fxml";
 	public static final String VISTA_CARGA_MODIF_ENT = RUTA_VENT + "vistaCargaModifEntrenamiento.fxml";
+//	public static final String VISTA_ABM_RUT_ENT = RUTA_VENT + "vistaABMRutinaEntrenamiento.fxml";
+	public static final String VISTA_ABM_RUT_ENT_B = RUTA_VENT + "vistaABMRutinaEntrenamientoB.fxml";
 	
 	// RUTAS VISTAS SEGUIMIENTO
 	private static final String RUTA_VSEG = "/vistas/vseguimiento/";
