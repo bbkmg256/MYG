@@ -1,4 +1,4 @@
-<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>MYG</groupId>
 	<artifactId>MYG</artifactId>
@@ -12,7 +12,7 @@
 		<maven.compiler.version>3.13.0</maven.compiler.version>
 		<hibernate.orm.version>6.6.9.Final</hibernate.orm.version>
 		<javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
-		<javafx.depend.version>21</javafx.depend.version>
+		<javafx.depend.version>23-ea+20</javafx.depend.version>
 	</properties>
 	
 	<!-- Dependencias -->
@@ -49,16 +49,25 @@
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
 			<version>${javafx.depend.version}</version>
-			<classifier>linux</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-fxml</artifactId>
 			<version>${javafx.depend.version}</version>
-			<classifier>linux</classifier>
 		</dependency>
+		<dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.depend.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.depend.version}</version>
+        </dependency>
 	</dependencies>
 	
+	<!-- Zona de compilación y contrucción -->
 	<build>
 	<!-- Plugins -->
 		<plugins>
@@ -68,8 +77,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.version}</version>
 				<configuration>
-					<source>21.0.5</source>  <!-- Versión de Java fuente -->
-					<target>21.0.5</target>  <!-- Versión de Java objetivo -->
+					<source>21.0.7</source>  <!-- Versión de Java fuente -->
+					<target>21.0.7</target>  <!-- Versión de Java objetivo -->
 				</configuration>
 			</plugin>
 	        
