@@ -23,5 +23,6 @@ public class ParametrosEntrenamiento {
 	public Tutor tutor = null;
 	public Rutina rutina = null;
 	public int puntaje = 0;
+	public String estado = "Finalizado";
 //	public int volumenEntrenamiento = 0;
 }

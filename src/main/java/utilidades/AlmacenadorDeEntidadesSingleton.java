@@ -16,9 +16,9 @@ import edu.unam.modelo.*;
  * 
  */
 
-public class AlmacenadorDeEntidades {
+public class AlmacenadorDeEntidadesSingleton {
 	// PARA EL SINGLETON
-	private static AlmacenadorDeEntidades instancia = null;
+	private static AlmacenadorDeEntidadesSingleton instancia = null;
 	
 	// PARA ALMACENAR LAS ENTIDADES
 	private Cliente entidadCliente;
@@ -31,13 +31,13 @@ public class AlmacenadorDeEntidades {
 	
 	
 	// CONTRUCTOR //
-	private AlmacenadorDeEntidades() {}
+	private AlmacenadorDeEntidadesSingleton() {}
 	
 	// RETORNO DE INSTANCIA //
-	public static AlmacenadorDeEntidades getInstancia() {
+	public static AlmacenadorDeEntidadesSingleton getInstancia() {
 //		instancia = (instancia == null) ? new AlmacenadorDeEntidades() : instancia;
 		if (instancia == null) {
-			instancia = new AlmacenadorDeEntidades();
+			instancia = new AlmacenadorDeEntidadesSingleton();
 		}
 		return instancia;
 	}

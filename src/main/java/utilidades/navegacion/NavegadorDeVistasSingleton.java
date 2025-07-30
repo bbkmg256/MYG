@@ -2,7 +2,7 @@
  * CLASE (SINGLETON) PARA NAVEGAR ENTRE VISTAS
  */
 
-package utilidades;
+package utilidades.navegacion;
 
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
@@ -11,17 +11,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class NavegadorDeVistas {
+public class NavegadorDeVistasSingleton {
 	// ATRIBUTOS //
-	private static final NavegadorDeVistas ndvs = new NavegadorDeVistas();
+	private static final NavegadorDeVistasSingleton ndvs = new NavegadorDeVistasSingleton();
 	private FXMLLoader nuevaVista = null;
 	private Stage ventana = null;
 	private Scene escena = null;
 	
 	// CONSTRUCTOR Y GET //
-	private NavegadorDeVistas() {}
+	private NavegadorDeVistasSingleton() {}
 	
-    public static NavegadorDeVistas getInstancia() {
+    public static NavegadorDeVistasSingleton getInstancia() {
     	return ndvs;
     }
 	

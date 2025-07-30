@@ -2,7 +2,7 @@
 	CORRESPONDE A LA RUTA DEL FXML UBICADO EN EL DIRECTORIO RESOURCES JUNTO A META-INF
 */
 
-package utilidades;
+package utilidades.navegacion;
 
 /*
  * 
@@ -53,6 +53,7 @@ public class RutasVistas {
 	public static final String VISTA_CARGA_MODIF_ENT = RUTA_VENT + "vistaCargaModifEntrenamiento.fxml";
 //	public static final String VISTA_ABM_RUT_ENT = RUTA_VENT + "vistaABMRutinaEntrenamiento.fxml";
 	public static final String VISTA_ABM_RUT_ENT_B = RUTA_VENT + "vistaABMRutinaEntrenamientoB.fxml";
+	public static final String VISTA_PUNTUAR_TUTOR = RUTA_VENT + "vistaPuntuarTutor.fxml";
 	
 	// RUTAS VISTAS SEGUIMIENTO
 	private static final String RUTA_VSEG = "/vistas/vseguimiento/";
