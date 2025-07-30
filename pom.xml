@@ -44,7 +44,7 @@
 			<version>2.0.0</version>
 		</dependency>
 		
-		<!-- Dependencias de javaFX -->
+		<!-- Dependencias de JavaFX -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
