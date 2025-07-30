@@ -56,8 +56,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 //import utilidades.NavegadorDeVistas;
 import utilidades.NumeroDeVersion;
-import utilidades.RutasVistas;
 import utilidades.bd.EMFSingleton;
+import utilidades.navegacion.RutasVistas;
 
 /*
  * 
@@ -146,7 +146,7 @@ public class App extends Application {
 //		this.nuevaVista = new FXMLLoader(claseActual.getResource(rutaVista));
 //		Parent vista = this.nuevaVista.load();
 		
-		// MODIFICAR TODO ESTO PARA QUE UTILICE EL SINGLETON DE NAVEGACIÓN
+		// MODIFICAR TOD0 ESTO PARA QUE UTILICE EL SINGLETON DE NAVEGACIÓN
 		FXMLLoader raizVistaInicio = new FXMLLoader(this.getClass().getResource(RutasVistas.VISTA_INICIO)); // LEE EL FICHERO FXML DE LA VISTA
 		AnchorPane vista = raizVistaInicio.load();
 		Scene escenaInicio = new Scene(vista); // CREA UNA NUEVA ESCENA EN BASE AL CONTENEDOR RAIZ		
