@@ -34,6 +34,15 @@
 - [11/05/25](#110525)
 - [12/05/25](#120525)
 - [17/05/25](#170525)
+- [22/05/25](#220525)
+- [25/05/25](#250525)
+- [19/06/25](#190625)
+- [20/06/25](#200625)
+- [25/06/25](#250625)
+- [26/06/25](#260625)
+- [27/06/25](#270625)
+- [05/07/25](#050725)
+- [16/07/25](#160725)
 
 ---
 
@@ -286,3 +295,65 @@ No se llegó a terminar la clase de prueba (TestFuncionamiento), pero se realiza
 aún así esta clase probablemente se vaya cosntruyendo a medida que se va terminando el proyecto.
 
 Hoy comienza el frontend, dando por termindado (aun que sujeto a cambios), el backend.
+
+---
+
+### 22/05/25
+Se crearon las vistas para crear los clientes y la ventana que se supone es la inicial del sistema (momentaneamente).
+
+El directorio `vistas` ubicado en el directorio resources junto al `META-INF` del proyecto, contiene los fichero FXML de las vistas.
+Dentro del directorio hay subdirectorios especificos para cada entidad, estos almacenan cada vista perteneciente a cada entidad.
+
+Las clases controladoras para cada vista se encuentran en el paquete `controlador` dentro del directorio java principal del projecto.
+
+Se agrego una comprobación de conexión correcta con la BD, en caso de no haber, el sistema no inicia y genera mensajes de error.
+
+---
+
+### 25/05/25
+Ocurrieron problemas serios respecto a fallas en la ejecución del proyecto mediante maven, causados por eclipse y una mala configuracion del pom.xml, actualmente
+está solucionado.
+
+Se crearon las vistas ABM para la entidad Grupo muscular y la vista para cargar al mismo. Todavía no terminado.
+
+---
+
+### 19/06/25
+Se elimina la clase `ComprobarConexionBD` (para comprobar si la BD está activa) y los metodos se fusionan a la calse `EMFSingleton` para unificar funcionalidades.
+
+Se modificó la vista de inicio, ahora es un poco mas explicativa, brindando información sobre que se puede hacer, y otras recomendaciónes.
+
+---
+
+### 20/06/25
+Se termino la vista de clientes (la de Tutor tambien por que hay que reutilizar la misma de Cliente), con todas sus funcionalidades.
+
+---
+
+### 25/06/25
+Se termino con las vistas para la entidad grupo muscular, ademas de trabajo y se termino con la vista de carga/modificacion para la entidad ejercicio, todavía falta la vista ABM
+para el mismo.
+
+---
+
+### 26/06/25
+Se trabajo en la vista de `ejercicio`, todavía no está terminada, pero ya se puede listar elementos, y cargarlos.
+
+---
+
+### 27/06/25
+Se modificó la capade servicio y de persistencia, especificamente en los apartados de ejercicio, ahora el metodo `obtenerTodosLosEjercicios` emplea una consulta FETCH JOIN (jpql)
+para traer a los elementos y sus atributos objeto (previamente solo traia a los elementos y falla al querer retornar sus atributos objeto), también,
+se creo el metodo `obtenerEjercicioYSusObjetos` que funciona de una forma similar al metodo que trae un solo elemento, solo que este trae al elemento con sus
+objetos atributo. Respecto a la capa de persistencia , se sobreescribio el metodo `obtenerEntidadEjercicio`, ahora se tiene uno que aplica el metodo
+find() para traer al elemento y otro que aplica la consulta FETCH JOIN para traer al elemento con su objeto atributo.
+
+---
+
+### 05/07/25
+Se terminaron las vistas de ejercicio, y tambien el primer apartado de rutina (todavía falta la funcionalidad para abrir la vista del contenido de cada rutina).
+
+---
+
+### 16/07/25
+Sinceramente perdí el hilo con este archivo, así que lo que puedo decir es que por el momento solo falta terminar las vistas y controladores de la entidad `seguimiento`.

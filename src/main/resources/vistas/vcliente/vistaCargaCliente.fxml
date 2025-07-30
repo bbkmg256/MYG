@@ -6,30 +6,65 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.ControladorVistaCargaCliente">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.cliente.ControladorVistaCargaCliente">
    <children>
-      <Button fx:id="BTFinalizar" layoutX="497.0" layoutY="313.0" mnemonicParsing="false" onAction="#eventoBTFinalizar" prefHeight="24.0" prefWidth="76.0" text="Finalizar" />
-      <Button fx:id="BTCancelar" layoutX="497.0" layoutY="344.0" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="24.0" prefWidth="76.0" text="Cancelar" />
-      <Label layoutX="254.0" layoutY="28.0" text="Cargar cliente" />
-      <TextField fx:id="txtDNI" layoutX="152.0" layoutY="72.0" prefHeight="24.0" prefWidth="161.0" />
-      <Label layoutX="39.0" layoutY="76.0" prefHeight="16.0" prefWidth="29.0" text="DNI" />
-      <Label layoutX="39.0" layoutY="116.0" text="Nombre" />
-      <Label layoutX="39.0" layoutY="153.0" text="Apellido" />
-      <Label layoutX="39.0" layoutY="190.0" text="Sexo" />
-      <Label layoutX="39.0" layoutY="228.0" text="Ciudad" />
-      <Label layoutX="39.0" layoutY="266.0" text="Provincia" />
-      <Label layoutX="39.0" layoutY="304.0" text="Codigo postal" />
-      <TextField fx:id="txtNombre" layoutX="152.0" layoutY="112.0" prefHeight="24.0" prefWidth="161.0" />
-      <TextField fx:id="txtApellido" layoutX="152.0" layoutY="149.0" prefHeight="24.0" prefWidth="161.0" />
-      <RadioButton fx:id="RBMasculino" layoutX="131.0" layoutY="189.0" mnemonicParsing="false" text="Masculino" />
-      <RadioButton fx:id="RBFemenino" layoutX="255.0" layoutY="189.0" mnemonicParsing="false" text="Femenino" />
-      <TextField fx:id="txtCiudad" layoutX="152.0" layoutY="224.0" prefHeight="24.0" prefWidth="161.0" />
-      <TextField fx:id="txtProvincia" layoutX="152.0" layoutY="262.0" prefHeight="24.0" prefWidth="161.0" />
-      <TextField fx:id="txtCodigoPostal" layoutX="152.0" layoutY="300.0" prefHeight="24.0" prefWidth="161.0" />
-      <Label layoutX="398.0" layoutY="76.0" text="Fecha de nacimiento" />
-      <DatePicker fx:id="DPFechaNac" layoutX="367.0" layoutY="104.0" />
-      <DatePicker fx:id="DPFechaIng" layoutX="367.0" layoutY="181.0" />
-      <Label layoutX="410.0" layoutY="152.0" text="Fecha de ingreso" />
+      <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="469.0" prefWidth="772.0" spacing="20.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="53.0" prefWidth="306.0" text="Cargar Cliente">
+               <font>
+                  <Font name="System Bold Italic" size="36.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="383.0" prefWidth="772.0" spacing="40.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="300.0" spacing="20.0">
+                     <children>
+                        <TextField fx:id="txtDNI" prefHeight="45.0" promptText="DNI" />
+                        <TextField fx:id="txtNombre" prefHeight="45.0" promptText="Nombre" />
+                        <TextField fx:id="txtApellido" prefHeight="45.0" promptText="Apellido" />
+                        <HBox alignment="CENTER" prefHeight="45.0" prefWidth="272.0" spacing="20.0">
+                           <children>
+                              <Label text="Sexo">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton fx:id="RBMasculino" mnemonicParsing="false" text="Masculino" />
+                              <RadioButton fx:id="RBFemenino" mnemonicParsing="false" text="Femenino" />
+                           </children>
+                        </HBox>
+                        <TextField fx:id="txtCiudad" prefHeight="45.0" promptText="Ciudad" />
+                        <TextField fx:id="txtProvincia" prefHeight="45.0" promptText="Provincia" />
+                        <TextField fx:id="txtCodigoPostal" prefHeight="45.0" promptText="Código postal" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="300.0" spacing="40.0">
+                     <children>
+                        <DatePicker fx:id="DPFechaNac" prefHeight="45.0" prefWidth="300.0" promptText="Fecha de nacimiento" />
+                        <DatePicker fx:id="DPFechaIng" prefHeight="45.0" prefWidth="300.0" promptText="Fecha de ingreso" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="BOTTOM_RIGHT" layoutX="14.0" layoutY="527.0" prefHeight="60.0" prefWidth="772.0" spacing="20.0">
+         <children>
+            <Button fx:id="BTCancelar" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="36.0" prefWidth="120.0" text="Cancelar">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="BTFinalizar" mnemonicParsing="false" onAction="#eventoBTFinalizar" prefHeight="36.0" prefWidth="120.0" text="Finalizar">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

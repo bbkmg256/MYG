@@ -12,9 +12,8 @@ import jakarta.persistence.EntityManager;
 // import java.time.LocalDate;
 import java.util.List;
 
-import utilidades.EMFSingleton;
-import utilidades.ParametrosClienteTutor;
-
+import utilidades.bd.EMFSingleton;
+import utilidades.parametros.ParametrosClienteTutor;
 // Entidad
 import edu.unam.modelo.Tutor;
 
@@ -37,33 +36,33 @@ public class TutorServicio {
 	// Registra un tutor en el sistema
 	public void cargarTutor(Tutor tutor) {
 		// VERIFICA QUE NO EXISTA YA UN TUTOR CON EL MISMO DNI
-		if (this.obtenerTutor(tutor.getDni()) != null) {
-			System.out.printf("[ ERROR ] > El tutor %d ya se encuentra en el sistema!%n", tutor.getDni());
+		if (this.obtenerTutor(tutor.getDni(), false) != null) {
+			System.out.printf("[ ERROR ] > El tutor %d ya se encuentra en el sistema!%n", tutor.getDni()); // LOG
 			return;
 		}
 		
 		if (tutor.getNombre() == null) {
-			System.out.printf("[ ERROR ] > El tutor %d no tiene un nombre asignado o este es nulo!%n", tutor.getDni());
+			System.out.printf("[ ERROR ] > El tutor %d no tiene un nombre asignado o este es nulo!%n", tutor.getDni()); // LOG
 			return;
 		}
 		
 		if (tutor.getApellido() == null) {
-			System.out.printf("[ ERROR ] > El tutor %d no tiene un apellido asignado o este es nulo!%n", tutor.getDni());
+			System.out.printf("[ ERROR ] > El tutor %d no tiene un apellido asignado o este es nulo!%n", tutor.getDni()); // LOG
 			return;
 		}
 		
 		if (tutor.getFechaNacimiento() == null) {
-			System.out.printf("[ ERROR ] > El tutor %d no tiene una fecha de namcimiento asignada o este es nulo!%n", tutor.getDni());
+			System.out.printf("[ ERROR ] > El tutor %d no tiene una fecha de namcimiento asignada o este es nulo!%n", tutor.getDni()); // LOG
 			return;
 		}
 		
 		if (tutor.getCiudad() == null) {
-			System.out.printf("[ ERROR ] > El tutor %d no tiene una ciudad asignada o este es nulo!%n", tutor.getDni());
+			System.out.printf("[ ERROR ] > El tutor %d no tiene una ciudad asignada o este es nulo!%n", tutor.getDni()); // LOG
 			return;
 		}
 		
 		if (tutor.getProvincia() == null) {
-			System.out.printf("[ ERROR ] > El tutor %d no tiene una ciudad asignada o este es nulo!%n", tutor.getDni());
+			System.out.printf("[ ERROR ] > El tutor %d no tiene una ciudad asignada o este es nulo!%n", tutor.getDni()); // LOG
 			return;
 		}
 		
@@ -81,18 +80,18 @@ public class TutorServicio {
 			this.manager.getTransaction().begin();
 			this.tutorDao.crearEntidadTutor(this.manager, tutor);
 			this.manager.getTransaction().commit();
-			System.out.printf("[ EXITO ] > El tutor %d cargado correctamente!%n", tutor.getDni());
+			System.out.printf("[ EXITO ] > El tutor %d cargado correctamente!%n", tutor.getDni()); // LOG
 		} catch (Exception e) {
 			this.manager.getTransaction().rollback();
 			System.out.println(e);
-			System.out.println("[ ERROR ] > Falla al cargar el tutor!");
+			System.out.println("[ ERROR ] > Falla al cargar el tutor!"); // LOG
 		} finally {
 			this.manager.close();
 		}
 	}
 
 	// Busca un tutor en el sistema
-	public Tutor obtenerTutor(int dni) {		
+	public Tutor obtenerTutor(int dni, boolean mostrarLog) {		
 		Tutor regTutor = null;
 		
 		// ADMINISTRADOR DE ENTIDADES
@@ -102,9 +101,13 @@ public class TutorServicio {
 			regTutor = this.tutorDao.obtenerEntidadTutor(this.manager, dni);
 		} catch (Exception e) {
 			System.out.println(e);
-			System.out.print("[ ERROR ] > Falla al obtener el tutor!");
+			System.out.print("[ ERROR ] > Falla al obtener el tutor!"); // LOG
 		} finally {
 			this.manager.close();
+		}
+		
+		if (mostrarLog && regTutor == null) {
+			System.out.printf("[ ERROR ] > Tutor %d no encontrado%n", dni); // LOG
 		}
 		
 		return regTutor;
@@ -122,7 +125,7 @@ public class TutorServicio {
 			listaTutores = this.tutorDao.obtenerEntidadesTutor(this.manager, consulta);
 		} catch (Exception e) {
 			System.out.println(e);
-			System.out.println("[ ERROR ] > Falla al obtener los tutores!");
+			System.out.println("[ ERROR ] > Falla al obtener los tutores!"); // LOG
 		} finally {
 			this.manager.close();
 		}
@@ -131,40 +134,40 @@ public class TutorServicio {
 	}
 	
 	// Actualiza la informacion de un tutor en el sistema
-	public void actualizarEstadoTutor(int dni, ParametrosClienteTutor paramTutor) {
-		Tutor tutor = this.obtenerTutor(dni);
+	public boolean actualizarEstadoTutor(int dni, ParametrosClienteTutor paramTutor) {
+		Tutor tutor = this.obtenerTutor(dni, false);
 		
 		if (tutor == null) {
-			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni);
-			return;
+			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni); // LOG
+			return false;
 		}
 
 		// CONDICIONES PARA VERIFICAR CUALES ATRIBUTOS SE MODIFICAN, Y CUALES NO
-		if (paramTutor.nombre != null) {
+		if (paramTutor.nombre != null && paramTutor.nombre != tutor.getNombre()) {
 			tutor.setNombre(paramTutor.nombre.toLowerCase());
 		}
 		
-		if (paramTutor.apellido != null) {
+		if (paramTutor.apellido != null && paramTutor.apellido != tutor.getApellido()) {
 			tutor.setApellido(paramTutor.apellido.toLowerCase());
 		}
 		
-		if (paramTutor.sexo != 'x') {
+		if (paramTutor.sexo != ' ' && paramTutor.sexo != tutor.getSexo()) {
 			tutor.setSexo(Character.toLowerCase(paramTutor.sexo));
 		}
 		
-		if (paramTutor.ciudad != null) {
+		if (paramTutor.ciudad != null && paramTutor.ciudad != tutor.getCiudad()) {
 			tutor.setCiudad(paramTutor.ciudad.toLowerCase());
 		}
 		
-		if (paramTutor.provincia != null) {
+		if (paramTutor.provincia != null && paramTutor.provincia != tutor.getProvincia()) {
 			tutor.setProvicia(paramTutor.provincia.toLowerCase());
 		}
 		
-		if (paramTutor.codigoPostal != 0) {
+		if (paramTutor.codigoPostal != 0 && paramTutor.codigoPostal != tutor.getCodPost()) {
 			tutor.setCodigoPostal(paramTutor.codigoPostal);
 		}
 		
-		if (paramTutor.fechaNacimiento != null) {
+		if (paramTutor.fechaNacimiento != null && paramTutor.fechaNacimiento != tutor.getFechaNacimiento()) {
 			tutor.setFechaNacimiento(paramTutor.fechaNacimiento);
 		}
 		
@@ -175,11 +178,13 @@ public class TutorServicio {
 			this.manager.getTransaction().begin();
 			this.tutorDao.actualizarEstadoTutor(this.manager, tutor);
 			this.manager.getTransaction().commit();
-			System.out.printf("[ EXITO ] > El tutor %d actualizado correctamente!%n", tutor.getDni());
+			System.out.printf("[ EXITO ] > El tutor %d actualizado correctamente!%n", tutor.getDni()); // LOG
+			return true;
 		} catch (Exception e) {
 			this.manager.getTransaction().rollback();
 			System.out.println(e);
-			System.out.println("[ ERROR ] > Falla al actualizar el tutor!");
+			System.out.println("[ ERROR ] > Falla al actualizar el tutor!"); // LOG
+			return false;
 		} finally {
 			this.manager.close();
 		}
@@ -187,10 +192,10 @@ public class TutorServicio {
 	
 	// Da de baja a un tutor del sistema
 	public void eliminarTutor(int dni) {		
-		Tutor tutor = this.obtenerTutor(dni);
+		Tutor tutor = this.obtenerTutor(dni, false);
 		
 		if (tutor == null) {
-			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni);
+			System.out.printf("[ ERROR ] > El tutor %d no se encuentra en el sistema!%n", dni); // LOG
 			return;
 		}
 		
@@ -204,11 +209,11 @@ public class TutorServicio {
 			tutor = this.manager.merge(tutor);
 			this.tutorDao.eliminarEntidadTutor(this.manager, tutor);
 			this.manager.getTransaction().commit();
-			System.out.printf("[ EXITO ] > El tutor %d eliminado correctamente!%n", tutor.getDni());
+			System.out.printf("[ EXITO ] > El tutor %d eliminado correctamente!%n", tutor.getDni()); // LOG
 		} catch (Exception e) {
 			this.manager.getTransaction().rollback();
 			System.out.println(e);
-			System.out.println("[ ERROR ] > Falla al eliminar el Tutor!");
+			System.out.println("[ ERROR ] > Falla al eliminar el Tutor!"); // LOG
 		} finally {
 			this.manager.close();
 		}

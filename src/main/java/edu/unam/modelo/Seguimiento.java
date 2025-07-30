@@ -37,6 +37,22 @@ import jakarta.persistence.TemporalType;
  * 
  * NOTA:
  * 
+ * PARA OBTENER EL VOLUMEN DE ENTRENAMIENTO SEMANAL, DEBERÍA TENER COMO ATRIBUTO
+ * UNA INSTANCIA DE Ejercicio. EN BASE A ESTE SE PUEDE CALCULAR EL VOLUMEN DE
+ * ENTRENAMIENTO SEMANAL, ADEMAS DE QUE ESTA ENTIDAD DEBERÍA ALMACENAR QUE EJERCICIO
+ * TRABAJÓ EN EL DÍA.
+ * 
+ * RECORDATORIO: TRANQUI VIEJO, LA ENTIDAD ESTÁ BIEN, SE SUPONE QUE ALMACENA TODOS
+ * LOS SEGUIMIENTOS COMO EN CRUDO, EN EL FRONT SE LO VA A MOLDEAR PARA PRESENTARLO
+ * DE FORMA ENTENDIBLE AL USUARIO.
+ * 
+ * SEGUNDO RECORDATORIO: NO TAN TRANQUI VIEJO, ESTA MIERDA TIENE QUE ESTAR APARTADA
+ * Y NO RELACIONADA CON EL RESTO DE LAS CLASES PARA EVITAR PROBLEMAS AL QUERES ELIMINAR
+ * OBJETOS PADRES E HIJOS AL SER MODIFICADOS, EN FORMA DE CASCADA. SE SUPONE QUE EL
+ * SEGUIMIENTO ES COMO UN HISTORIAL O REGISTRO DEL ENTRENAMIENTO REALIZADO POR EL
+ * CLIENTE, SI ALGUN GRUPO MUSCULAR, EJERCICIO, RUTINA O ENTRENAMIENTO SE ELIMINA,
+ * ESTE NO DEBERÍA VERSE AFECTADO, A NO SER QUE EL MISMO USUARIO META MANO EN LA
+ * ENTIDAD, DE LO CONTRARIO NO SE DEBE MODIFICAR NI ELIMINAR NADA ACÁ.
  * 
  */
 
@@ -49,7 +65,7 @@ import jakarta.persistence.TemporalType;
 public class Seguimiento {
 	//ATRIBUTOS
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idSeguimiento;
 	
 	@Basic
@@ -77,10 +93,12 @@ public class Seguimiento {
 	// CONTRUCTOR
 	public Seguimiento() {}
 	
-	public Seguimiento(LocalDate paramFechaHoy, Ejercicio paramEjercicio,
-		int paramCantSeries, int paramCantRep,
-		double paramPesoTrabajado,
-		Entrenamiento paramEntrenamiento) {
+	public Seguimiento(
+			LocalDate paramFechaHoy, Ejercicio paramEjercicio,
+			int paramCantSeries, int paramCantRep,
+			double paramPesoTrabajado,
+			Entrenamiento paramEntrenamiento
+	) {
 		
 		this.fechaHoy = paramFechaHoy;
 		this.ejercicioRealizado = paramEjercicio;

@@ -44,7 +44,19 @@ import jakarta.persistence.FetchType;
  * 
  * NOTA:
  * 
- * NO HAY XD
+ *	IMPORTANTE: ADEMÁS DE QUE ME QUIERO PEGAR UN TIRO, DISEÑE ALGO MAL EN LA RELACIÓN DE LAS ENTIDADES
+ *	RUTINA Y ENTRENAMIENTO, TAS COMO ESTÁ, LA RELACION ACEPTA QUE UNA RUTINA ESTE EN VARIOS ENTRENAMIENTOS,
+ *	PERO QUE UN ENTRENAMIENTO SOLO PUEDA TENER UNA RUTINA, COSA QUE EN LA REALIDAD, ASÍ NO FUNCIONA, POR ENDE,
+ *	PARA TENER QUE SE PERMITA CARGAR VARIAS RUTINAS EN VARIOS ENTRENAMIENTOS, DE LO CONTRARIO NOS SE PUEDE.
+ *
+ *	EN RESUMEN, HAY QUE CREAR OTRA ENTIDAD INTERMEDIA ENTRE RUTINA Y ENTRENAMIENTO.
+ *
+ *	VOY A TENER QUE MODIFICAR LA VISTA DE ENTRENAMIENTO PARA HACER ALGO MEDIO SIMILAR A LA VISTA QUE HAY PARA RUTINA,
+ *	DONDE SE CREA EL ENTRENAMIENTO, PARA DESPUES ABRIRLO Y EMPEZAR A CARGAR LAS RUTINAS AL MISMO, ASÍ HAY UN FUJO DE UI
+ *	MAS ENTENDIBLE PARA EL USUARIO.
+ *
+ *	EL TUTOR ES POSIBLE QUE SEA NULL, YA QUE SI POR X MOTIVO, SE ELIMINE EL TUTOR O SE DEBA ELIMINAR POR FUERZA MAYOR
+ *	EL ENTRENAMIENTO PASA A ESTAR SIN TUTOR HASTA QUE SE SE ASIGNE UNO NUEVO.
  * 
  */
 
@@ -57,12 +69,13 @@ import jakarta.persistence.FetchType;
 public class Entrenamiento {
 	// ATRIBUTOS
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_entrenamiento")
 	private int idEntrenamiento;
 	
 	@Basic
 	private int puntaje; // PUNTUACION POR PARTE DEL CLIENTE AL TUTOR.
+	private String estado; // PARA DEFINIR SI EL ENTRENAMIENTO ESTÁ EN CURSO O FINALIZÓ.
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_inicio")
@@ -77,30 +90,52 @@ public class Entrenamiento {
 	
 	// ATRIBUTO RELACION A CLASE TUTOR
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tutor_id")
+	@JoinColumn(name = "tutor_id", nullable=true)
 	private Tutor tutor; // FK'S DE TUTOR
 	
 	// ATRIBUTO RELACION A CLASE RUTINA (LISTA)
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "rutina_id")
-	private Rutina rutina;
-	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "rutina_id")
+//	private Rutina rutina;
+		
 	// ATRIBUTO RELACION A CLASE SEGUIMIENTO (LISTA)
-	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
+//	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "entrenamiento")
 	private List<Seguimiento> seguimientos = new ArrayList<>();
+	
+	// ESTA RELACION SI DEBERIA PODER TENER POLITICA DE CASCADA //
+	// ATRIBUTO RELACION A CLASE RUTINAENTRENAMIENTO
+//	@OneToMany(mappedBy = "entrenamiento")
+	@OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
+	private List<RutinaEntrenamiento> rutinaentrenamientos = new ArrayList<>();
 	
 	// CONTRUCTOR
 	public Entrenamiento() {}
 	
-	public Entrenamiento(LocalDate paramFechaInicio, LocalDate paramFechaFin,
-		Cliente paramCli, Tutor paramTutor, Rutina paramRutina) {
+//	public Entrenamiento(
+//			Cliente paramCli, Tutor paramTutor, Rutina paramRutina,
+//			LocalDate paramFechaInicio, LocalDate paramFechaFin
+//	) {
+//		
+//		this.puntaje = 0; // AL INICIO ES 0 HASTA QUE EL CLIENTE LO PUNTUE DESPUES DE 5 SEMANAS DEL ENTRENAMIENTO
+//		this.fechaInicio = paramFechaInicio;
+//		this.fechaFin = paramFechaFin;
+//		this.cliente = paramCli;
+//		this.tutor = paramTutor;
+////		this.rutina = paramRutina;
+//	}
+	
+	public Entrenamiento(
+			Cliente paramCli, Tutor paramTutor,
+			LocalDate paramFechaInicio, LocalDate paramFechaFin
+	) {
 		
 		this.puntaje = 0; // AL INICIO ES 0 HASTA QUE EL CLIENTE LO PUNTUE DESPUES DE 5 SEMANAS DEL ENTRENAMIENTO
+		this.estado = "En curso";
 		this.fechaInicio = paramFechaInicio;
 		this.fechaFin = paramFechaFin;
 		this.cliente = paramCli;
 		this.tutor = paramTutor;
-		this.rutina = paramRutina;
 	}
 	
 	// SET
@@ -133,8 +168,16 @@ public class Entrenamiento {
 		this.seguimientos = listSeguimiento;
 	}
 	
-	public void setRutina(Rutina valRutina) {
-		this.rutina = valRutina;
+//	public void setRutina(Rutina valRutina) {
+//		this.rutina = valRutina;
+//	}
+	
+	public void setRutinaEntrenamiento(List<RutinaEntrenamiento> paramRE) {
+		this.rutinaentrenamientos = paramRE;
+	}
+	
+	public void setEstado(String valorEstado) {
+		this.estado = valorEstado;
 	}
 	
 	// GET
@@ -154,7 +197,6 @@ public class Entrenamiento {
 		return this.fechaFin;
 	}
 	
-	
 	public Cliente getCliente() {
 		return this.cliente;
 	}
@@ -167,7 +209,15 @@ public class Entrenamiento {
 		return this.seguimientos;
 	}
 	
-	public Rutina getRutina() {
-		return this.rutina;
+//	public Rutina getRutina() {
+//		return this.rutina;
+//	}
+	
+	public List<RutinaEntrenamiento> getRutinaEntrenamientos() {
+		return this.rutinaentrenamientos;
+	}
+	
+	public String getEstado() {
+		return this.estado;
 	}
 }

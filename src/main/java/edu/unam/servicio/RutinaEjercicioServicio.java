@@ -10,14 +10,15 @@ import edu.unam.repositorio.RutinaEjercicioDAO;
 
 // JPA
 import jakarta.persistence.EntityManager;
-import utilidades.EMFSingleton;
 
 // VARIOS
  import java.util.List;
-import utilidades.ParametrosRutinaEjercicio;
 
+import utilidades.bd.EMFSingleton;
+import utilidades.parametros.ParametrosRutinaEjercicio;
 // ENTIDAD
 import edu.unam.modelo.RutinaEjercicio;
+import edu.unam.modelo.Ejercicio;
 //import edu.unam.modelo.Ejercicio;
 import edu.unam.modelo.Rutina;
 
@@ -26,7 +27,11 @@ import edu.unam.modelo.Rutina;
  * 
  * NOTA:
  * 
- * SOLO SE DEJA FUNCIONANDO LA RELACION BIDIRECCIONAL CON RUTINA
+ * EN EL METODO DE ACTUALIZACION DE LA ENTIDAD, EL NUEVO ENLACE DE LO QUE
+ * SERÍA UNA NUEVA ENTIDAD RUTINA CON ESTA ENTIDAD, ESTÁ COMENTADA Y NO SE HACE,
+ * POR QUE EL USUARIO NO MODIFICA ESTE APARTADO, ES DECIR "O LO ASOCIA,
+ * O LO ELIMINA, PERO NO LO MODIFICA". LA RUTINA TOMARÍA NUEVAS HIJAS PARA
+ * ASOCIAR EJERCICIOS, PERO NO MODIFICA O CAMBIA DE HIJAS.
  * 
  */
 
@@ -40,7 +45,7 @@ public class RutinaEjercicioServicio {
 	private RutinaEjercicioDAO reDao;
 	private EntityManager manager;
 	private Rutina rt;
-//	private Ejercicio ejer;
+	private Ejercicio ejer;
 	private RutinaServicio srt;
 	private EjercicioServicio sej;
 	
@@ -73,11 +78,11 @@ public class RutinaEjercicioServicio {
 			
 			// ENLACE CON RUTINA
 			this.rt = this.manager.merge(re.getRutina());
-			this.rt.getRutinaEjercicio().add(re);
+			this.rt.getRutinaEjercicios().add(re);
 			
 			// ENLACE CON EJERCICIO
-//			this.ejer = this.manager.merge(re.getEjercicio());
-//			this.ejer.getRutinaEjercicio().add(re);
+			this.ejer = this.manager.merge(re.getEjercicio());
+			this.ejer.getRutinaEjercicios().add(re);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La entidad %d cargada correctamente!%n", re.getId());
@@ -98,7 +103,34 @@ public class RutinaEjercicioServicio {
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
 		
 		try {
-			regRE= this.reDao.obtenerEntidadRutinaEjercicio(this.manager, id);
+			regRE = this.reDao.obtenerEntidadRutinaEjercicio(this.manager, id);
+		} catch (Exception e) {
+			System.out.print(e);
+			System.out.println("[ ERROR ] > Falla al obtener el registro!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return regRE;
+	}
+	
+	// Obtener una RutinaEjercicio existente en el sistema (CON SUS OBJETOS)
+	public RutinaEjercicio obtenerREYSusObjetos(int id) {	
+		String consulta = String.format(
+				"SELECT %c FROM %s %c " +
+				"JOIN FETCH %c.rutina " +
+				"JOIN FETCH %c.ejercicio " +
+				"WHERE %c.id = :id",
+				'r', "RutinaEjercicio",
+				'r', 'r', 'r', 'r'
+		); // Consulta JPQL
+		RutinaEjercicio regRE = null;
+		
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			regRE = this.reDao.obtenerEntidadRutinaEjercicio(this.manager, id, consulta);
 		} catch (Exception e) {
 			System.out.print(e);
 			System.out.println("[ ERROR ] > Falla al obtener el registro!");
@@ -110,7 +142,7 @@ public class RutinaEjercicioServicio {
 	}
 	
 	// Obtiene todos las RutinaEjejercicio del sistema
-	public List<RutinaEjercicio> obtenerTodasLasRutinaEjercicio(){		
+	public List<RutinaEjercicio> obtenerTodasLasRutinaEjercicio() {		
 		String consulta = String.format("SELECT %c FROM %s %c", 'r', "RutinaEjercicio", 'r'); // Consulta JPQL
 		List<RutinaEjercicio> reList = null;
 		
@@ -128,44 +160,90 @@ public class RutinaEjercicioServicio {
 		return reList;
 	}
 
+	// SIN RELEVANCIA (BASURA)
+//	// Obtiene todos las RutinaEjejercicio del sistema
+//	public List<RutinaEjercicio> obtenerTodasLasRutinaEjercicioYSusObjetos() {		
+////		String consulta = String.format("SELECT %c FROM %s %c", 'r', "RutinaEjercicio", 'r'); // Consulta JPQL
+//		String consulta = "SELECT r FROM RutinaEjercicio r JOIN FETCH r.rutina JOIN FETCH r.ejercicio";
+//		List<RutinaEjercicio> reList = null;
+//		
+//		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+//		
+//		try {
+//			reList = this.reDao.obtenerEntidadesRutinaEjercicio(this.manager, consulta);
+//		} catch (Exception e) {
+//			System.out.println(e);
+//			System.out.println("[ ERROR ] > Falla al obtener las entidades!");
+//		} finally {
+//			this.manager.close();
+//		}
+//		
+//		return reList;
+//	}
+	
+	// OBTIENE TOD0 EL CONTENIDO DE LO QUE SERÍA UNA RUTINA (CON LOS EJERCICIOS)
+	public List<RutinaEjercicio> obtenerTodoElContenidoDesdeUnaRutina(int idRutina) {
+		// TENER EN CUENTA QUE NO SE PUEDE HACER "getRutina()" POR QUE EXPLOTA TOD0 AL CARAJO
+		String consulta = String.format(
+				"SELECT %c FROM %s %c " +
+				"JOIN FETCH %c.ejercicio " +
+				"WHERE %c.rutina.idRutina = :idRutina",
+				'r', "RutinaEjercicio", 'r', 'r', 'r'
+		); // Consulta JPQL
+		List<RutinaEjercicio> reList = null;
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			reList = this.reDao.obtenerEntidadesRutinaEjercicio(this.manager, consulta, idRutina);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener las entidades!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return reList;
+	}
+
 	// Actualizar datos de una Rutina del sistema (FUNCIONA CORRECTAMENTE, NO ENTIENDO POR QUE XD)
 	// EN REALIDAD FUNCIONA POR QUE HIBERNATE ACTUALIZA O HACE ALGUNA MAMADA ASÍ CON LAS ENTIDADES AL CERRAR EL "EM" EN UNA TRANSACCION.
-	public void actualizarEstadoRutina(int id, ParametrosRutinaEjercicio paramRE) {
-		RutinaEjercicio regRE = this.obtenerRE(id);
-		Rutina rtAntigua = null;
-//		Ejercicio ejerAntigua = null;
+	public Boolean actualizarEstadoRutina(int id, ParametrosRutinaEjercicio paramRE) {
+		RutinaEjercicio regRE = this.obtenerREYSusObjetos(id);
+//		Rutina rtAntigua = null;
+		Ejercicio ejerAntigua = null;
 		
 		if (regRE == null) {
 			System.out.printf("[ ERROR ] > La entidad %d no se encuentra en el sistema!%n", id);
-			return;
+			return false;
 		}
 		
 		// ALMACENA LOS OBJETOS ANTIGUOS
-		rtAntigua = regRE.getRutina();
-//		ejerAntigua = regRE.getEjercicio();
+//		rtAntigua = regRE.getRutina();
+		ejerAntigua = regRE.getEjercicio();
 		
 		// MODIFICACION DE ATRIBUTOS
-		if (paramRE.rutina != null) {
-			if (this.srt.obtenerRutina(paramRE.rutina.getIdRutina()) == null) {
-				System.out.println("[ ERROR ] > El parámetro rutina no es valido!");
-				return;
-			}
-			regRE.setRutina(paramRE.rutina);
-		}
+//		if (paramRE.rutina != null) {
+//			if (this.srt.obtenerRutina(paramRE.rutina.getIdRutina()) == null) {
+//				System.out.println("[ ERROR ] > El parámetro rutina no es valido!");
+//				return false;
+//			}
+//			regRE.setRutina(paramRE.rutina);
+//		}
 		
-		if (paramRE.ejercicio != null) {
+		if (paramRE.ejercicio != null && paramRE.ejercicio != regRE.getEjercicio()) {
 			if (this.sej.obtenerEjercicio(paramRE.ejercicio.getIdEjercicio()) == null) {
 				System.out.println("[ ERROR ] > El parámetro ejercicio no es valido!");
-				return;				
+				return false;				
 			}
 			regRE.setEjercicio(paramRE.ejercicio);
 		}
 		
-		if (paramRE.serie != 0) {
+		if (paramRE.serie != 0 && paramRE.serie != regRE.getSerie()) {
 			regRE.setSerie(paramRE.serie);
 		}
 		
-		if (paramRE.repeticion != 0) {
+		if (paramRE.repeticion != 0 && paramRE.repeticion != regRE.getRepeticion()) {
 			regRE.setRepeticion(paramRE.repeticion);
 		}
 		
@@ -176,30 +254,32 @@ public class RutinaEjercicioServicio {
 			this.manager.getTransaction().begin();
 			regRE = this.reDao.actualizarEntidadRutinaEjercicio(this.manager, regRE);
 			
-			if (paramRE.rutina != null) {
-				// ENLACE RUTINA NUEVA
-				this.rt = this.manager.merge(regRE.getRutina());
-				this.rt.getRutinaEjercicio().add(regRE);
-				// DESENLACE RUTINA VIEJA
-				rtAntigua = this.manager.merge(rtAntigua);
-				rtAntigua.getRutinaEjercicio().remove(regRE);
-			}
-//			
-//			if (paramRE.ejercicio != null) {
-//				// ENLACE EJERCICIO NUEVO
-//				this.ejer = this.manager.merge(regRE.getEjercicio());
-//				this.ejer.getRutinaEjercicio().add(regRE);
-//				// DESENLACE EJERCICIO VIEJO
-//				ejerAntigua = this.manager.merge(ejerAntigua);
-//				ejerAntigua.getRutinaEjercicio().remove(regRE);
+//			if (paramRE.rutina != null) {
+//				// ENLACE RUTINA NUEVA
+//				this.rt = this.manager.merge(regRE.getRutina());
+//				this.rt.getRutinaEjercicio().add(regRE);
+//				// DESENLACE RUTINA VIEJA
+//				rtAntigua = this.manager.merge(rtAntigua);
+//				rtAntigua.getRutinaEjercicio().remove(regRE);
 //			}
+			
+			if (paramRE.ejercicio != null) {
+				// ENLACE EJERCICIO NUEVO
+				this.ejer = this.manager.merge(regRE.getEjercicio());
+				this.ejer.getRutinaEjercicios().add(regRE);
+				// DESENLACE EJERCICIO VIEJO
+				ejerAntigua = this.manager.merge(ejerAntigua);
+				ejerAntigua.getRutinaEjercicios().remove(regRE);
+			}
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La entidad %d actualizada correctamente!%n", id);
+			return true;
 		} catch (Exception e) {
 			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al actualizar la entidad!");
+			return false;
 		} finally {
 			this.manager.close();
 		}
@@ -207,7 +287,7 @@ public class RutinaEjercicioServicio {
 	
 	// Eliminar una RutinaEjercicio del sistema
 	public void eliminarRE(int id) {
-		RutinaEjercicio regRE = this.obtenerRE(id);
+		RutinaEjercicio regRE = this.obtenerREYSusObjetos(id);
 		
 		if (regRE == null) {
 			System.out.printf("[ ERROR ] > El registro %d  no se encuentra en el sistema!%n", id);
@@ -223,11 +303,11 @@ public class RutinaEjercicioServicio {
 			
 			// DESENLACE RUTINA
 			this.rt = this.manager.merge(regRE.getRutina());
-			this.rt.getRutinaEjercicio().remove(regRE);
+			this.rt.getRutinaEjercicios().remove(regRE);
 			
 			// DESENLACE EJERCICIO
-//			this.ejer = this.manager.merge(regRE.getEjercicio());
-//			this.ejer.getRutinaEjercicio().remove(regRE);
+			this.ejer = this.manager.merge(regRE.getEjercicio());
+			this.ejer.getRutinaEjercicios().remove(regRE);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La entidad %d eliminada correctamente!%n", id);

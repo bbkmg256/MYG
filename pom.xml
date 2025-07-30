@@ -68,8 +68,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.version}</version>
 				<configuration>
-					<source>21</source>  <!-- Versión de Java fuente -->
-					<target>21</target>  <!-- Versión de Java objetivo -->
+					<source>21.0.5</source>  <!-- Versión de Java fuente -->
+					<target>21.0.5</target>  <!-- Versión de Java objetivo -->
 				</configuration>
 			</plugin>
 	        

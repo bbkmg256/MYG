@@ -14,10 +14,11 @@ package edu.unam.modelo;
 
 // LIBRERIAS
 // VARIOS
-//import java.util.ArrayList;
-//import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Basic; // MODULO JPA PARA ATRIBUTOS BASICOS
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity; // MODULO JPA PARA ENTIDADES/OBJETOS
 import jakarta.persistence.Column;
 
@@ -28,6 +29,7 @@ import jakarta.persistence.GenerationType;
 
 // MODULOS JPA DE MAPEADO DE RELACIONES
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 //import jakarta.persistence.OneToMany;
 // import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
@@ -99,7 +101,13 @@ public class Ejercicio {
 	
 	// ATRIBUTO RELACION CON CLASE RUTINAEJERCICIO
 //	@OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL)
-//	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
+	@OneToMany(mappedBy = "ejercicio")
+	private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
+	
+	// ATRIBUTO RELACION CON CLASE SEGUIMIENTO
+	@OneToMany(mappedBy = "ejercicioRealizado")
+	private List<Seguimiento> seguimientos = new ArrayList<>();
+
 
 	// CONSTRUCTOR
 	public Ejercicio() {}
@@ -122,9 +130,13 @@ public class Ejercicio {
 		this.GM = paramGM;
 	}
 	
-//	public void setRutinaEjercicio(List<RutinaEjercicio> listRutinaEjercicio) {
-//		this.rutinaEjercicio = listRutinaEjercicio;
-//	}
+	public void setRutinaEjercicios(List<RutinaEjercicio> listRutinaEjercicio) {
+		this.rutinaEjercicios = listRutinaEjercicio;
+	}
+	
+	public void setSeguimientos(List<Seguimiento> listaSeguimientos) {
+		this.seguimientos = listaSeguimientos;
+	}
 	
 	// GET
 	public int getIdEjercicio(){
@@ -139,7 +151,11 @@ public class Ejercicio {
 		return this.GM;
 	}
 	
-//	public List<RutinaEjercicio> getRutinaEjercicio() {
-//		return this.rutinaEjercicio;
-//	}
+	public List<RutinaEjercicio> getRutinaEjercicios() {
+		return this.rutinaEjercicios;
+	}
+	
+	public List<Seguimiento> getSeguimientos() {
+		return this.seguimientos;
+	}
 }

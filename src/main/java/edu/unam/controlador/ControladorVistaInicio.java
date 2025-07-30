@@ -5,19 +5,37 @@
 package edu.unam.controlador;
 
 // LIBRERIAS
-import java.io.IOException;
+//import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+//import javafx.scene.control.Alert;
+//import javafx.fxml.FXMLLoader;
+//import javafx.scene.Parent;
+//import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+//import javafx.scene.control.ButtonType;
+//import javafx.scene.layout.AnchorPane;
+//import javafx.stage.Stage;
 import javafx.scene.control.Label;
+import utilidades.NumeroDeVersion;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
+//import java.util.Optional;
+import edu.unam.servicio.GMServicio;
+import edu.unam.servicio.RutinaEjercicioServicio;
+import edu.unam.servicio.RutinaServicio;
+import edu.unam.servicio.TutorServicio;
+import edu.unam.controlador.cliente.ControladorVistaABMCliente;
+import edu.unam.controlador.entrenamiento.ControladorVistaABMEntrenamiento;
+import edu.unam.servicio.ClienteServicio;
+//import edu.unam.controlador.ejercicio.ControladorVistaCargaEjercicio;
+import edu.unam.servicio.EjercicioServicio;
+import edu.unam.servicio.EntrenamientoServicio;
+//import javafx.scene.layout.Region;
 
-import utilidades.RutasVistas;
 
 public class ControladorVistaInicio {
+	// ATRIBUTOS, NODOS Y ELEMENTOS DE ESCENA //
     @FXML
     private Button BTCliente;
 
@@ -44,61 +62,216 @@ public class ControladorVistaInicio {
     
     @FXML
     private Label LBEGG;
+    
+    @FXML
+    private Label LBBuildVer;
+    
+    private GMServicio sgm;
+    
+    private EjercicioServicio sejer;
+    
+    private RutinaServicio srut;
+    
+    private EntrenamientoServicio sentre;
+    
+    private ClienteServicio scli;
+    
+    private TutorServicio stutor;
+    
+    private RutinaEjercicioServicio sre;
+    
+    
+    // METODOS Y EVENTOS //
+    private void inicializarDatos() {
+        sgm = new GMServicio();
+        sejer = new EjercicioServicio();
+        srut = new RutinaServicio();
+        sentre = new EntrenamientoServicio();
+        scli = new ClienteServicio();
+        stutor = new TutorServicio();
+        sre = new RutinaEjercicioServicio();    	
+    }
+    
+    private void modificarEtiquetaVersionBuild() {
+    	this.LBBuildVer.setText(NumeroDeVersion.version);
+    }
 
-    private static Stage ventana;
+//    private Optional<ButtonType> lanzarMensaje(
+//    		AlertType tipoDeAlerta, String titulo,
+//    		String cabecera, String contenido
+//    ) {
+//    	Alert alerta = new Alert(tipoDeAlerta);
+//    	alerta.setTitle(titulo);
+//    	alerta.setHeaderText(cabecera);
+//    	alerta.setContentText(contenido);
+//    	return alerta.showAndWait();
+//    }
+    
+    public void iniciar() {
+    	this.inicializarDatos();
+    	
+    	// ESTAS CONDICIONALES DESHABILITAN CIERTOS BOTONES SEGUN QUE //
+    	// DATOS FALTEN CARGAR PARA CADA APARTADO...				  //
+    	
+    	// SEGUIMIENTO
+    	if (this.sentre.obtenerTodosLosEntrenamientos().isEmpty()) {
+    		this.BTSeguimiento.setDisable(true);
+    	}
+    	
+    	// RUTINA
+    	if (this.sejer.obtenerTodosLosEjercicios().isEmpty()) {
+    		this.BTRutina.setDisable(true);
+    	}
+    	
+    	// ENTRENAMIENTO
+    	if (
+    			this.scli.obtenerTodosLosClientes().isEmpty() ||
+    			this.stutor.obtenerTodosLosTutores().isEmpty() ||
+    			this.srut.obtenerTodasLasRutinas().isEmpty() ||
+    			this.sre.obtenerTodasLasRutinaEjercicio().isEmpty()
+    		) {
+    		this.BTEntrenamiento.setDisable(true);
+    	}
+    	
+    	// EJERCICIO
+    	if (this.sgm.obtenerTodosLosGM().isEmpty()) {
+    		this.BTEjercicio.setDisable(true);
+    	}
+    }
     
     @FXML
     private void eventoBTCliente(ActionEvent event) {
-    	// SI YA HAY UNA VENTANA DE ESTE TIPO, SOLO LA TRAE AL FRENTE
-    	if (ventana != null && ventana.isShowing()) {
-    		ventana.toFront();
-    		return;
-    	}
-
-    	try {
-    		FXMLLoader cargaVistaCargarCli = new FXMLLoader(this.getClass().getResource(RutasVistas.VISTA_CARGA_CLIENTE));
-    		AnchorPane raizVistaCargarCli = cargaVistaCargarCli.load();
-    		Scene escenaCargarCli = new Scene(raizVistaCargarCli);
-    		ventana = new Stage();
-    		ventana.setTitle("Cliente");
-    		ventana.setResizable(false);
-    		ventana.setScene(escenaCargarCli);
-    		ventana.setOnCloseRequest(e -> ventana = null); // AL CERRAR LA VENTANA, EL ESTATICO "VENTANA" SE VUELVE NULO
-//    		ventana.setAlwaysOnTop(true);
-    		ventana.show();
-    	} catch (IOException e) {
-    		System.out.println(e);
-    	}    		
+    	NavegadorDeVistasSingleton
+    		.getInstancia()
+    		.cargarNuevaVista(
+    				this.getClass(),
+    				RutasVistas.VISTA_ABM_CLIENTE
+    		);
+    	
+    	ControladorVistaABMCliente CVABMC =
+    			NavegadorDeVistasSingleton
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABMC.iniciar();
+    	
+    	NavegadorDeVistasSingleton
+    		.getInstancia()
+    		.cambiarVista(
+    				LBBuildVer,
+    				"Cliente"
+    		);
     }
 
     @FXML
     private void eventoBTEjercicio(ActionEvent event) {
-
+    	NavegadorDeVistasSingleton
+			.getInstancia()
+			.cargarNuevaVista(
+					this.getClass(),
+					RutasVistas.VISTA_ABM_EJERCICIO
+			);
+//    	NavegadorDeVistas
+//			.getInstancia()
+//			.cargarNuevaVista(
+//					this.getClass(),
+//					RutasVistas.VISTA_CARGA_MODIF_EJER,
+//					new ControladorVistaCargaEjercicio()
+//			);
+    	NavegadorDeVistasSingleton
+			.getInstancia()
+			.cambiarVista(
+					BTEjercicio,
+					"Ejercicio"
+			);
     }
 
     @FXML
     private void eventoBTEntrenamiento(ActionEvent event) {
-
+    	NavegadorDeVistasSingleton
+			.getInstancia()
+			.cargarNuevaVista(
+					this.getClass(),
+					RutasVistas.VISTA_ABM_ENT
+			);
+    	
+    	ControladorVistaABMEntrenamiento CVABME =
+    			NavegadorDeVistasSingleton
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVABME.iniciar();
+    	
+		NavegadorDeVistasSingleton
+			.getInstancia()
+			.cambiarVista(
+					LBBuildVer,
+					"Entrenamiento"
+			);
     }
 
     @FXML
     private void eventoBTGM(ActionEvent event) {
-
+    	NavegadorDeVistasSingleton
+    		.getInstancia()
+    		.cargarNuevaVista(
+    				this.getClass(),
+    				RutasVistas.VISTA_ABM_GM
+    		);
+    	NavegadorDeVistasSingleton
+    		.getInstancia()
+    		.cambiarVista(
+    				LBBuildVer,
+    				"Grupo Muscular"
+    		);
     }
 
     @FXML
     private void eventoBTRutina(ActionEvent event) {
-
+    	NavegadorDeVistasSingleton
+			.getInstancia()
+			.cargarNuevaVista(
+					this.getClass(),
+					RutasVistas.VISTA_ABM_RUTINA
+			);
+    	NavegadorDeVistasSingleton
+			.getInstancia()
+			.cambiarVista(
+					LBBuildVer,
+					"Rutina"
+			);
     }
 
     @FXML
     private void eventoBTSeguimiento(ActionEvent event) {
-
+    	NavegadorDeVistasSingleton
+			.getInstancia()
+			.cargarNuevaVista(
+					this.getClass(),
+					RutasVistas.VISTA_CLI_SEG
+			);
+    	NavegadorDeVistasSingleton
+			.getInstancia()
+			.cambiarVista(
+					LBBuildVer,
+					"Seguimiento"
+			);
     }
 
     @FXML
     private void eventoBTTutor(ActionEvent event) {
-
+    	NavegadorDeVistasSingleton
+			.getInstancia()
+			.cargarNuevaVista(
+					this.getClass(),
+					RutasVistas.VISTA_ABM_TUTOR
+			);
+    	NavegadorDeVistasSingleton
+			.getInstancia()
+			.cambiarVista(
+					LBBuildVer,
+					"Tutor"
+			);
     }
     
     @FXML
@@ -106,8 +279,136 @@ public class ControladorVistaInicio {
     	this.LBEGG.setVisible(true);
     }
 
-    
     @FXML
     private void initialize() {
+    	modificarEtiquetaVersionBuild();
+    	
+    	// NO FUNCIONA, VER MAS TARDE (OBTENCION DE DIMENSIONES DEL CONTENEDOR)
+//    	Region contenedor = (Region) this.BTLOL.getParent();
+//    	System.out.print(contenedor);
+//    	System.out.printf("Alto > %f | Ancho > %f%n",
+//    			contenedor.getHeight(),
+//    			contenedor.getWidth()
+//    	);
     }
 }
+
+
+
+// CODIGO SIN USAR //
+
+//private void cambiarVista(String rutaVista, String tituloDeVentana) {
+//// SI YA HAY UNA VENTANA DE ESTE TIPO, SOLO LA TRAE AL FRENTE
+//if (ventana != null && ventana.isShowing()) {
+//	ventana.toFront();
+//	return;
+//}
+
+//try {
+//	// SE CARGA LA VISTA A UN TIPO PARENT POR QUE NO SE SABE EL TIPO DE CONTENEDOR DE LA VISTA PADRE/PRINCIPAL
+//	Parent nuevaVista = FXMLLoader.load(this.getClass().getResource(rutaVista));
+//	Scene escena = new Scene(nuevaVista);
+//	
+//	// OBTIENE EL STAGE O VENTANA ACTUAL DESDE ALGUNO DE LOS NODOS QUE CONTIENE
+//	Stage ventana = (Stage) LBBuildVer.getScene().getWindow();
+//	ventana.setScene(escena);
+//	ventana.setTitle(tituloDeVentana);
+//	ventana.setResizable(false);
+//	ventana.show();
+	
+//	ventana = new Stage();
+//	ventana.setTitle(tituloDeVentana);
+//	ventana.setResizable(false);
+//	ventana.setScene(escena);
+//	ventana.setOnCloseRequest(e -> ventana = null); // AL CERRAR LA VENTANA, EL ESTATICO "VENTANA" SE VUELVE NULO
+//	// ventana.setAlwaysOnTop(true);
+//	ventana.show();
+	
+//	// CIERRA LA VENTANA ACTUAL
+//	ventanaActual = (Stage) this.LBBuildVer.getScene().getWindow();
+//	this.ventanaActual.close();
+//} catch (IOException e) {
+//	System.out.println(e);
+//}  
+//}
+
+//this.cambiarVista(RutasVistas.VISTA_ABM_GM, "Grupo Muscular");
+
+//this.cambiarVista(RutasVistas.VISTA_ABM_CLIENTE, "Cliente");
+
+//@FXML
+//private Stage ventanaActual;
+
+//private static Stage ventana;
+
+
+//if (this.sentre.obtenerTodosLosEntrenamientos().isEmpty()) {
+//this.lanzarMensaje(
+//		AlertType.ERROR, "Error!", "DATOS INSUFICIENTES",
+//		"No puede crear seguimientos sin entrenamientos, " +
+//		"agregue almenos uno antes de crear seguimientos..."
+//);
+//System.out.println(
+//		"[ ERROR ] > Imposible crear seguimientos " +
+//		"sin rutinas!"
+//); // LOG
+//return;
+//}
+
+
+
+//if (this.sejer.obtenerTodosLosEjercicios().isEmpty()) {
+//this.lanzarMensaje(
+//		AlertType.ERROR, "Error!", "DATOS INSUFICIENTES",
+//		"No puede crear rutinas sin ejercicios, " +
+//		"agregue almenos uno antes de crear rutinas..."
+//);
+//System.out.println(
+//		"[ ERROR ] > Imposible crear rutinas " +
+//		"sin ejercicios!"
+//); // LOG
+//return;
+//}
+
+
+//// ARREGLAR ESTA COSAS DESPUES
+//boolean noHayDatosEnCTR = 
+//		this.scli.obtenerTodosLosClientes().isEmpty() ||
+//		this.stutor.obtenerTodosLosTutores().isEmpty() ||
+//		this.srut.obtenerTodasLasRutinas().isEmpty();
+////System.out.println(noHayDatosEnCTR);
+//// CTR -> CLIENTE - TUTOR - RUTINA
+//if (noHayDatosEnCTR) {
+//	this.lanzarMensaje(
+//			AlertType.ERROR, "Error!", "DATOS INSUFICIENTES",
+//			"No puede crear entrenamientos sin rutinas, clientes y tutores, " +
+//			"agregue almenos uno de cada uno antes de crear entrenamientos..."
+//	);
+//	System.out.println(
+//			"[ ERROR ] > Imposible crear entrenamientos " +
+//			"sin rutinas, clientes y tutores!"
+//	); // LOG
+//	return;
+//}
+
+
+////System.out.println(this.sgm.obtenerTodosLosGM());
+//// DESPUES METER ESTO EN UN METODO APARTE!!
+//if (this.sgm.obtenerTodosLosGM().isEmpty()) {
+//this.lanzarMensaje(
+//		AlertType.ERROR, "Error!", "DATOS INSUFICIENTES",
+//		"No puede crear ejercicios sin grupos musculares, " +
+//		"agregue almenos uno antes de crear ejercicios..."
+//);
+////this.lanzarMensaje(
+////		AlertType.ERROR, "Error!", "OPERACION FALLIDA",
+////		"Seleccione un cliente..."
+////);
+//System.out.println(
+//		"[ ERROR ] > Imposible crear ejercicios " +
+//		"sin grupos musculares!"
+//); // LOG
+//return;
+//}
+//
+
