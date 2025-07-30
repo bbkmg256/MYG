@@ -14,9 +14,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-//import utilidades.AlmacenadorDeEntidades;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import edu.unam.modelo.Ejercicio;
 //import edu.unam.modelo.Entrenamiento;
 import edu.unam.modelo.Seguimiento;
@@ -124,7 +123,7 @@ public class ControladorVistaABMSeg {
     
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -132,13 +131,13 @@ public class ControladorVistaABMSeg {
 	    	);
     	
     	ControladorVistaEntSeg CVES =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVES.iniciar();
 
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTAtras,
@@ -148,7 +147,7 @@ public class ControladorVistaABMSeg {
 
     @FXML
     private void eventoBTCrear(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     	.getInstancia()
     	.cargarNuevaVista(
     			this.getClass(),
@@ -158,13 +157,13 @@ public class ControladorVistaABMSeg {
 	
     	// MODIFICAR ESTA BERGA
 		ControladorVistaCargarSeg CVCS =
-				NavegadorDeVistas
+				NavegadorDeVistasSingleton
 					.getInstancia()
 					.obtenerControladorDeNuevaVista();
 		
 		CVCS.iniciar();
 	
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTCrear,

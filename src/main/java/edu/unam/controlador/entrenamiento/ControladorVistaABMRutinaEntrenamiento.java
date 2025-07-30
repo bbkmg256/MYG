@@ -14,9 +14,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import utilidades.AlmacenadorDeEntidades;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.AlmacenadorDeEntidadesSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +95,7 @@ public class ControladorVistaABMRutinaEntrenamiento {
     // METODOS Y EVENTOS //
     private void inicializarDatos() {
     	this.sre = new RutinaEjercicioServicio();
-    	this.ent = AlmacenadorDeEntidades.getInstancia().getEntrenamiento();
+    	this.ent = AlmacenadorDeEntidadesSingleton.getInstancia().getEntrenamiento();
     	this.sru = new RutinaServicio();
     	this.sruent = new RutinaEntrenamientoServicio();
     	
@@ -230,7 +230,7 @@ public class ControladorVistaABMRutinaEntrenamiento {
 
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -238,13 +238,13 @@ public class ControladorVistaABMRutinaEntrenamiento {
 			);
     	
     	ControladorVistaABMEntrenamiento CVABME =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABME.iniciar();
     	
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					this.BTAtras,

@@ -24,10 +24,10 @@ import java.time.LocalDate;
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Tutor;
 import edu.unam.servicio.TutorServicio;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
 import utilidades.bd.ComprobarConexionBD;
 import utilidades.bd.EMFSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 
 /*
  * 
@@ -245,14 +245,14 @@ public class ControladorVistaCargaTutor {
 				"El Tutor fue cargado con exito..."
 		);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
     				RutasVistas.VISTA_ABM_TUTOR
     		);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTFinalizar,
@@ -262,13 +262,13 @@ public class ControladorVistaCargaTutor {
     
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
     				RutasVistas.VISTA_ABM_TUTOR
     		);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTCancelar,

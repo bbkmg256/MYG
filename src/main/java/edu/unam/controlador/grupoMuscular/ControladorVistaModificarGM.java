@@ -14,10 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
-//import utilidades.bd.ComprobarConexionBD;
-//import utilidades.bd.EMFSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 
 /*
  * 
@@ -156,13 +154,13 @@ public class ControladorVistaModificarGM {
 				"El grupo muscular fue modificado con exito..."
 		);
 		
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_GM
 			);
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTCancelar,
@@ -172,13 +170,13 @@ public class ControladorVistaModificarGM {
     
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
         			RutasVistas.VISTA_ABM_GM
         	);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTCancelar,

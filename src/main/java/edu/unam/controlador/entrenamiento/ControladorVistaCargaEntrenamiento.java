@@ -12,10 +12,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.util.StringConverter;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
+
 import java.util.List;
 import java.util.function.Function;
 import edu.unam.modelo.Cliente;
@@ -60,18 +62,30 @@ public class ControladorVistaCargaEntrenamiento {
 
     @FXML
     private TextField txtPuntaje; // NO USADO PARA ESTE CONSTRUCTOR
+
+    @FXML
+    private Button BTInfo; // TAMPOCO USADO ACÁ
     
-    private ClienteServicio scli = new ClienteServicio();
+    @FXML
+    private HBox HBPuntaje;
     
-    private TutorServicio stu = new TutorServicio();
+    private ClienteServicio scli;
+    
+    private TutorServicio stu;
     
 //    private RutinaServicio sru = new RutinaServicio();
     
-    private EntrenamientoServicio sentre = new EntrenamientoServicio();
+    private EntrenamientoServicio sentre;
     
     
     // METODOS Y EVENTOS //
     // METODO GENERICO PARA ACTUALIZAR LOS CBs
+    private void inicializarDatos() {
+        scli = new ClienteServicio();
+        stu = new TutorServicio();        
+        sentre = new EntrenamientoServicio();
+    }
+    
     private <T> void actualizarCB(
     		List<T> lista,
     		ComboBox<T> cb,
@@ -104,9 +118,25 @@ public class ControladorVistaCargaEntrenamiento {
     	alerta.showAndWait();
     }
     
+    public void iniciar() {
+    	this.inicializarDatos();
+    	
+    	this.actualizarCB(
+    			this.scli.obtenerTodosLosClientes(),
+    			this.CBCli,
+    			cli -> cli.getNombre()
+    	);
+    	
+    	this.actualizarCB(
+    			this.stu.obtenerTodosLosTutores(),
+    			this.CBTu,
+    			tu -> tu.getNombre()
+    	);
+    }
+    
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -114,13 +144,13 @@ public class ControladorVistaCargaEntrenamiento {
 	    	);
     	
     	ControladorVistaABMEntrenamiento CVABME =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABME.iniciar();
 	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTCancelar,
@@ -193,7 +223,18 @@ public class ControladorVistaCargaEntrenamiento {
     				AlertType.ERROR,
     				"Error!",
     				"ERROR DE CAMPOS",
-    				"La fecha de finalización no puede ser menor a la de inicio..."
+    				"La fecha de finalización no puede ser anterior a la de inicio..."
+    		);
+    		System.err.println("[ ERROR ] >  Inconsistencia en las fechas!"); // LOG
+    		return;
+    	}
+//    	if (regCli.getFechaIngreso().isAfter(fechaInicio)) {
+    	if (fechaInicio.isBefore(regCli.getFechaIngreso())) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR,
+    				"Error!",
+    				"ERROR DE CAMPOS",
+    				"La fecha de inicio no puede ser anterior a la del ingreso del cliente al gym..."
     		);
     		System.err.println("[ ERROR ] >  Inconsistencia en las fechas!"); // LOG
     		return;
@@ -223,7 +264,7 @@ public class ControladorVistaCargaEntrenamiento {
 				"El entrenamiento fue cargado con exito!"
 		);
 		
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -231,13 +272,13 @@ public class ControladorVistaCargaEntrenamiento {
 	    	);
     	
     	ControladorVistaABMEntrenamiento CVABME =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABME.iniciar();
 
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTFinalizar,
@@ -246,31 +287,36 @@ public class ControladorVistaCargaEntrenamiento {
     }
     
     @FXML
+    void eventoBTInfo(ActionEvent event) {} // NO USADO
+    
+    
+    @FXML
     private void initialize() {
     	this.LTitulo.setText("Cargar entrenamiento");
-    	this.txtPuntaje.setVisible(false);
-    	
-    	this.actualizarCB(
-    			this.scli.obtenerTodosLosClientes(),
-    			this.CBCli,
-    			cli -> cli.getNombre()
-    	);
-    	
-    	this.actualizarCB(
-    			this.stu.obtenerTodosLosTutores(),
-    			this.CBTu,
-    			tu -> tu.getNombre()
-    	);
-    	
-//    	this.actualizarCB(
-//    			this.sru.obtenerTodasLasRutinas(),
-//    			this.CBRu,
-//    			ru -> ru.getNombreRutina()
-//    	);
+//    	this.txtPuntaje.setVisible(false);
+    	this.HBPuntaje.setVisible(false);
     	
     	// PARA QUE EL USUARIO NO PUEDA DIGITAR //
     	// CUALQUIERA EN LOS DP.				//
     	this.DPFI.setEditable(false);
     	this.DPFF.setEditable(false);
+
+//    	this.actualizarCB(
+//    			this.scli.obtenerTodosLosClientes(),
+//    			this.CBCli,
+//    			cli -> cli.getNombre()
+//    	);
+//    	
+//    	this.actualizarCB(
+//    			this.stu.obtenerTodosLosTutores(),
+//    			this.CBTu,
+//    			tu -> tu.getNombre()
+//    	);
+    	
+//    	this.actualizarCB(
+//    			this.sru.obtenerTodasLasRutinas(),
+//    			this.CBRu,
+//    			ru -> ru.getNombreRutina()
+//    	);    	
     }
 }

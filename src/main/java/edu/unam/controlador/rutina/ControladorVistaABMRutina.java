@@ -9,8 +9,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -81,14 +82,14 @@ public class ControladorVistaABMRutina {
     
     @FXML
     private void eventoBTCrear(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_MODIF_RUTINA,
 					new ControladorVistaCargaRutina()
 			);
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTAtras,
@@ -107,6 +108,19 @@ public class ControladorVistaABMRutina {
     		);
     		System.out.println(
     				"[ ERROR ] > No se ah seleccionado un registro!"
+    		); // LOG
+    		return;
+    	}
+    	
+    	if (!this.srut.obtenerListaDeRutinaEntrenamientos(this.regRut.getIdRutina()).isEmpty()) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, "Error!",
+    				"IMPOSIBLE ELIMINAR REGISTRO",
+    				"Esta rutina es usada o está relacionada con por lo menos 1 entrenamiento..."
+    		);
+    		System.out.println(
+    				"[ ERROR ] > No se puede eliminar el registro " +
+    				"por que tiene registros hijos asociados!"
     		); // LOG
     		return;
     	}
@@ -153,7 +167,7 @@ public class ControladorVistaABMRutina {
     		return;
     	}
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -162,13 +176,13 @@ public class ControladorVistaABMRutina {
 			);
     	
     	ControladorVistaModificarRutina CVMR =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVMR.establecerRutinaParaModificar(regRut);
     	
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTModificar,
@@ -192,7 +206,7 @@ public class ControladorVistaABMRutina {
     		return;
     	}
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 		.getInstancia()
 		.cargarNuevaVista(
 				this.getClass(),
@@ -208,14 +222,14 @@ public class ControladorVistaABMRutina {
 //		);
     	
     	ControladorVistaABMRutinaEjercicio CVABMRE =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABMRE.establecerRutina(regRut);
 //    	CVABMRE.ejecutarActualizacionTablaVista();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTAbrir,
@@ -225,7 +239,7 @@ public class ControladorVistaABMRutina {
     
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
@@ -233,13 +247,13 @@ public class ControladorVistaABMRutina {
     		);
     	
     	ControladorVistaInicio CVI = 
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVI.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTAtras,

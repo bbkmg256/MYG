@@ -17,9 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
-import utilidades.AlmacenadorDeEntidades;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.AlmacenadorDeEntidadesSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import edu.unam.servicio.SeguimientoServicio;
 import edu.unam.servicio.EjercicioServicio;
 import edu.unam.servicio.EntrenamientoServicio;
@@ -27,6 +27,8 @@ import java.util.Optional;
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Ejercicio;
 import edu.unam.modelo.Entrenamiento;
+
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import edu.unam.modelo.Seguimiento;
 
@@ -76,7 +78,7 @@ public class ControladorVistaCargarSeg {
     	this.sseg = new SeguimientoServicio();
     	this.sej = new EjercicioServicio();
     	this.sentre = new EntrenamientoServicio();
-    	this.ent = AlmacenadorDeEntidades.getInstancia().getEntrenamiento();
+    	this.ent = AlmacenadorDeEntidadesSingleton.getInstancia().getEntrenamiento();
     	this.fechaInicioEnt = this.sentre.obtenerEntrenamiento(this.ent.getIdEntrenamiento()).getFechaInicio();
     	this.fechaFinEnt = this.sentre.obtenerEntrenamiento(this.ent.getIdEntrenamiento()).getFechaFin();
     }
@@ -134,7 +136,7 @@ public class ControladorVistaCargarSeg {
     
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -142,13 +144,13 @@ public class ControladorVistaCargarSeg {
 	    	);
 	
 		ControladorVistaABMSeg CVABMS =
-				NavegadorDeVistas
+				NavegadorDeVistasSingleton
 					.getInstancia()
 					.obtenerControladorDeNuevaVista();
 		
 		CVABMS.iniciar();
 		
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTCancelar,
@@ -202,29 +204,65 @@ public class ControladorVistaCargarSeg {
     		return;
     	}
     	
+    	int errorDeFecha = 0;
+    	
     	// LA FECHA DE REALIZACION DEL SEGUIMIENTO DEBE ESTAR ENTRE LA FECHA DE //
     	// INICIO Y FINAL DEL ENTRENAMIENTO, DE LO CONTRARIO ES ERRONEO			//
     	if (fecha.isBefore(this.fechaInicioEnt)) {
-    		hayCamposErroneos = true;
+    		errorDeFecha = 1;
     	}
     	
     	if (fecha.isAfter(this.fechaFinEnt)) {
-    		hayCamposErroneos = true;
+    		errorDeFecha = 2;
     	}
     	
-    	if (hayCamposErroneos) {
-    		this.lanzarMensaje(
-    				AlertType.ERROR,
-    				"Error!",
-    				"ERROR DE CAMPOS",
-    				"La fecha no puede ser anterior a " +
-    				this.fechaInicioEnt +
-    				" y posterior a "+
-    				this.fechaFinEnt
-    		);
-    		System.err.println("[ ERROR ] > Fecha fuera de rango!"); // LOG
-    		return;
+    	// VERIFICA QUE LA FECHA CARGADA NO CAIGA UN DOMINGO
+    	if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
+    		errorDeFecha = 3;
     	}
+    	
+    	switch (errorDeFecha) {
+			case 1, 2: {
+	    		this.lanzarMensaje(
+	    				AlertType.ERROR,
+	    				"Error!",
+	    				"INCONSISTENCIA DE FECHAS",
+	    				"La fecha no puede ser anterior a " +
+	    				this.fechaInicioEnt +
+	    				" y posterior a "+
+	    				this.fechaFinEnt
+	    		);
+	    		System.err.println("[ ERROR ] > Fecha fuera de rango!"); // LOG
+	    		return;
+			}
+			case 3: {
+	    		this.lanzarMensaje(
+	    				AlertType.ERROR,
+	    				"Error!",
+	    				"INCONSISTENCIA DE FECHAS",
+	    				"No se puede ingresar un seguimiento un dia Domingo..."
+	    		);
+	    		System.err.println("[ ERROR ] > Fecha no permitida!"); // LOG
+	    		return;
+			}
+			default: {
+				// SIGUE DE LARGO
+			}
+		}
+    	
+//    	if (hayCamposErroneos) {
+//    		this.lanzarMensaje(
+//    				AlertType.ERROR,
+//    				"Error!",
+//    				"ERROR DE CAMPOS",
+//    				"La fecha no puede ser anterior a " +
+//    				this.fechaInicioEnt +
+//    				" y posterior a "+
+//    				this.fechaFinEnt
+//    		);
+//    		System.err.println("[ ERROR ] > Fecha fuera de rango!"); // LOG
+//    		return;
+//    	}
 
     	// PARSEO DE SERIE, REPETICION Y LA FECHA INGRESADA
     	serie = Integer.parseInt(this.txtSeries.getText());
@@ -233,7 +271,7 @@ public class ControladorVistaCargarSeg {
     	
     	Seguimiento seg = new Seguimiento(
     			fecha, ej, serie, repeticion, peso,
-    			AlmacenadorDeEntidades
+    			AlmacenadorDeEntidadesSingleton
     				.getInstancia()
     				.getEntrenamiento()
     	);
@@ -264,7 +302,7 @@ public class ControladorVistaCargarSeg {
     			"El seguimiento se cargó correctamente..."
     	);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -272,13 +310,13 @@ public class ControladorVistaCargarSeg {
 	    	);
 	
 		ControladorVistaABMSeg CVABMS =
-				NavegadorDeVistas
+				NavegadorDeVistasSingleton
 					.getInstancia()
 					.obtenerControladorDeNuevaVista();
 		
 		CVABMS.iniciar();
 		
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTCancelar,

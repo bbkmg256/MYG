@@ -19,8 +19,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.util.StringConverter;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import utilidades.parametros.ParametrosEjercicio;
 
 /*
@@ -183,13 +183,13 @@ public class ControladorVistaModificarEjercicio {
     			"El ejercicio fue modificado con exito..."
     	);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_EJERCICIO
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTFinalizar,
@@ -199,13 +199,13 @@ public class ControladorVistaModificarEjercicio {
 
     @FXML
     void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_EJERCICIO
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTCancelar,

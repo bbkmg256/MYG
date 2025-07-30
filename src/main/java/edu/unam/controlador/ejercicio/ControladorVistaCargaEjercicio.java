@@ -15,9 +15,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.util.StringConverter;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import edu.unam.modelo.GrupoMuscular;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -174,13 +175,13 @@ public class ControladorVistaCargaEjercicio {
     			"El ejercicio fue cargado con exito..."
     	);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_EJERCICIO
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTFinalizar,
@@ -190,13 +191,13 @@ public class ControladorVistaCargaEjercicio {
 
     @FXML
     void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_EJERCICIO
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTCancelar,

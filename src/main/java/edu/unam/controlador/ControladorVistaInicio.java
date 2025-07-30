@@ -17,10 +17,9 @@ import javafx.scene.control.Button;
 //import javafx.scene.layout.AnchorPane;
 //import javafx.stage.Stage;
 import javafx.scene.control.Label;
-//import javafx.scene.control.Alert.AlertType;
-import utilidades.RutasVistas;
-import utilidades.NavegadorDeVistas;
 import utilidades.NumeroDeVersion;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 //import java.util.Optional;
 import edu.unam.servicio.GMServicio;
 import edu.unam.servicio.RutinaEjercicioServicio;
@@ -142,7 +141,7 @@ public class ControladorVistaInicio {
     
     @FXML
     private void eventoBTCliente(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
@@ -150,13 +149,13 @@ public class ControladorVistaInicio {
     		);
     	
     	ControladorVistaABMCliente CVABMC =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABMC.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				LBBuildVer,
@@ -166,7 +165,7 @@ public class ControladorVistaInicio {
 
     @FXML
     private void eventoBTEjercicio(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -179,7 +178,7 @@ public class ControladorVistaInicio {
 //					RutasVistas.VISTA_CARGA_MODIF_EJER,
 //					new ControladorVistaCargaEjercicio()
 //			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTEjercicio,
@@ -189,7 +188,7 @@ public class ControladorVistaInicio {
 
     @FXML
     private void eventoBTEntrenamiento(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -197,13 +196,13 @@ public class ControladorVistaInicio {
 			);
     	
     	ControladorVistaABMEntrenamiento CVABME =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABME.iniciar();
     	
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					LBBuildVer,
@@ -213,13 +212,13 @@ public class ControladorVistaInicio {
 
     @FXML
     private void eventoBTGM(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
     				RutasVistas.VISTA_ABM_GM
     		);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				LBBuildVer,
@@ -229,13 +228,13 @@ public class ControladorVistaInicio {
 
     @FXML
     private void eventoBTRutina(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_RUTINA
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					LBBuildVer,
@@ -245,13 +244,13 @@ public class ControladorVistaInicio {
 
     @FXML
     private void eventoBTSeguimiento(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CLI_SEG
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					LBBuildVer,
@@ -261,13 +260,13 @@ public class ControladorVistaInicio {
 
     @FXML
     private void eventoBTTutor(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_TUTOR
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					LBBuildVer,

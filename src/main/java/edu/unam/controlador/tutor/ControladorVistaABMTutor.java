@@ -21,8 +21,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 //import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
-import utilidades.RutasVistas;
 import utilidades.bd.EMFSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 
 //import java.io.IOException;
 import java.time.LocalDate;
@@ -34,7 +35,6 @@ import java.util.function.UnaryOperator;
 import edu.unam.controlador.ControladorVistaInicio;
 import edu.unam.modelo.Tutor;
 import edu.unam.servicio.TutorServicio;
-import utilidades.NavegadorDeVistas;
 
 /*
  * 
@@ -121,7 +121,7 @@ public class ControladorVistaABMTutor {
     private void actualizarTabla(List<Tutor> listaClientes) {
     	TVTablaTutores.getItems().clear(); // Limpia los items de la tabla
     	TVTablaTutores.getItems().addAll(listaClientes); // Muestra items en la tabla
-    	TVTablaTutores.refresh();
+//    	TVTablaTutores.refresh();
 
     	this.asignarValoresColumnas(this.colDNI, "dni");
     	this.asignarValoresColumnas(this.colNombre, "nombre");
@@ -151,13 +151,13 @@ public class ControladorVistaABMTutor {
 
     @FXML
     private void eventoBTCargar(ActionEvent event) {    	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 	    			RutasVistas.VISTA_CARGAR_TUTOR
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTCrear,
@@ -187,7 +187,7 @@ public class ControladorVistaABMTutor {
 
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
@@ -195,13 +195,13 @@ public class ControladorVistaABMTutor {
     		);
     	
     	ControladorVistaInicio CVI = 
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVI.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTAtras,
@@ -273,7 +273,7 @@ public class ControladorVistaABMTutor {
     		return;
     	}
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
@@ -281,10 +281,10 @@ public class ControladorVistaABMTutor {
     		);
     	
     	// OBTIENE EL CONTROLADOR DE LA VISTA SIGUIENTE Y PASA EL OBJETO TUTORES EXTRAIDO DE LA TABLA DE DATOS
-    	ControladorVistaModificarTutor controladorModificarTutor = NavegadorDeVistas.getInstancia().obtenerControladorDeNuevaVista();
+    	ControladorVistaModificarTutor controladorModificarTutor = NavegadorDeVistasSingleton.getInstancia().obtenerControladorDeNuevaVista();
     	controladorModificarTutor.establecerTutorParaModificar(regTu);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTModificar,

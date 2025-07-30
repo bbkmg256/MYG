@@ -14,9 +14,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import utilidades.AlmacenadorDeEntidades;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.AlmacenadorDeEntidadesSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import edu.unam.modelo.Entrenamiento;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -53,6 +53,9 @@ public class ControladorVistaABMEntrenamiento {
     
     @FXML
     private Button BTAbrir;
+    
+    @FXML
+    private Button BTFinalizarEnt; // PERMITE FINALIZAR EL ENTRENAMIENTO Y PUNTUAR AL TUTOR
 
     @FXML
     private TableView<Entrenamiento> TVEntrenamiento;
@@ -77,6 +80,9 @@ public class ControladorVistaABMEntrenamiento {
 
     @FXML
     private TableColumn<Entrenamiento, String> TCTu;
+    
+    @FXML
+    private TableColumn<Entrenamiento, String> TCEstado;
     
     private EntrenamientoServicio sentre;
 
@@ -117,6 +123,7 @@ public class ControladorVistaABMEntrenamiento {
     	this.asignarValoresColumnas(this.TCFI, "fechaInicio");
     	this.asignarValoresColumnas(this.TCFF, "fechaFin");
     	this.asignarValoresColumnas(this.TCPT, "puntaje");
+    	this.asignarValoresColumnas(this.TCEstado, "estado");
     	
     	// RENDERIZADO DE OBJETOS DE ENTRENAMIENTO //
     	// CLIENTE
@@ -145,15 +152,22 @@ public class ControladorVistaABMEntrenamiento {
 
     @FXML
     private void eventoBTCrear(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
 	    			RutasVistas.VISTA_CARGA_MODIF_ENT,
 	    			new ControladorVistaCargaEntrenamiento()
 	    	);
+    	
+    	ControladorVistaCargaEntrenamiento CVCE =
+    			NavegadorDeVistasSingleton
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVCE.iniciar();
 	
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTCrear,
@@ -174,6 +188,20 @@ public class ControladorVistaABMEntrenamiento {
     		);
     		System.err.println(
     				"[ ERROR ] > Seleccione un entrenamiento para eliminar!"
+    		); // LOG
+    		return;
+    	}
+    	
+    	if (!this.sentre.obtenerListaDeSeguimientos(regEnt.getIdEntrenamiento()).isEmpty()) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, 
+    				"Error!", 
+    				"IMPOSIBLE ELIMINAR REGISTRO", 
+    				"Este entrenamiento es usado o está asociado con por lo menos 1 seguimiento..."
+    		);
+    		System.err.println(
+    				"[ ERROR ] > No se puede eliminar el registro " +
+    				"por que tiene 1 o mas registros hijos asociados!"
     		); // LOG
     		return;
     	}
@@ -209,7 +237,10 @@ public class ControladorVistaABMEntrenamiento {
 
     @FXML
     private void eventoBTModificar(ActionEvent event) {
-    	Entrenamiento regEnt = TVEntrenamiento.getSelectionModel().getSelectedItem();
+    	Entrenamiento regEnt = 
+    			TVEntrenamiento
+    				.getSelectionModel()
+    				.getSelectedItem();
     	
     	if (regEnt == null) {
     		this.lanzarMensaje(
@@ -224,7 +255,11 @@ public class ControladorVistaABMEntrenamiento {
     		return;
     	}
     	
-    	NavegadorDeVistas
+    	AlmacenadorDeEntidadesSingleton
+    		.getInstancia()
+    		.setEntrenamiento(regEnt);
+    	
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -233,14 +268,15 @@ public class ControladorVistaABMEntrenamiento {
 	    	);
     	
     	ControladorVistaModifEntrenamiento CVCME =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	// DESPUES ARREGLAR ESTO QUE ESTA HORRIBLE
-    	CVCME.establecerEntrenamiento(regEnt);
+//    	CVCME.establecerEntrenamiento(regEnt);
+    	CVCME.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTModificar,
@@ -265,7 +301,7 @@ public class ControladorVistaABMEntrenamiento {
     		return;
     	}
     	
-    	AlmacenadorDeEntidades.getInstancia().setEntrenamiento(regEnt);
+    	AlmacenadorDeEntidadesSingleton.getInstancia().setEntrenamiento(regEnt);
     	System.out.println(regEnt);
     	
 //    	NavegadorDeVistas
@@ -275,7 +311,7 @@ public class ControladorVistaABMEntrenamiento {
 //	    			RutasVistas.VISTA_ABM_RUT_ENT
 //	    	);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -283,13 +319,13 @@ public class ControladorVistaABMEntrenamiento {
 	    	);
 	
     	ControladorVistaABMRutinaEntrenamiento CVAMBRE = 
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVAMBRE.iniciar();
 		
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTAbrir,
@@ -299,7 +335,7 @@ public class ControladorVistaABMEntrenamiento {
 
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -307,18 +343,87 @@ public class ControladorVistaABMEntrenamiento {
 	    	);
     	
     	ControladorVistaInicio CVI = 
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVI.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTAtras,
 	    			"Inicio"
 	    	);
+    }
+    
+    @FXML
+    void eventoBTFinalizarEnt(ActionEvent event) {
+    	Entrenamiento regEnt = this.TVEntrenamiento.getSelectionModel().getSelectedItem();
+    	
+    	if (regEnt == null) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, 
+    				"Error!", 
+    				"ERROR DE OPERACION", 
+    				"Seleccione un entrenamiento..."
+    		);
+    		System.err.println(
+    				"[ ERROR ] > Seleccione un entrenamiento para eliminar!"
+    		); // LOG
+    		return;
+    	}
+    	
+    	// SI EL ENTRENAMIENTO YA FINALIZÓ, NO SE PUEDE FINALIZARLO NUEVAMENTE
+    	if (regEnt.getEstado().equals("Finalizado")) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, 
+    				"Error!", 
+    				"ERROR DE OPERACION", 
+    				"Imposible finalizar el entrenamiento, ya que el mismo está finalizado..."
+    		);
+    		System.err.println(
+    				"[ ERROR ] > No se puede finalizar un entrenamiento que ya está finalizado!"
+    		); // LOG
+    		return;
+    	}
+    	
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Gestión de estado del entrenamiento",
+    			"FINALIZAR ENTRENAMIENTO", "Realmente desea finalizar el entrenamiento?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Eliminación cancelada!"); // LOG
+        	return;
+    	}
+    	
+    	AlmacenadorDeEntidadesSingleton
+    		.getInstancia()
+    		.setEntrenamiento(regEnt);
+    	
+    	NavegadorDeVistasSingleton
+    		.getInstancia()
+    		.cargarNuevaVista(
+    				this.getClass(),
+    				RutasVistas.VISTA_PUNTUAR_TUTOR
+    		);
+    	
+    	ControladorVistaPuntuarTutor CVPT =
+    			NavegadorDeVistasSingleton
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CVPT.iniciar();
+    	
+    	NavegadorDeVistasSingleton
+    		.getInstancia()
+    		.cambiarVista(
+    				this.BTFinalizarEnt,
+    				"Puntuar tutor"
+    		);
     }
     
     @FXML

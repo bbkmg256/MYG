@@ -14,13 +14,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 //import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+
 import java.time.LocalDate;
 import java.util.Optional;
 import edu.unam.modelo.Cliente;
 import edu.unam.servicio.ClienteServicio;
-import utilidades.AlmacenadorDeEntidades;
+import utilidades.AlmacenadorDeEntidadesSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 
 /*
  * 
@@ -126,13 +127,13 @@ public class ControladorVistaCliSeg {
     		return;
     	}
 
-    	AlmacenadorDeEntidades
+    	AlmacenadorDeEntidadesSingleton
     		.getInstancia()
     		.setCliente(regCli);
     	
 //    	System.out.println(AlmacenadorDeEntidades.getInstancia().getCliente());
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -140,13 +141,13 @@ public class ControladorVistaCliSeg {
 			);
     	
     	ControladorVistaEntSeg CVES = 
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVES.iniciar();
     	
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTAbrir,
@@ -156,13 +157,13 @@ public class ControladorVistaCliSeg {
 
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_INICIO
 			);
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTAtras,

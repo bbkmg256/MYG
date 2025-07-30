@@ -20,8 +20,8 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import utilidades.parametros.ParametrosRutinaEjercicio;
 
 public class ControladorVistaModificarRutinaEjercicio {
@@ -112,7 +112,7 @@ public class ControladorVistaModificarRutinaEjercicio {
 
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -120,13 +120,13 @@ public class ControladorVistaModificarRutinaEjercicio {
 			);
     	
     	ControladorVistaABMRutinaEjercicio CVABMRE =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABMRE.establecerRutina(this.rutina);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					this.BTFinalizar,
@@ -204,7 +204,7 @@ public class ControladorVistaModificarRutinaEjercicio {
     			"Los elementos fueron actualizados con exito..."
     	);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -212,13 +212,13 @@ public class ControladorVistaModificarRutinaEjercicio {
 			);
     	
     	ControladorVistaABMRutinaEjercicio CVABMRE =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABMRE.establecerRutina(this.rutina);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					this.BTFinalizar,

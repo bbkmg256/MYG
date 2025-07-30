@@ -16,12 +16,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import edu.unam.servicio.GMServicio;
 import edu.unam.modelo.GrupoMuscular;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
-//import utilidades.bd.ComprobarConexionBD;
-//import utilidades.bd.EMFSingleton;
 
 /*
  * 
@@ -157,13 +155,13 @@ public class ControladorVistaCargarGM {
 				"Se cargó correctamente el GM..."
 		);
 		
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_GM
 			);
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTCancelar,
@@ -173,13 +171,13 @@ public class ControladorVistaCargarGM {
     
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
         			RutasVistas.VISTA_ABM_GM
         	);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTCancelar,

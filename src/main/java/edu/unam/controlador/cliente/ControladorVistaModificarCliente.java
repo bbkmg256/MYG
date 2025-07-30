@@ -19,8 +19,8 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.util.converter.IntegerStringConverter;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 //import utilidades.bd.EMFSingleton;
 import utilidades.parametros.ParametrosClienteTutor;
 
@@ -141,7 +141,7 @@ public class ControladorVistaModificarCliente {
     
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -149,13 +149,13 @@ public class ControladorVistaModificarCliente {
 			);
     	
     	ControladorVistaABMCliente CVABMC =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABMC.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTCancelar,
@@ -274,7 +274,7 @@ public class ControladorVistaModificarCliente {
  				"El cliente fue modificado con exito..."
  		);
      	
-     	NavegadorDeVistas
+     	NavegadorDeVistasSingleton
      		.getInstancia()
      		.cargarNuevaVista(
      				this.getClass(),
@@ -282,13 +282,13 @@ public class ControladorVistaModificarCliente {
      		);
      	
     	ControladorVistaABMCliente CVABMC =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABMC.iniciar();
      	
-     	NavegadorDeVistas
+     	NavegadorDeVistasSingleton
      		.getInstancia()
      		.cambiarVista(
      				BTFinalizar,

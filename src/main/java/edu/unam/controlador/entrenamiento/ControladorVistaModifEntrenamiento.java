@@ -1,14 +1,17 @@
 package edu.unam.controlador.entrenamiento;
 
+import java.util.ArrayList;
 //import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Function;
 import edu.unam.modelo.Cliente;
 import edu.unam.modelo.Entrenamiento;
+import edu.unam.modelo.Seguimiento;
 //import edu.unam.modelo.Rutina;
 import edu.unam.modelo.Tutor;
 import edu.unam.servicio.ClienteServicio;
 import edu.unam.servicio.EntrenamientoServicio;
+import edu.unam.servicio.SeguimientoServicio;
 //import edu.unam.servicio.RutinaServicio;
 import edu.unam.servicio.TutorServicio;
 import javafx.event.ActionEvent;
@@ -20,9 +23,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
 import javafx.util.StringConverter;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.AlmacenadorDeEntidadesSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import utilidades.parametros.ParametrosEntrenamiento;
 
 /*
@@ -59,21 +64,40 @@ public class ControladorVistaModifEntrenamiento {
     @FXML
     private TextField txtPuntaje;
     
-    private ClienteServicio scli = new ClienteServicio();
+    @FXML
+    private Button BTInfo;
     
-    private TutorServicio stu = new TutorServicio();
+    @FXML
+    private HBox HBPuntaje;
+    
+    private ClienteServicio scli;
+    
+    private TutorServicio stu;
     
 //    private RutinaServicio sru = new RutinaServicio();
     
-    private EntrenamientoServicio sentre = new EntrenamientoServicio();
+    private EntrenamientoServicio sentre;
     
 //    private Entrenamiento entre;
     private int idEnt;
     
-    private ParametrosEntrenamiento paramEnt = new ParametrosEntrenamiento();
+    private ParametrosEntrenamiento paramEnt;
     
+    private Entrenamiento ent;
+    
+    private SeguimientoServicio sseg;
+
     
     // METODOS Y EVENTOS //
+    private void inicializarDatos() {
+        scli = new ClienteServicio();
+        stu = new TutorServicio();
+        sentre = new EntrenamientoServicio();
+        paramEnt = new ParametrosEntrenamiento();
+    	ent = AlmacenadorDeEntidadesSingleton.getInstancia().getEntrenamiento();
+    	sseg = new SeguimientoServicio();
+    }
+    
     // METODO GENERICO PARA ACTUALIZAR LOS CBs
     private <T> void actualizarCB(
     		List<T> lista,
@@ -107,19 +131,72 @@ public class ControladorVistaModifEntrenamiento {
     	alerta.showAndWait();
     }
     
-    public void establecerEntrenamiento(Entrenamiento entrenamiento) {
+    // TENGO FICA DE CAMBIARLO, POR ESO LO DEJO ASÍ
+    private void establecerEntrenamiento(Entrenamiento entrenamiento) {
     	this.idEnt = entrenamiento.getIdEntrenamiento();
     	this.CBCli.setValue(entrenamiento.getCliente());
     	this.CBTu.setValue(entrenamiento.getTutor());
 //    	this.CBRu.setValue(entrenamiento.getRutina());
     	this.DPFI.setValue(entrenamiento.getFechaInicio());
     	this.DPFF.setValue(entrenamiento.getFechaFin());
-    	this.txtPuntaje.setText(Integer.toString(entrenamiento.getPuntaje()));
+    	
+    	if (entrenamiento.getPuntaje() != 0) {
+    		this.txtPuntaje.setText(Integer.toString(entrenamiento.getPuntaje()));
+    	}    	
+    }
+    
+    private boolean hayFechaFinalEnSeguimiento(Entrenamiento paramEnt) {
+    	List<Seguimiento> lista = new ArrayList<>();
+    	lista =
+    			this.sseg.obtenerListaFiltradaPorEntrenamiento(paramEnt);
+
+    	if (lista == null) {
+    		return false;
+    	}
+    	
+    	// SI HAY UN REGISTRO CON FECHA COINCIDENTE A LA DE LA FINALIZACION //
+    	// DEL ENTRENAMIENTO, SE RETORNA VERDADERO, SINO NO XD				//
+    	for (Seguimiento i : lista) {
+    		if (i.getFechaHoy().isEqual(paramEnt.getFechaFin())) {
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
+    
+    public void iniciar() {
+    	this.inicializarDatos();
+    	
+    	this.establecerEntrenamiento(ent);
+    	
+    	this.actualizarCB(
+    			this.scli.obtenerTodosLosClientes(),
+    			this.CBCli,
+    			cli -> cli.getNombre()
+    	);
+    	
+    	this.actualizarCB(
+    			this.stu.obtenerTodosLosTutores(),
+    			this.CBTu,
+    			tu -> tu.getNombre()
+    	);
+    	
+    	// LA MODIFICACIÓN DEL PUNTAJE SE HABILITA SI EXISTE   //
+    	// POR LO MENOS UN SEGUIMIENTO REGISTRADO CON LA FECHA //
+    	// EL ULTIMO DIA DE LA ULTIMA SEMANA DEL ENTRENAMIENTO //
+    	
+    	
+    	if (this.hayFechaFinalEnSeguimiento(this.ent)) {
+//        	this.txtPuntaje.setVisible(true);
+        	this.HBPuntaje.setVisible(true);
+        	System.out.println("WTF?");
+    	}
     }
     
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -127,13 +204,13 @@ public class ControladorVistaModifEntrenamiento {
 	    	);
 
     	ControladorVistaABMEntrenamiento CVABME =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABME.iniciar();
 	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTCancelar,
@@ -148,6 +225,9 @@ public class ControladorVistaModifEntrenamiento {
 //    	this.paramEnt.rutina = this.CBRu.getSelectionModel().getSelectedItem();
     	this.paramEnt.fechaInicio = this.DPFI.getValue();
     	this.paramEnt.fechaFin = this.DPFF.getValue();
+    	
+    	// AHORA ESTO PUEDE SER BLANK, ASÍ QUE TENGO QUE VERIFICARLO MAS ABAJO, YA VUELVO XD
+    	this.paramEnt.puntaje = Integer.parseInt(this.txtPuntaje.getText());
     	
     	boolean hayErrorDeCampos = false;
     	
@@ -164,6 +244,13 @@ public class ControladorVistaModifEntrenamiento {
     		hayErrorDeCampos = true;
     		System.err.println(
     				"[ ERROR ] > Debe seleccionar un tutor para continuar!"
+    		); // LOG
+    	}
+    	
+    	if (!hayErrorDeCampos && this.paramEnt.puntaje == 0) {
+    		hayErrorDeCampos = true;
+    		System.err.println(
+    				"[ ERROR ] > El puntaje del tutor debe ser un numero entre 1 y 10!"
     		); // LOG
     	}
     	
@@ -211,6 +298,17 @@ public class ControladorVistaModifEntrenamiento {
     		System.err.println("[ ERROR ] > Inconsistencia en las fechas!"); // LOG
     		return;
     	}
+    	
+    	if (this.paramEnt.fechaInicio.isBefore(this.paramEnt.cliente.getFechaIngreso())) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR,
+    				"Error!",
+    				"ERROR DE CAMPOS",
+    				"La fecha de inicio no puede ser anterior a la del ingreso del cliente al gym..."
+    		);
+    		System.err.println("[ ERROR ] >  Inconsistencia en las fechas!"); // LOG
+    		return;
+    	}
     	 
     	boolean actualizacionCorrecta = 
     			this.sentre
@@ -236,7 +334,7 @@ public class ControladorVistaModifEntrenamiento {
 				"El entrenamiento fue modificado con exito!"
 		);
 		
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -244,13 +342,13 @@ public class ControladorVistaModifEntrenamiento {
 	    	);
 
     	ControladorVistaABMEntrenamiento CVABME =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABME.iniciar();
     	
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTCancelar,
@@ -259,21 +357,38 @@ public class ControladorVistaModifEntrenamiento {
     }
     
     @FXML
+    void eventoBTInfo(ActionEvent event) {
+    	this.lanzarMensaje(
+    			AlertType.INFORMATION,
+    			"Acerca de puntaje...",
+    			"PUNTUACION AL TUTOR",
+    			"Al haber terminado el entrenamiento, " +
+    			"puede definir una calificación al tutor entre 1 a 10..."
+    	);
+    }
+    
+    @FXML
     private void initialize() {
     	this.LTitulo.setText("Modificar entrenamiento");
-    	this.txtPuntaje.setVisible(true);
+    	this.HBPuntaje.setVisible(false);
+
+    	// PARA QUE EL USUARIO NO PUEDA DIGITAR //
+    	// CUALQUIERA EN LOS DP.				//
+    	this.DPFI.setEditable(false);
+    	this.DPFF.setEditable(false);
     	
-    	this.actualizarCB(
-    			this.scli.obtenerTodosLosClientes(),
-    			this.CBCli,
-    			cli -> cli.getNombre()
-    	);
-    	
-    	this.actualizarCB(
-    			this.stu.obtenerTodosLosTutores(),
-    			this.CBTu,
-    			tu -> tu.getNombre()
-    	);
+//    	this.txtPuntaje.setVisible(true);
+//    	this.actualizarCB(
+//    			this.scli.obtenerTodosLosClientes(),
+//    			this.CBCli,
+//    			cli -> cli.getNombre()
+//    	);
+//    	
+//    	this.actualizarCB(
+//    			this.stu.obtenerTodosLosTutores(),
+//    			this.CBTu,
+//    			tu -> tu.getNombre()
+//    	);
     	
 //    	this.actualizarCB(
 //    			this.sru.obtenerTodasLasRutinas(),
@@ -281,9 +396,5 @@ public class ControladorVistaModifEntrenamiento {
 //    			ru -> ru.getNombreRutina()
 //    	);
     	
-    	// PARA QUE EL USUARIO NO PUEDA DIGITAR //
-    	// CUALQUIERA EN LOS DP.				//
-    	this.DPFI.setEditable(false);
-    	this.DPFF.setEditable(false);
     }
 }

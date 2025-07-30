@@ -17,11 +17,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-//import javafx.scene.layout.AnchorPane;
-//import javafx.stage.Stage;
-//import java.io.IOException;
-import utilidades.RutasVistas;
-import utilidades.NavegadorDeVistas;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
+
 import java.util.Optional;
 
 import edu.unam.controlador.ControladorVistaInicio;
@@ -87,14 +85,14 @@ public class ControladorVistaABMGM {
     
     @FXML
     private void eventoBTAgregar(ActionEvent event) {    	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_GM, // SE REUTILIZA LA VISTA DE CARGA PARA LA MODIFICACION
 					new ControladorVistaCargarGM()
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(BTAgregar, "Cargar GM");
     }
@@ -109,6 +107,20 @@ public class ControladorVistaABMGM {
     				"Seleccione un grupo muscular..."
     		);
     		System.out.println("[ ERROR ] > No se ah seleccionado un registro!"); // LOG
+    		return;
+    	}
+    	
+    	// CREO QUE ESTO ESTÁ MEJOR
+    	if (!this.gms.obtenerListaDeEjercicios(regGM.getIdGM()).isEmpty()) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, "Error!",
+    				"IMPOSIBLE ELIMINAR REGISTRO",
+    				"Este grupo muscular es usado o está relacionado con por lo menos 1 ejercicio..."
+    		);
+    		System.out.println(
+    				"[ ERROR ] > No se puede eliminar el registro " +
+    				"por que tiene registros hijos asociados!"
+    		); // LOG
     		return;
     	}
     		
@@ -141,7 +153,7 @@ public class ControladorVistaABMGM {
     		return;
     	}
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -149,10 +161,10 @@ public class ControladorVistaABMGM {
 					new ControladorVistaModificarGM()
 			);
 
-    	ControladorVistaModificarGM cvmgm = NavegadorDeVistas.getInstancia().obtenerControladorDeNuevaVista();
+    	ControladorVistaModificarGM cvmgm = NavegadorDeVistasSingleton.getInstancia().obtenerControladorDeNuevaVista();
     	cvmgm.establecerGMParaModificar(regGM);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTModificar,
@@ -162,7 +174,7 @@ public class ControladorVistaABMGM {
     
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(), 
@@ -170,13 +182,13 @@ public class ControladorVistaABMGM {
 			);
     	
     	ControladorVistaInicio CVI = 
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVI.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTAtras, 

@@ -15,8 +15,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
 import edu.unam.modelo.Entrenamiento;
 //import edu.unam.modelo.Rutina;
 import edu.unam.modelo.Tutor;
@@ -25,7 +23,9 @@ import java.util.List;
 import java.util.Optional;
 import edu.unam.modelo.Cliente;
 import java.time.LocalDate;
-import utilidades.AlmacenadorDeEntidades;
+import utilidades.AlmacenadorDeEntidadesSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 
 /*
  * 
@@ -70,7 +70,7 @@ public class ControladorVistaEntSeg {
     
     // METODOS Y EVENTOS //
     private void inicializarDatos() {
-    	cli = AlmacenadorDeEntidades.getInstancia().getCliente();
+    	cli = AlmacenadorDeEntidadesSingleton.getInstancia().getCliente();
     	sentre = new EntrenamientoServicio();
     	
     	System.out.println("A");
@@ -165,11 +165,11 @@ public class ControladorVistaEntSeg {
     	}
     	
     	// PASA LA ENTIDAD ENTRENAMIENTO PARA USARLO EN LA SIGUIENTE VISTA
-    	AlmacenadorDeEntidades
+    	AlmacenadorDeEntidadesSingleton
     		.getInstancia()
     		.setEntrenamiento(regEnt);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
@@ -177,13 +177,13 @@ public class ControladorVistaEntSeg {
 	    	);
     	
     	ControladorVistaABMSeg CVABMS =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABMS.iniciar();
     	
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTAtras,
@@ -193,13 +193,13 @@ public class ControladorVistaEntSeg {
 
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
 	    			RutasVistas.VISTA_CLI_SEG
 	    	);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 	    	.getInstancia()
 	    	.cambiarVista(
 	    			this.BTAtras,

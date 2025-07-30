@@ -16,6 +16,8 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
 //import javafx.scene.input.KeyEvent; // NO REQUERIDO
 import javafx.util.converter.IntegerStringConverter;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -24,10 +26,6 @@ import java.time.LocalDate;
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Cliente;
 import edu.unam.servicio.ClienteServicio;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
-//import utilidades.bd.ComprobarConexionBD;
-//import utilidades.bd.EMFSingleton;
 
 /*
  * 
@@ -265,7 +263,7 @@ public class ControladorVistaCargaCliente {
 				"El cliente fue cargado con exito..."
 		);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
@@ -273,13 +271,13 @@ public class ControladorVistaCargaCliente {
     		);
     	
     	ControladorVistaABMCliente CVABMC =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABMC.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTFinalizar,
@@ -289,7 +287,7 @@ public class ControladorVistaCargaCliente {
     
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
@@ -297,13 +295,13 @@ public class ControladorVistaCargaCliente {
     		);
     	
     	ControladorVistaABMCliente CVABMC =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVABMC.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTCancelar,

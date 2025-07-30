@@ -16,8 +16,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import edu.unam.modelo.RutinaEjercicio;
 import edu.unam.servicio.RutinaEjercicioServicio;
 import java.util.List;
@@ -124,7 +124,7 @@ public class ControladorVistaABMRutinaEjercicio {
     
     @FXML
     private void eventoBTCrear(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -133,11 +133,11 @@ public class ControladorVistaABMRutinaEjercicio {
 			);
     	
     	ControladorVistaCargarRutinaEjercicio CVCRE =
-    			NavegadorDeVistas.getInstancia().obtenerControladorDeNuevaVista();
+    			NavegadorDeVistasSingleton.getInstancia().obtenerControladorDeNuevaVista();
     	
     	CVCRE.establecerRutina(this.rutina);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					this.BTCrear,
@@ -158,7 +158,7 @@ public class ControladorVistaABMRutinaEjercicio {
 			return;
 		}
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -167,11 +167,11 @@ public class ControladorVistaABMRutinaEjercicio {
 			);
     	
     	ControladorVistaModificarRutinaEjercicio CVCRE =
-    			NavegadorDeVistas.getInstancia().obtenerControladorDeNuevaVista();
+    			NavegadorDeVistasSingleton.getInstancia().obtenerControladorDeNuevaVista();
     	
     	CVCRE.establecerRutinaYRE(this.rutina, regRE);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					this.BTModificar,
@@ -223,13 +223,13 @@ public class ControladorVistaABMRutinaEjercicio {
     
     @FXML
     private void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_RUTINA
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					this.BTAtras,

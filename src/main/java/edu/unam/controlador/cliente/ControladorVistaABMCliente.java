@@ -23,10 +23,8 @@ import javafx.scene.control.TableView;
 //import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-//import javafx.stage.Stage;
-//import javafx.util.converter.IntegerStringConverter;
-import utilidades.RutasVistas;
-//import utilidades.bd.EMFSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 
 //import java.io.IOException;
 import java.time.LocalDate;
@@ -37,8 +35,8 @@ import java.util.Optional;
 import edu.unam.controlador.ControladorVistaInicio;
 //import java.util.function.UnaryOperator;
 import edu.unam.modelo.Cliente;
+import edu.unam.modelo.Entrenamiento;
 import edu.unam.servicio.ClienteServicio;
-import utilidades.NavegadorDeVistas;
 
 /*
  * 
@@ -179,13 +177,13 @@ public class ControladorVistaABMCliente {
 
     @FXML
     private void eventoBTCargar(ActionEvent event) {    	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 	    			RutasVistas.VISTA_CARGA_CLIENTE
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTCrear,
@@ -216,7 +214,7 @@ public class ControladorVistaABMCliente {
     @FXML
     private void eventoBTAtras(ActionEvent event) {
 //    	this.cambiarVista(RutasVistas.VISTA_INICIO, "Inicio");
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
@@ -224,13 +222,13 @@ public class ControladorVistaABMCliente {
     		);
     	
     	ControladorVistaInicio CVI = 
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVI.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTAtras,
@@ -248,6 +246,19 @@ public class ControladorVistaABMCliente {
     				"Seleccione un cliente..."
     		);
     		System.out.println("[ ERROR ] > No se ah seleccionado un registro!"); // LOG
+    		return;
+    	}
+
+    	if (!this.cs.obtenerListaDeEntrenamientsos(regCli.getDni()).isEmpty()) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, "Error!",
+    				"IMPOSIBLE ELIMINAR REGISTRO",
+    				"Este cliente es usado o está relacionado con por lo menos 1 entrenamiento..."
+    		);
+    		System.out.println(
+    				"[ ERROR ] > No se puede eliminar el registro " +
+    				"por que tiene registros hijos asociados!"
+    		); // LOG
     		return;
     	}
     	
@@ -301,7 +312,7 @@ public class ControladorVistaABMCliente {
     		return;
     	}
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
@@ -311,13 +322,13 @@ public class ControladorVistaABMCliente {
     	// OBTIENE EL CONTROLADOR DE LA VISTA SIGUIENTE Y PASA //
     	// EL OBJETO CLIENTE EXTRAIDO DE LA TABLA DE DATOS     //
     	ControladorVistaModificarCliente controladorModificarCliente =
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	controladorModificarCliente.establecerClienteParaModificar(regCli);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTModificar,

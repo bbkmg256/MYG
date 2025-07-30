@@ -16,8 +16,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 
 import java.util.List;
 import java.util.Optional;
@@ -113,7 +113,7 @@ public class ControladorVistaABMEjercicio {
     
     @FXML
     void eventoBTAtras(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
@@ -121,13 +121,13 @@ public class ControladorVistaABMEjercicio {
 			);
     	
     	ControladorVistaInicio CVI = 
-    			NavegadorDeVistas
+    			NavegadorDeVistasSingleton
     				.getInstancia()
     				.obtenerControladorDeNuevaVista();
     	
     	CVI.iniciar();
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTAtras,
@@ -137,14 +137,14 @@ public class ControladorVistaABMEjercicio {
 
     @FXML
     void eventoBTCrear(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_MODIF_EJER,
 					new ControladorVistaCargaEjercicio()
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTCrear,
@@ -164,7 +164,34 @@ public class ControladorVistaABMEjercicio {
     		System.out.println("[ ERROR ] > No se ah seleccionado un registro!"); // LOG
     		return;
     	}
-    	
+
+    	if (!this.sejer.obtenerListaDeSeguimientos(regEjer.getIdEjercicio()).isEmpty()) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, "Error!",
+    				"IMPOSIBLE ELIMINAR REGISTRO",
+    				"Este ejercicio es usado o está relacionado con por lo menos 1 seguimiento..."
+    				);
+    		System.out.println(
+    				"[ ERROR ] > No se puede eliminar el registro " +
+    						"por que tiene registros hijos asociados!"
+    				); // LOG
+    		return;
+    	}
+
+    	// EN REALIDAD SE ASOCIA A LA CLASE INTERMENDIA, NO OLVIDAR ESO.
+    	if (!this.sejer.obtenerListaDeRutinaEjercicios(regEjer.getIdEjercicio()).isEmpty()) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, "Error!",
+    				"IMPOSIBLE ELIMINAR REGISTRO",
+    				"Este ejercicio es usado o está relacionado con por lo menos 1 rutina..."
+    		);
+    		System.out.println(
+    				"[ ERROR ] > No se puede eliminar el registro " +
+    				"por que tiene registros hijos asociados!"
+    		); // LOG
+    		return;
+    	}
+
     	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
     	Optional<ButtonType> resultado =  this.lanzarMensaje(
     			AlertType.CONFIRMATION, "Eliminacion de ejercicio",
@@ -204,7 +231,7 @@ public class ControladorVistaABMEjercicio {
 			return;
 		}
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
@@ -213,10 +240,10 @@ public class ControladorVistaABMEjercicio {
     		);
     	
     	// PASA EL OBJETO AL CONSTR. PARA MODIFICARLO
-    	ControladorVistaModificarEjercicio controladorModificarEjercicio = NavegadorDeVistas.getInstancia().obtenerControladorDeNuevaVista();
+    	ControladorVistaModificarEjercicio controladorModificarEjercicio = NavegadorDeVistasSingleton.getInstancia().obtenerControladorDeNuevaVista();
     	controladorModificarEjercicio.establecerEjercicioParaModificar(regEjer);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
     				BTModificar,

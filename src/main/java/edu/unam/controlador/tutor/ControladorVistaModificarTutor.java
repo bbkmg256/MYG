@@ -19,9 +19,9 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.util.converter.IntegerStringConverter;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
 import utilidades.bd.EMFSingleton;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 import utilidades.parametros.ParametrosClienteTutor;
 
 /*
@@ -134,13 +134,13 @@ public class ControladorVistaModificarTutor {
     
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_TUTOR
 			);
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTCancelar,
@@ -224,14 +224,14 @@ public class ControladorVistaModificarTutor {
  				"El tutor fue modificado con exito..."
  		);
      	
-     	NavegadorDeVistas
+     	NavegadorDeVistasSingleton
      		.getInstancia()
      		.cargarNuevaVista(
      				this.getClass(),
      				RutasVistas.VISTA_ABM_TUTOR
      		);
      	
-     	NavegadorDeVistas
+     	NavegadorDeVistasSingleton
      		.getInstancia()
      		.cambiarVista(
      				BTFinalizar,

@@ -14,9 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
-import utilidades.NavegadorDeVistas;
-import utilidades.RutasVistas;
-//import java.util.HashMap;
+import utilidades.navegacion.NavegadorDeVistasSingleton;
+import utilidades.navegacion.RutasVistas;
 
 /*
  * 
@@ -138,13 +137,13 @@ public class ControladorVistaModificarRutina {
     			"La rutina fue modificada con exito..."
     	);
     	
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_RUTINA
 			);
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTFinalizar,
@@ -154,13 +153,13 @@ public class ControladorVistaModificarRutina {
 
     @FXML
     private void eventoBTCancelar(ActionEvent event) {
-    	NavegadorDeVistas
+    	NavegadorDeVistasSingleton
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_ABM_RUTINA
 			);
-		NavegadorDeVistas
+		NavegadorDeVistasSingleton
 			.getInstancia()
 			.cambiarVista(
 					BTCancelar,
