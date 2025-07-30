@@ -43,6 +43,11 @@ public class SeguimientoDAO {
 		return em.createQuery(consulta, Seguimiento.class).getResultList();
 	}
 	
+	// LEER ENTIDADES (SOBRECARGA)
+	public <T> List<Seguimiento> obtenerEntidadesSeguimiento(EntityManager em, String consulta, T valor) {
+		return em.createQuery(consulta, Seguimiento.class).setParameter("val", valor).getResultList();
+	}
+	
 	// ACTUALIZAR ENTIDAD
 	public Seguimiento actualizarEntidadSeguimiento(EntityManager em, Seguimiento entidadSeguimiento) {
 		return em.merge(entidadSeguimiento);
