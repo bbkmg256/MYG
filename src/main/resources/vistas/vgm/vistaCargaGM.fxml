@@ -27,8 +27,8 @@
       </VBox>
       <HBox alignment="BOTTOM_RIGHT" layoutX="14.0" layoutY="511.0" prefHeight="76.0" prefWidth="771.0" spacing="20.0">
          <children>
-            <Button fx:id="BTAceptar" mnemonicParsing="false" onAction="#eventoBTAceptar" prefHeight="40.0" prefWidth="177.0" text="Finalizar" />
-            <Button fx:id="BTCancelar" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="40.0" prefWidth="177.0" text="Cancelar" />
+            <Button fx:id="BTCancelar" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="40.0" prefWidth="145.0" text="Cancelar" />
+            <Button fx:id="BTAceptar" mnemonicParsing="false" onAction="#eventoBTAceptar" prefHeight="40.0" prefWidth="145.0" text="Finalizar" />
          </children>
       </HBox>
    </children>

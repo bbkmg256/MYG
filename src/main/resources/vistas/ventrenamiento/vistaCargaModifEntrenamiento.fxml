@@ -21,31 +21,40 @@
             </Label>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="128.0" prefHeight="367.0" prefWidth="772.0" spacing="20.0">
+      <VBox layoutX="18.0" layoutY="162.0" prefHeight="277.0" prefWidth="765.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="572.0" prefWidth="300.0" spacing="40.0">
+            <HBox alignment="CENTER" prefHeight="195.0" prefWidth="765.0" spacing="20.0">
                <children>
-                  <ComboBox fx:id="CBCli" prefHeight="45.0" prefWidth="264.0" promptText="Cliente" />
-                  <ComboBox fx:id="CBTu" prefHeight="45.0" prefWidth="264.0" promptText="Tutor" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="572.0" prefWidth="300.0" spacing="40.0">
-               <children>
-                  <DatePicker fx:id="DPFI" prefHeight="45.0" prefWidth="264.0" promptText="Fecha de inicio de entrenamiento" />
-                  <DatePicker fx:id="DPFF" prefHeight="45.0" prefWidth="264.0" promptText="Fecha de fin de entrenamiento" />
-                  <HBox alignment="CENTER" prefHeight="47.0" prefWidth="300.0">
+                  <VBox alignment="CENTER" prefHeight="572.0" prefWidth="300.0" spacing="40.0">
                      <children>
-                        <TextField fx:id="txtPuntaje" prefHeight="45.0" prefWidth="264.0" promptText="Puntaje del tutor" />
+                        <ComboBox fx:id="CBCli" prefHeight="45.0" prefWidth="264.0" promptText="Cliente" />
+                        <ComboBox fx:id="CBTu" prefHeight="45.0" prefWidth="264.0" promptText="Tutor" />
                      </children>
-                  </HBox>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="572.0" prefWidth="300.0" spacing="40.0">
+                     <children>
+                        <DatePicker fx:id="DPFI" prefHeight="45.0" prefWidth="264.0" promptText="Fecha de inicio de entrenamiento" />
+                        <DatePicker fx:id="DPFF" prefHeight="45.0" prefWidth="264.0" promptText="Fecha de fin de entrenamiento" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+            </HBox>
+            <HBox fx:id="HBPuntaje" alignment="CENTER" prefHeight="72.0" prefWidth="765.0" spacing="5.0">
+               <children>
+                  <TextField fx:id="txtPuntaje" prefHeight="45.0" prefWidth="128.0" promptText="Puntaje del tutor" />
+                  <Button fx:id="BTInfo" mnemonicParsing="false" onAction="#eventoBTInfo" prefHeight="30.0" prefWidth="30.0" text="i">
+                     <font>
+                        <Font name="System Bold Italic" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
       <HBox alignment="BOTTOM_RIGHT" layoutX="18.0" layoutY="531.0" prefHeight="53.0" prefWidth="765.0" spacing="10.0">
          <children>
-            <Button fx:id="BTFinalizar" mnemonicParsing="false" onAction="#eventoBTFinalizar" prefHeight="36.0" prefWidth="115.0" text="Finalizar" />
             <Button fx:id="BTCancelar" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="36.0" prefWidth="115.0" text="Cancelar" />
+            <Button fx:id="BTFinalizar" mnemonicParsing="false" onAction="#eventoBTFinalizar" prefHeight="36.0" prefWidth="115.0" text="Finalizar" />
          </children>
       </HBox>
    </children>
