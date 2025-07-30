@@ -8,6 +8,8 @@ package edu.unam.servicio;
 import edu.unam.repositorio.SeguimientoDAO;
 import jakarta.persistence.EntityManager;
 
+import java.lang.reflect.Field;
+import java.time.LocalDate;
 // Varios
 import java.util.List;
 
@@ -15,6 +17,7 @@ import utilidades.bd.EMFSingleton;
 import utilidades.parametros.ParametrosSeguimiento;
 // Entidad
 import edu.unam.modelo.Seguimiento;
+import edu.unam.modelo.Ejercicio;
 import edu.unam.modelo.Entrenamiento;
 
 
@@ -48,6 +51,8 @@ public class SeguimientoServicio {
 	private Entrenamiento entre;
 	private EntrenamientoServicio sentre;
 	private EjercicioServicio sejer;
+	private Ejercicio ej;
+	
 	
 	public SeguimientoServicio() {
 		this.segDao = new SeguimientoDAO();
@@ -83,6 +88,10 @@ public class SeguimientoServicio {
 			// ENLACE ENTRENAMIENTO
 			this.entre = this.manager.merge(seg.getEntrenamiento());
 			this.entre.getSeguimientos().add(seg);
+			
+			// ENLACE EJERCICIO
+			this.ej = this.manager.merge(seg.getEjercicioRealizado());
+			this.ej.getSeguimientos().add(seg);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El seguimiento %d cargado correctamente!%n", seg.getIdSeguimiento());
@@ -158,6 +167,57 @@ public class SeguimientoServicio {
 		return segList;
 	}
 	
+	// OBTENER SEGUIMIENTOS POR FILTRO
+	private <T> List<Seguimiento> obtenerListaFiltrada(String atributoNombre, T valorFiltro) {
+		List<Seguimiento> segList= null;
+		
+		String consulta =
+				"SELECT s FROM Seguimiento s " +
+				"JOIN FETCH s.entrenamiento " +
+				"JOIN FETCH s.ejercicioRealizado " +
+				"WHERE s." + atributoNombre + " = :val";
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			segList = this.segDao.obtenerEntidadesSeguimiento(this.manager, consulta, valorFiltro);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener los seguimientos!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return segList;
+	}
+	
+	// HAY QUE VER DESPUES QUE FILTROS SE VAN A USAR Y QUE NO //
+	
+	public List<Seguimiento> obtenerListaFiltradaPorEntrenamiento(Entrenamiento ent) {
+		return this.obtenerListaFiltrada("entrenamiento", ent);
+	}
+	
+	public List<Seguimiento> obtenerListaFiltradaPorEjercicio(Ejercicio ej) {
+		return this.obtenerListaFiltrada("ejercicicoRealizado", ej);
+	}
+	
+	// POR EL MOMENTO FILTRO POR UNA SOLA FECHA //
+	public List<Seguimiento> obtenerListaFiltradaPorFecha(LocalDate fecha) {
+		return this.obtenerListaFiltrada("fechaHoy", fecha);
+	}
+	
+	public List<Seguimiento> obtenerListaFiltradaPorSerie(int serie) {
+		return this.obtenerListaFiltrada("cantSerieRealizado", serie);
+	}
+	
+	public List<Seguimiento> obtenerListaFiltradaPorRepeticion(int rep) {
+		return this.obtenerListaFiltrada("cantRepeticionesRealizado", rep);
+	}
+	
+	public List<Seguimiento> obtenerListaFiltradaPorPeso(double peso) {
+		return this.obtenerListaFiltrada("pesoTrabajado", peso);
+	}
+	
 	// Obtiene todos los Seguimientos del sistema (CON SUS OBJETOS)
 	public List<Seguimiento> obtenerTodosLosSeguimientosYSusObjetos() {
 		List<Seguimiento> segList= null;
@@ -186,6 +246,7 @@ public class SeguimientoServicio {
 	public void actualizarEstadoSeguimiento(int id, ParametrosSeguimiento paramSeg) {
 		Seguimiento segReg = this.obtenerSeguimiento(id);
 		Entrenamiento entreAntiguo = null;
+		Ejercicio ejerAntiguo = null;
 		
 		if (segReg == null) {
 			System.out.printf("[ ERROR ] > El seguimiento %d no se encuentra en el sistema!%n", id);
@@ -240,6 +301,15 @@ public class SeguimientoServicio {
 				entreAntiguo = this.manager.merge(entreAntiguo);
 				entreAntiguo.getSeguimientos().remove(segReg);				
 			}
+			
+			if (paramSeg.ejercicioRealizado != null) {
+				// ENLACE (NUEVO) Y DESENLACE (ANTIGUO) DE EJERCICIO
+				this.ej = this.manager.merge(segReg.getEjercicioRealizado());
+				this.ej.getSeguimientos().add(segReg);
+				
+				ejerAntiguo = this.manager.merge(ejerAntiguo);
+				ejerAntiguo.getSeguimientos().remove(segReg);
+			}
 						
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El seguimiento %d actualizado correctamente!%n", id);
@@ -272,6 +342,10 @@ public class SeguimientoServicio {
 			// DESENLACE DE ENTRENAMIENTO
 			this.entre = this.manager.merge(regSeg.getEntrenamiento());
 			this.entre.getSeguimientos().remove(regSeg);
+			
+			// DESENLACE DE EJERCICIO
+			this.ej = this.manager.merge(regSeg.getEjercicioRealizado());
+			this.ej.getSeguimientos().remove(regSeg);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El seguimiento %d eliminado correctamente!%n", id);

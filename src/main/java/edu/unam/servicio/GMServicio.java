@@ -9,9 +9,11 @@ import edu.unam.repositorio.GMDAO;
 import jakarta.persistence.EntityManager;
 import utilidades.bd.EMFSingleton;
 
+import java.util.ArrayList;
 // Varios
 import java.util.List;
 
+import edu.unam.modelo.Ejercicio;
 // Entidad
 import edu.unam.modelo.GrupoMuscular;
 
@@ -89,7 +91,7 @@ public class GMServicio {
 	}
 	
 	// Obtener todos los Grupo Musculares (NUNCA RETORNA NULL)
-	public List<GrupoMuscular> obtenerTodosLosGM(){		
+	public List<GrupoMuscular> obtenerTodosLosGM() {		
 		String consulta = String.format("SELECT %c FROM %s %c", 'g', "GrupoMuscular", 'g'); // Consulta JPQL
 		List<GrupoMuscular> regEntidades = null; // Variable para almacenar el registro
 		
@@ -106,6 +108,28 @@ public class GMServicio {
 		}
 		
 		return regEntidades;
+	}
+	
+	// (CREO QUE DEBERÍA MODIFICAR TODOS LOS METODOS //
+	// CON UN ORDENAMIENTO MEJOR COMO ESTE 			 //
+	// POR QUE SON UN ASCO) 						 //
+	public List<Ejercicio> obtenerListaDeEjercicios(int id) {
+		List<Ejercicio> lista = new ArrayList<>();
+		GrupoMuscular gm = this.obtenerGM(id, false);
+		
+		// ADMINISTRADOR DE ENTIDADES
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			lista.addAll(this.manager.merge(gm).getEjercicios());
+		} catch (Exception e) {
+			System.err.println(e);
+			System.err.println("[ ERROR ] > Falla al obtener la lista de ejercicios!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return lista;
 	}
 	
 	// Actualizar Grupo Muscular en el sistema

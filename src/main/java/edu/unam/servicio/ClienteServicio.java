@@ -9,6 +9,7 @@ package edu.unam.servicio;
 import edu.unam.repositorio.ClienteDAO;
 import jakarta.persistence.EntityManager;
 
+import java.util.ArrayList;
 // VARIOS
 //import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,7 @@ import utilidades.bd.EMFSingleton;
 import utilidades.parametros.ParametrosClienteTutor;
 // ENTIDAD
 import edu.unam.modelo.Cliente;
+import edu.unam.modelo.Entrenamiento;
 
 
 /*
@@ -165,6 +167,50 @@ public class ClienteServicio {
 		}
 		
 		return regClientes;
+	}
+	
+	// OBTIENE LOS CLIENTES Y SUS OBJETOS
+//	public List<Cliente> obtenerTodosLosClientesYSusObjetos(){		
+////		String consulta = String.format("SELECT %c FROM %s %c", 'c', "Cliente", 'c'); // Consulta JPQL
+//		String consulta =
+//				"SELECT c FROM Cliente c " +
+//				"JOIN FETCH c.entrenamientos";
+//		
+//		List<Cliente> regClientes = null;
+//		
+//		// ADMINISTRADOR DE ENTIDADES
+//		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+//
+//		try {
+//			regClientes = this.clienteDao.obtenerEntidadesCliente(this.manager, consulta);
+//		} catch (Exception e) {
+//			System.out.print(e);
+//			System.out.println("[ ERROR ] > Falla al obtener los clientes!"); // LOG
+//		} finally {
+//			this.manager.close();
+//		}
+//		
+//		return regClientes;
+//	}
+	
+	// NO ME ACUERDO POR QUE HICE ESTO XD
+	
+	public List<Entrenamiento> obtenerListaDeEntrenamientsos(int id) {
+		List<Entrenamiento> lista = new ArrayList<>();
+		Cliente regCli = this.obtenerCliente(id, false);
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+
+		try {
+			lista.addAll(this.manager.merge(regCli).getEntrenamientos());
+		} catch (Exception e) {
+			System.err.print(e);
+			System.err.println("[ ERROR ] > Falla al obtener la lista de entrenamientos!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return lista;
 	}
 	
 	// Actualiza la información de un cliente

@@ -55,11 +55,11 @@ public class RutinaEntrenamientoServicio {
 			
 			// ENLACE CON RUTINA
 			this.rutina = this.manager.merge(re.getRutina());
-			this.rutina.getRutinaEntrenamiento().add(re);
+			this.rutina.getRutinaEntrenamientos().add(re);
 			
 			// ENLACE CON ENTRENAMIENTO
 			this.entrenamiento = this.manager.merge(re.getEntrenamiento());
-			this.entrenamiento.getRutinaEntrenamiento().add(re);
+			this.entrenamiento.getRutinaEntrenamientos().add(re);
 			System.out.printf("[ EXITO ] > La entidad %d cargada correctamente!%n", re.getId());
 			this.manager.getTransaction().commit();
 		} catch (Exception e) {
@@ -205,11 +205,11 @@ public class RutinaEntrenamientoServicio {
 			
 			// ENLACE RUTINA NUEVA
 			this.rutina = this.manager.merge(regRE.getRutina());
-			this.rutina.getRutinaEntrenamiento().add(regRE);
+			this.rutina.getRutinaEntrenamientos().add(regRE);
 			
 			// DESENLACE RUTINA VIEJA
 			rutinaAntigua = this.manager.merge(rutinaAntigua);
-			rutinaAntigua.getRutinaEntrenamiento().remove(regRE);
+			rutinaAntigua.getRutinaEntrenamientos().remove(regRE);
 			
 			// ENTRENAMIENTO NO NECESITA MODIFICARSE //
 			
@@ -244,11 +244,11 @@ public class RutinaEntrenamientoServicio {
 			
 			// DESENLACE RUTINA
 			this.rutina = this.manager.merge(regRE.getRutina());
-			this.rutina.getRutinaEntrenamiento().remove(regRE);
+			this.rutina.getRutinaEntrenamientos().remove(regRE);
 			
 			// DESENLACE ENTRENAMIENTO
 			this.entrenamiento = this.manager.merge(regRE.getEntrenamiento());
-			this.entrenamiento.getRutinaEntrenamiento().remove(regRE);
+			this.entrenamiento.getRutinaEntrenamientos().remove(regRE);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La entidad %d eliminada correctamente!%n", id);

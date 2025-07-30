@@ -78,11 +78,11 @@ public class RutinaEjercicioServicio {
 			
 			// ENLACE CON RUTINA
 			this.rt = this.manager.merge(re.getRutina());
-			this.rt.getRutinaEjercicio().add(re);
+			this.rt.getRutinaEjercicios().add(re);
 			
 			// ENLACE CON EJERCICIO
 			this.ejer = this.manager.merge(re.getEjercicio());
-			this.ejer.getRutinaEjercicio().add(re);
+			this.ejer.getRutinaEjercicios().add(re);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La entidad %d cargada correctamente!%n", re.getId());
@@ -266,10 +266,10 @@ public class RutinaEjercicioServicio {
 			if (paramRE.ejercicio != null) {
 				// ENLACE EJERCICIO NUEVO
 				this.ejer = this.manager.merge(regRE.getEjercicio());
-				this.ejer.getRutinaEjercicio().add(regRE);
+				this.ejer.getRutinaEjercicios().add(regRE);
 				// DESENLACE EJERCICIO VIEJO
 				ejerAntigua = this.manager.merge(ejerAntigua);
-				ejerAntigua.getRutinaEjercicio().remove(regRE);
+				ejerAntigua.getRutinaEjercicios().remove(regRE);
 			}
 			
 			this.manager.getTransaction().commit();
@@ -303,11 +303,11 @@ public class RutinaEjercicioServicio {
 			
 			// DESENLACE RUTINA
 			this.rt = this.manager.merge(regRE.getRutina());
-			this.rt.getRutinaEjercicio().remove(regRE);
+			this.rt.getRutinaEjercicios().remove(regRE);
 			
 			// DESENLACE EJERCICIO
 			this.ejer = this.manager.merge(regRE.getEjercicio());
-			this.ejer.getRutinaEjercicio().remove(regRE);
+			this.ejer.getRutinaEjercicios().remove(regRE);
 			
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > La entidad %d eliminada correctamente!%n", id);

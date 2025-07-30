@@ -12,11 +12,14 @@ import edu.unam.repositorio.RutinaDAO;
 import jakarta.persistence.EntityManager;
 import utilidades.bd.EMFSingleton;
 
+import java.util.ArrayList;
 // VARIOS
 import java.util.List;
 
 // ENTIDAD
 import edu.unam.modelo.Rutina;
+import edu.unam.modelo.RutinaEjercicio;
+import edu.unam.modelo.RutinaEntrenamiento;
 
 /**
 *
@@ -76,7 +79,7 @@ public class RutinaServicio {
 	}
 	
 	// Obtiene todos las Rutinas en el sistema
-	public List<Rutina> obtenerTodasLasRutinas(){		
+	public List<Rutina> obtenerTodasLasRutinas() {
 		String consulta = String.format("SELECT %c FROM %s %c", 'r', "Rutina", 'r'); // Consulta JPQL
 		List<Rutina> regRutinas = null;
 		
@@ -93,6 +96,70 @@ public class RutinaServicio {
 		}
 		
 		return regRutinas;
+	}
+	
+//	// Obtiene todos las Rutinas en el sistema
+//	public List<Rutina> obtenerTodasLasRutinasYSusObjetos() {
+////		String consulta = String.format("SELECT %c FROM %s %c", 'r', "Rutina", 'r'); // Consulta JPQL
+////		String consulta =
+////				"SELECT r Rutina FROM r " +
+////				"JOIN FETCH r.seguimientos " +
+////				"JOIN FETCH r.rutinaentrenamientos";
+//		
+//		String consulta =
+//			"SELECT r Rutina FROM r " +
+//			"JOIN FETCH r.rutinaentrenamientos";
+//		List<Rutina> regRutinas = null;
+//		
+//		// ADMINISTRADOR DE ENTIDADES
+//		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+//		
+//		try {
+//			regRutinas = this.rutinaDao.obtenerEntidadesRutina(this.manager, consulta);
+//		} catch (Exception e) {
+//			System.out.println(e);
+//			System.out.println("[ ERROR ] > Falla al obtener todas las rutinas!");
+//		} finally {
+//			this.manager.close();
+//		}
+//		
+//		return regRutinas;
+//	}
+	
+	public List<RutinaEntrenamiento> obtenerListaDeRutinaEntrenamientos(int id) {
+		List<RutinaEntrenamiento> lista = new ArrayList<>();
+		Rutina regRut = this.obtenerRutina(id);
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			lista.addAll(this.manager.merge(regRut).getRutinaEntrenamientos());
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener la lista de rutinaEntrenamientos!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return lista;
+	}
+	
+	public List<RutinaEjercicio> obtenerListaDeRutinaEjercicios(int id) {
+		List<RutinaEjercicio> lista = new ArrayList<>();
+		Rutina regRut = this.obtenerRutina(id);
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			lista.addAll(this.manager.merge(regRut).getRutinaEjercicios());
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener la lista de rutinaEjercicios!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return lista;
 	}
 	
 	// Actualizar datos de una Rutina del sistema

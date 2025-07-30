@@ -8,6 +8,7 @@ package edu.unam.servicio;
 import edu.unam.repositorio.EjercicioDAO;
 import jakarta.persistence.EntityManager;
 
+import java.util.ArrayList;
 // VARIOS
 import java.util.List;
 
@@ -16,6 +17,8 @@ import utilidades.parametros.ParametrosEjercicio;
 // ENTIDAD
 import edu.unam.modelo.Ejercicio;
 import edu.unam.modelo.GrupoMuscular;
+import edu.unam.modelo.RutinaEjercicio;
+import edu.unam.modelo.Seguimiento;
 
 /**
 *
@@ -142,7 +145,10 @@ public class EjercicioServicio {
 	public List<Ejercicio> obtenerTodosLosEjerciciosYSusObjetos(){		
 //		String consulta = String.format("SELECT %c FROM %s %c", 'e', "Ejercicio", 'e'); // Consulta JPQL
 //		String consulta = "SELECT e FROM Ejercicio e JOIN FETCH e.GM"; // Consulta JPQL
-		String consulta = String.format("SELECT %c FROM %s %c JOIN FETCH %c.GM", 'e', "Ejercicio", 'e', 'e'); // Consulta JPQL
+//		String consulta = String.format("SELECT %c FROM %s %c JOIN FETCH %c.GM", 'e', "Ejercicio", 'e', 'e'); // Consulta JPQL
+		String consulta = 
+				"SELECT e FROM Ejercicio e " +
+				"JOIN FETCH e.GM ";
 		List<Ejercicio> regEjers = null;
 		
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
@@ -157,6 +163,42 @@ public class EjercicioServicio {
 		}
 		
 		return regEjers;
+	}
+	
+	public List<Seguimiento> obtenerListaDeSeguimientos(int id) {
+		List<Seguimiento> lista = new ArrayList<>();
+		Ejercicio ej = this.obtenerEjercicio(id);
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			lista.addAll(this.manager.merge(ej).getSeguimientos());
+		} catch (Exception e) {
+			System.err.println(e);
+			System.err.println("[ ERROR ] > Falla al obtener la lista de seguimientos!");
+		} finally {
+			this.manager.close();
+		}
+
+		return lista;
+	}
+	
+	public List<RutinaEjercicio> obtenerListaDeRutinaEjercicios(int id) {
+		List<RutinaEjercicio> lista = new ArrayList<>();
+		Ejercicio ej = this.obtenerEjercicio(id);
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			lista.addAll(this.manager.merge(ej).getRutinaEjercicios());
+		} catch (Exception e) {
+			System.err.println(e);
+			System.err.println("[ ERROR ] > Falla al obtener la lista de rutinaEjercicios!");
+		} finally {
+			this.manager.close();
+		}
+
+		return lista;
 	}
 
 	// Actualizar Ejercicio

@@ -8,6 +8,7 @@ package edu.unam.servicio;
 import edu.unam.repositorio.EntrenamientoDAO;
 import jakarta.persistence.EntityManager;
 
+import java.util.ArrayList;
 // VARIOS
 import java.util.List;
 
@@ -17,6 +18,7 @@ import utilidades.parametros.ParametrosEntrenamiento;
 import edu.unam.modelo.Entrenamiento;
 import edu.unam.modelo.Cliente;
 import edu.unam.modelo.Rutina;
+import edu.unam.modelo.Seguimiento;
 import edu.unam.modelo.Tutor;
 
 /*
@@ -198,7 +200,7 @@ public class EntrenamientoServicio {
 		String consulta =
 				"SELECT e FROM Entrenamiento e " +
 				"JOIN FETCH e.cliente " +
-				"JOIN FETCH e.tutor ";
+				"JOIN FETCH e.tutor";
 
 		// ADMINISTRADOR DE ENTIDADES
 		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
@@ -249,6 +251,24 @@ public class EntrenamientoServicio {
 		}
 		
 		return entr;
+	}
+	
+	public List<Seguimiento> obtenerListaDeSeguimientos(int id) {
+		List<Seguimiento> lista = new ArrayList<>();
+		Entrenamiento ent = this.obtenerEntrenamiento(id);
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			lista.addAll(this.manager.merge(ent).getSeguimientos());
+		} catch (Exception e) {
+			System.err.println(e);
+			System.err.println("[ ERROR ] > Falla al obtener la lista de seguimientos!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return lista;
 	}
 
 	// Actualizar Entrenamiento
@@ -305,6 +325,7 @@ public class EntrenamientoServicio {
 		// EL LIMITE INFERIOR SERIA 1 (PEOR VALOR)
 		if (paramEntre.puntaje != 0) {
 			entrenamiento.setPuntaje(paramEntre.puntaje);
+			entrenamiento.setEstado(paramEntre.estado); // CUANDO SE PUNTUA, EL ENTRENAMIENTO TAMBIEN SE FINALIZA
 		}
 		
 		//  QUTAR ESTO MAS TARDE (TANTO DE LA CLASE DE PARAMETROS, COMO DE LA ENTIDAD)
