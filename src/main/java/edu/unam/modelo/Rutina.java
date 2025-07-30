@@ -90,9 +90,9 @@ public class Rutina {
 	private String nombreRutina; // PARA JUSTIFICAR UN POCO LA EXISTENCIA DE ESTA CLASE E IDENTIFICAR MEJOR CADA RUTINA XD
 	
 	// ATRIBUTO RELACION CON CLASE RUTINAEJERCICIO
-//	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
-	@OneToMany(mappedBy = "rutina")
-	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
+//	@OneToMany(mappedBy = "rutina")
+	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
+	private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
 	
 	// ATRIBUTO RELACION CON CLASE ENTRENAMIENTO (LISTA)
 //	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
@@ -101,7 +101,7 @@ public class Rutina {
 	// ATRIBUTO RELACION CON CLASE RUTINAENTRENAMIENTO
 //	@OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL)
 	@OneToMany(mappedBy = "rutina")
-	private List<RutinaEntrenamiento> rutinaentrenamiento = new ArrayList<>();
+	private List<RutinaEntrenamiento> rutinaentrenamientos = new ArrayList<>();
 	
 	// CONTRUCTOR
 	public Rutina() {}
@@ -116,8 +116,8 @@ public class Rutina {
 	}
 	
 	// PENSANDOLO BIEN, CREO QUE NO ME SIRVE DE NADA ESTO, DESPUES VEO QUE ONDA
-	public void setRutinaEjercicio(List<RutinaEjercicio> listRutinaEjercico) {
-		this.rutinaEjercicio = listRutinaEjercico;
+	public void setRutinaEjercicios(List<RutinaEjercicio> listRutinaEjercico) {
+		this.rutinaEjercicios = listRutinaEjercico;
 	}
 	
 //	public void setEntrenamientos(List<Entrenamiento> listEntrenamientos) {
@@ -128,8 +128,8 @@ public class Rutina {
 		this.nombreRutina = valNombre;
 	}
 	
-	public void setRutinaEntrenamiento(List<RutinaEntrenamiento> paramRE) {
-		this.rutinaentrenamiento = paramRE;
+	public void setRutinaEntrenamientos(List<RutinaEntrenamiento> paramRE) {
+		this.rutinaentrenamientos = paramRE;
 	}
 	
 	// GET
@@ -137,8 +137,8 @@ public class Rutina {
 		return this.idRutina;
 	}
 	
-	public List<RutinaEjercicio> getRutinaEjercicio() {
-		return this.rutinaEjercicio;
+	public List<RutinaEjercicio> getRutinaEjercicios() {
+		return this.rutinaEjercicios;
 	}
 	
 //	public List<Entrenamiento> getEntrenamientos() {
@@ -149,7 +149,7 @@ public class Rutina {
 		return this.nombreRutina;
 	}
 	
-	public List<RutinaEntrenamiento> getRutinaEntrenamiento() {
-		return this.rutinaentrenamiento;
+	public List<RutinaEntrenamiento> getRutinaEntrenamientos() {
+		return this.rutinaentrenamientos;
 	}
 }

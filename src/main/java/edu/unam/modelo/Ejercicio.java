@@ -102,7 +102,12 @@ public class Ejercicio {
 	// ATRIBUTO RELACION CON CLASE RUTINAEJERCICIO
 //	@OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL)
 	@OneToMany(mappedBy = "ejercicio")
-	private List<RutinaEjercicio> rutinaEjercicio = new ArrayList<>();
+	private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
+	
+	// ATRIBUTO RELACION CON CLASE SEGUIMIENTO
+	@OneToMany(mappedBy = "ejercicioRealizado")
+	private List<Seguimiento> seguimientos = new ArrayList<>();
+
 
 	// CONSTRUCTOR
 	public Ejercicio() {}
@@ -125,8 +130,12 @@ public class Ejercicio {
 		this.GM = paramGM;
 	}
 	
-	public void setRutinaEjercicio(List<RutinaEjercicio> listRutinaEjercicio) {
-		this.rutinaEjercicio = listRutinaEjercicio;
+	public void setRutinaEjercicios(List<RutinaEjercicio> listRutinaEjercicio) {
+		this.rutinaEjercicios = listRutinaEjercicio;
+	}
+	
+	public void setSeguimientos(List<Seguimiento> listaSeguimientos) {
+		this.seguimientos = listaSeguimientos;
 	}
 	
 	// GET
@@ -142,7 +151,11 @@ public class Ejercicio {
 		return this.GM;
 	}
 	
-	public List<RutinaEjercicio> getRutinaEjercicio() {
-		return this.rutinaEjercicio;
+	public List<RutinaEjercicio> getRutinaEjercicios() {
+		return this.rutinaEjercicios;
+	}
+	
+	public List<Seguimiento> getSeguimientos() {
+		return this.seguimientos;
 	}
 }
