@@ -12,7 +12,7 @@
 		<maven.compiler.version>3.13.0</maven.compiler.version>
 		<hibernate.orm.version>6.6.9.Final</hibernate.orm.version>
 		<javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
-		<javafx.depend.version>23-ea+20</javafx.depend.version>
+		<javafx.depend.version>23-ea+20</javafx.depend.version> <!-- Version nueva -->
 	</properties>
 	
 	<!-- Dependencias -->
