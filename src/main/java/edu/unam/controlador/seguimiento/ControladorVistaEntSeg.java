@@ -164,6 +164,17 @@ public class ControladorVistaEntSeg {
     		return;
     	}
     	
+//    	if (regEnt.getEstado().equals("Finalizado")) {
+//    		this.lanzarMensaje(
+//    				AlertType.ERROR, 
+//    				"Error!", 
+//    				"ENTRENAMIENTO FINALIZADO",
+//    				"Seleccione un entrenamiento que esté en curso..."
+//    		);
+//    		System.err.println("[ ERROR ] > El entrenamiento está finalizado!");
+//    		return;    		
+//    	}
+    	
     	// PASA LA ENTIDAD ENTRENAMIENTO PARA USARLO EN LA SIGUIENTE VISTA
     	AlmacenadorDeEntidadesSingleton
     		.getInstancia()

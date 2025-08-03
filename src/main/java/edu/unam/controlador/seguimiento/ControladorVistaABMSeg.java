@@ -14,9 +14,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import utilidades.AlmacenadorDeEntidadesSingleton;
 import utilidades.navegacion.NavegadorDeVistasSingleton;
 import utilidades.navegacion.RutasVistas;
 import edu.unam.modelo.Ejercicio;
+import edu.unam.modelo.Entrenamiento;
 //import edu.unam.modelo.Entrenamiento;
 import edu.unam.modelo.Seguimiento;
 import java.time.LocalDate;
@@ -40,6 +42,9 @@ public class ControladorVistaABMSeg {
 
     @FXML
     private Button BTModificar;
+    
+    @FXML
+    private Button BTVE;
 
     @FXML
     private TableView<Seguimiento> TVSeguimiento;
@@ -62,7 +67,7 @@ public class ControladorVistaABMSeg {
     @FXML
     private TableColumn<Seguimiento, Integer> TCSerie;
     
-//    private Entrenamiento ent;
+    private Entrenamiento ent;
     
     private SeguimientoServicio sseg;
     
@@ -75,6 +80,10 @@ public class ControladorVistaABMSeg {
 //        			.getEntrenamiento();
     	
     	this.sseg = new SeguimientoServicio();
+    	this.ent =
+    			AlmacenadorDeEntidadesSingleton
+    				.getInstancia()
+    				.getEntrenamiento();
     }
     
     private Optional<ButtonType> lanzarMensaje(
@@ -100,7 +109,8 @@ public class ControladorVistaABMSeg {
     	this.TVSeguimiento
     		.getItems()
     			.addAll(
-    					this.sseg.obtenerTodosLosSeguimientosYSusObjetos()
+//    					this.sseg.obtenerTodosLosSeguimientosYSusObjetos()
+    					this.sseg.obtenerListaFiltradaPorEntrenamiento(ent)
     			);
 //    	TVEntrenamiento.refresh();
     	
@@ -119,6 +129,13 @@ public class ControladorVistaABMSeg {
     public void iniciar() {
     	this.inicializarDatos();
     	this.actualizarTabla();
+    	
+    	// OPERACIONES DESHABILITADAS PARA ENTRENAMIENTOS FINALIZADOS
+    	if (this.ent.getEstado().equals("Finalizado")) {
+    		this.BTCrear.setDisable(true);
+    		this.BTModificar.setDisable(true);
+//    		this.BTEliminar.setDisable(true);
+    	}
     }
     
     @FXML
@@ -221,6 +238,20 @@ public class ControladorVistaABMSeg {
     @FXML
     private void eventoBTModificar(ActionEvent event) {
 
+    }
+    
+    @FXML
+    private void eventoBTVE(ActionEvent event) {
+    	NavegadorDeVistasSingleton.getInstancia().cargarNuevaVista(this.getClass(), RutasVistas.VISTA_CALCULO_VOLUMEN_ENTRENAMIENTO);
+    	
+    	ControladorDeVistaCalculoVolEntSemanal CDVCVE =
+    			NavegadorDeVistasSingleton
+    				.getInstancia()
+    				.obtenerControladorDeNuevaVista();
+    	
+    	CDVCVE.iniciar(this.sseg.obtenerListaFiltradaPorEntrenamiento(ent));
+    	
+    	NavegadorDeVistasSingleton.getInstancia().cambiarVista(this.BTVE, "Volumen de entrenamiento semanal");
     }
     
     @FXML
