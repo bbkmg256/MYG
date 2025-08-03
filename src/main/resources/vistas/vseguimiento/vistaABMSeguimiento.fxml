@@ -27,6 +27,7 @@
                <children>
                   <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCrear" prefHeight="40.0" prefWidth="129.0" text="Agregar" />
                   <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="129.0" text="Eliminar" />
+                  <Button fx:id="BTVE" mnemonicParsing="false" onAction="#eventoBTVE" prefHeight="44.0" prefWidth="129.0" text="Volumen de entrenamiento" textAlignment="CENTER" wrapText="true" />
                   <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="129.0" text="Modificar" visible="false" />
                   <HBox alignment="BOTTOM_CENTER" prefHeight="133.0" prefWidth="179.0" VBox.vgrow="ALWAYS">
                      <children>
