@@ -47,7 +47,7 @@ public class RutinaEntrenamientoDAO {
 	}
 	
 	// OBTENER TODAS LAS ENTIDADES
-	public <T> List<RutinaEntrenamiento> obtenerTodasLasEntidadesRutinaEntrenamiento(
+	public List<RutinaEntrenamiento> obtenerTodasLasEntidadesRutinaEntrenamiento(
 			EntityManager em, String consulta, Entrenamiento obj
 	) {
 		return em.createQuery(consulta, RutinaEntrenamiento.class).setParameter("obj", obj).getResultList();
@@ -65,5 +65,13 @@ public class RutinaEntrenamientoDAO {
 			EntityManager em, RutinaEntrenamiento entidadRE
 	) {
 		em.remove(entidadRE);
+	}
+	
+	// HACK: NO ES LA MEJOR IDEA, PERO NO SE ME OCURRE NADA MEJOR EN ESTE MOMENTO
+	// CONSULTA GENERICA
+	public <T, S> List<T> consultaGenerica(
+			EntityManager em, Class<T> clase, String consulta, S obj
+	) {
+		return em.createQuery(consulta, clase).setParameter("obj", obj).getResultList();
 	}
 }
