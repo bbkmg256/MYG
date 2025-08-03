@@ -287,6 +287,9 @@ public class ControladorVistaModifEntrenamiento {
     		return;
     	}
     	
+    	// VERIFICAR QUE LA FECHA DE INICIO Y FIN, NO COINCIDAN CON UN DOMINGO.
+    	
+    	
     	// ERROR DE FECHAS //
     	if (this.paramEnt.fechaFin.isBefore(this.paramEnt.fechaInicio)) {
     		this.lanzarMensaje(
@@ -376,6 +379,8 @@ public class ControladorVistaModifEntrenamiento {
     	// CUALQUIERA EN LOS DP.				//
     	this.DPFI.setEditable(false);
     	this.DPFF.setEditable(false);
+    	
+    	this.DPFF.setVisible(false);
     	
 //    	this.txtPuntaje.setVisible(true);
 //    	this.actualizarCB(
