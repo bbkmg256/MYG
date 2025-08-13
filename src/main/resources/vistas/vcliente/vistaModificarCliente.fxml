@@ -20,7 +20,7 @@
          <children>
             <Label text="Modificar Cliente">
                <font>
-                  <Font name="System Bold Italic" size="36.0" />
+                  <Font name="DejaVu Sans Bold" size="36.0" />
                </font>
             </Label>
             <HBox alignment="CENTER" prefHeight="291.0" prefWidth="778.0">

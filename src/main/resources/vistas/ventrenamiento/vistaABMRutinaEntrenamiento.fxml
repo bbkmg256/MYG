@@ -15,7 +15,7 @@
          <children>
             <Label text="Gestion del entrenamiento">
                <font>
-                  <Font name="DejaVu Sans Bold Oblique" size="18.0" />
+                  <Font name="DejaVu Sans Bold" size="18.0" />
                </font>
             </Label>
          </children>

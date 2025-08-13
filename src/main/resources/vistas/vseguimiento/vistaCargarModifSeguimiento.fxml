@@ -17,7 +17,7 @@
          <children>
             <Label fx:id="LBTitulo" text="Label">
                <font>
-                  <Font name="System Bold Italic" size="36.0" />
+                  <Font name="DejaVu Sans Bold" size="36.0" />
                </font>
             </Label>
          </children>
