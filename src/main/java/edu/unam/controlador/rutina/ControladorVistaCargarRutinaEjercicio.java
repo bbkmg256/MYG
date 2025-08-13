@@ -152,6 +152,18 @@ public class ControladorVistaCargarRutinaEjercicio {
     		return;
     	}
     	
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Gestión de rutina",
+    			"OPERACION DE CARGA", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
+    	}
+    	
     	Ejercicio ej = this.CBEjercicio.getSelectionModel().getSelectedItem();
     	
     	int serie, rep;

@@ -14,6 +14,7 @@ import java.util.List;
 
 import utilidades.bd.EMFSingleton;
 import utilidades.parametros.ParametrosClienteTutor;
+import edu.unam.modelo.Entrenamiento;
 // Entidad
 import edu.unam.modelo.Tutor;
 
@@ -34,36 +35,36 @@ public class TutorServicio {
 	}
 	
 	// Registra un tutor en el sistema
-	public void cargarTutor(Tutor tutor) {
+	public boolean cargarTutor(Tutor tutor) {
 		// VERIFICA QUE NO EXISTA YA UN TUTOR CON EL MISMO DNI
 		if (this.obtenerTutor(tutor.getDni(), false) != null) {
 			System.out.printf("[ ERROR ] > El tutor %d ya se encuentra en el sistema!%n", tutor.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (tutor.getNombre() == null) {
 			System.out.printf("[ ERROR ] > El tutor %d no tiene un nombre asignado o este es nulo!%n", tutor.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (tutor.getApellido() == null) {
 			System.out.printf("[ ERROR ] > El tutor %d no tiene un apellido asignado o este es nulo!%n", tutor.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (tutor.getFechaNacimiento() == null) {
 			System.out.printf("[ ERROR ] > El tutor %d no tiene una fecha de namcimiento asignada o este es nulo!%n", tutor.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (tutor.getCiudad() == null) {
 			System.out.printf("[ ERROR ] > El tutor %d no tiene una ciudad asignada o este es nulo!%n", tutor.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (tutor.getProvincia() == null) {
 			System.out.printf("[ ERROR ] > El tutor %d no tiene una ciudad asignada o este es nulo!%n", tutor.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		// MODIFICA TODOS LOS VALORES TEXTUALES QUE TENGA EL OBJETO, A MINUSCULA.
@@ -81,10 +82,12 @@ public class TutorServicio {
 			this.tutorDao.crearEntidadTutor(this.manager, tutor);
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El tutor %d cargado correctamente!%n", tutor.getDni()); // LOG
+			return true;
 		} catch (Exception e) {
 			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al cargar el tutor!"); // LOG
+			return false;
 		} finally {
 			this.manager.close();
 		}
@@ -188,6 +191,29 @@ public class TutorServicio {
 		} finally {
 			this.manager.close();
 		}
+	}
+	
+	public List<Entrenamiento> obtenerEntrenamientos(int dni) {
+		List<Entrenamiento> listEnt = null;
+		
+		String consulta =
+				"SELECT e FROM Tutor t "
+				+ "JOIN t.entrenamientos e "
+				+ "WHERE t.dni = :dni";
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			listEnt = this.tutorDao.obtenerListaEntrenamiento(manager, consulta, dni);
+		} catch (Exception e) {
+			this.manager.getTransaction().rollback();
+			System.err.println(e);
+			System.err.println("[ ERROR ] > Falla al obtner la lista de entrenamientos!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return listEnt;
 	}
 	
 	// Da de baja a un tutor del sistema

@@ -16,9 +16,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import edu.unam.modelo.Entrenamiento;
+import edu.unam.modelo.RutinaEntrenamiento;
 //import edu.unam.modelo.Rutina;
 import edu.unam.modelo.Tutor;
 import edu.unam.servicio.EntrenamientoServicio;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import edu.unam.modelo.Cliente;
@@ -40,6 +43,9 @@ public class ControladorVistaEntSeg {
     private Button BTAtras;
     
     @FXML
+    private Button BTMostrarMas;
+    
+    @FXML
     private Label txtCliente;
 
     @FXML
@@ -53,9 +59,12 @@ public class ControladorVistaEntSeg {
 
     @FXML
     private TableColumn<Entrenamiento, Integer> TCID;
-
+    
     @FXML
-    private TableColumn<Entrenamiento, Integer> TCPT;
+    private TableColumn<Entrenamiento, String> TCE;
+
+//    @FXML
+//    private TableColumn<Entrenamiento, Integer> TCPT;
 
 //    @FXML
 //    private TableColumn<Entrenamiento, String> TCRu;
@@ -106,7 +115,8 @@ public class ControladorVistaEntSeg {
     	this.asignarValoresColumnas(this.TCID, "idEntrenamiento");
     	this.asignarValoresColumnas(this.TCFI, "fechaInicio");
     	this.asignarValoresColumnas(this.TCFf, "fechaFin");
-    	this.asignarValoresColumnas(this.TCPT, "puntaje");
+    	this.asignarValoresColumnas(this.TCE, "estado");
+//    	this.asignarValoresColumnas(this.TCPT, "puntaje");
     	
     	// RENDERIZADO DE OBJETOS DE ENTRENAMIENTO //
     	// TUTOR
@@ -134,6 +144,18 @@ public class ControladorVistaEntSeg {
 //    				)
 //    	);
 //    }
+    
+    private List<Entrenamiento> filtrarPorEntrenamientosEnCurso(List<Entrenamiento> listaEntrenamientos) {
+    	// HACK: FILTRADO DE ENTRENAMIENTOS EN CURSO
+    	List<Entrenamiento> listaEntr = new ArrayList<>();
+    	for (Entrenamiento regEnt : listaEntrenamientos) {
+    		if (regEnt.getEstado().equals("En curso")) {
+    			listaEntr.add(regEnt);
+    		}
+    	}
+    	
+    	return listaEntr;
+    }
 
     // COMO initialize(), PERO APLICADO A MI LOGICA
     public void iniciar() {
@@ -142,10 +164,9 @@ public class ControladorVistaEntSeg {
     	this.txtCliente.setText(this.cli.getNombre());
     	
     	this.actualizarTabla(
-    			this.sentre
-    				.obtenerTodosLosEntrenamientosYSusObjetos(
-    						this.cli
-    				)
+    			this.filtrarPorEntrenamientosEnCurso(
+    					this.sentre.obtenerTodosLosEntrenamientosYSusObjetos(this.cli)
+    			)
     	);
     }
     
@@ -164,16 +185,21 @@ public class ControladorVistaEntSeg {
     		return;
     	}
     	
-//    	if (regEnt.getEstado().equals("Finalizado")) {
-//    		this.lanzarMensaje(
-//    				AlertType.ERROR, 
-//    				"Error!", 
-//    				"ENTRENAMIENTO FINALIZADO",
-//    				"Seleccione un entrenamiento que esté en curso..."
-//    		);
-//    		System.err.println("[ ERROR ] > El entrenamiento está finalizado!");
-//    		return;    		
-//    	}
+    	List<RutinaEntrenamiento> listaRE = new ArrayList<>();
+    	listaRE.addAll(this.sentre.obtenerListaDeRutinas(regEnt));
+    	
+    	System.out.println(listaRE);
+    	System.out.println(listaRE.isEmpty());
+    	if (listaRE.isEmpty()) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, 
+    				"Error!", 
+    				"ERROR DE OPERACION", 
+    				"Seleccione un entrenamiento que contenga rutinas..."
+    		);
+    		System.err.println("[ ERROR ] > El entrenamiento sin rutinas!");
+    		return;
+    	}
     	
     	// PASA LA ENTIDAD ENTRENAMIENTO PARA USARLO EN LA SIGUIENTE VISTA
     	AlmacenadorDeEntidadesSingleton
@@ -218,8 +244,45 @@ public class ControladorVistaEntSeg {
 	    	);
     }
     
+    /*
+     * NOTE: SE LLAMA MOSTRAR MAS, PERO EN REALIDAD MUESTRA TODOS LOS
+     * ENTRENAMIENTOS, REVIRTIENDO EL FILTRO ANTERIOR POR
+     * ENTRENAMIENTOS EN CURSO.
+     */
+    @FXML
+    private void eventoBTMostrarMas(ActionEvent event) {
+    	this.actualizarTabla(
+    			this.sentre
+    				.obtenerTodosLosEntrenamientosYSusObjetos(
+    						this.cli
+    				)
+    	);
+    }
+    
     @FXML
     private void initialize() {
     	System.out.println("B");
     }
 }
+
+
+
+// DEPRECATE: CODIGO NO USADO
+
+//if (regEnt.getEstado().equals("Finalizado")) {
+//this.lanzarMensaje(
+//		AlertType.ERROR, 
+//		"Error!", 
+//		"ENTRENAMIENTO FINALIZADO",
+//		"Seleccione un entrenamiento que esté en curso..."
+//);
+//System.err.println("[ ERROR ] > El entrenamiento está finalizado!");
+//return;    		
+//}
+
+//this.actualizarTabla(
+//this.sentre
+//	.obtenerTodosLosEntrenamientosYSusObjetos(
+//			this.cli
+//	)
+//);

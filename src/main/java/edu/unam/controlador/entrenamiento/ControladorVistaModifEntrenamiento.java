@@ -3,6 +3,7 @@ package edu.unam.controlador.entrenamiento;
 import java.util.ArrayList;
 //import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import edu.unam.modelo.Cliente;
 import edu.unam.modelo.Entrenamiento;
@@ -18,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -120,7 +122,7 @@ public class ControladorVistaModifEntrenamiento {
     	});
     }
     
-    private void lanzarMensaje(
+    private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
     ) {
@@ -128,7 +130,7 @@ public class ControladorVistaModifEntrenamiento {
     	alerta.setTitle(titulo);
     	alerta.setHeaderText(cabecera);
     	alerta.setContentText(contenido);
-    	alerta.showAndWait();
+    	return alerta.showAndWait();
     }
     
     // TENGO FICA DE CAMBIARLO, POR ESO LO DEJO ASÍ
@@ -187,10 +189,16 @@ public class ControladorVistaModifEntrenamiento {
     	// EL ULTIMO DIA DE LA ULTIMA SEMANA DEL ENTRENAMIENTO //
     	
     	
-    	if (this.hayFechaFinalEnSeguimiento(this.ent)) {
-//        	this.txtPuntaje.setVisible(true);
-        	this.HBPuntaje.setVisible(true);
-        	System.out.println("WTF?");
+//    	if (this.hayFechaFinalEnSeguimiento(this.ent) && this.ent.getEstado().equals("Finalizado")) {
+////        	this.txtPuntaje.setVisible(true);
+//        	this.txtPuntaje.setDisable(false);
+//        	System.out.println("WTF?");
+//    	}
+    	
+    	if (this.ent.getEstado().equals("Finalizado")) {
+    		this.CBCli.setDisable(true);
+    		this.CBTu.setDisable(true);
+    		this.txtPuntaje.setDisable(false);
     	}
     }
     
@@ -220,6 +228,18 @@ public class ControladorVistaModifEntrenamiento {
 
     @FXML
     private void eventoBTFinalizar(ActionEvent event) {
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Modificación de entrenamiento",
+    			"OPERACION MODIFICAR", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
+    	}
+    	
     	this.paramEnt.cliente = this.CBCli.getSelectionModel().getSelectedItem();
     	this.paramEnt.tutor = this.CBTu.getSelectionModel().getSelectedItem();
 //    	this.paramEnt.rutina = this.CBRu.getSelectionModel().getSelectedItem();
@@ -227,7 +247,9 @@ public class ControladorVistaModifEntrenamiento {
     	this.paramEnt.fechaFin = this.DPFF.getValue();
     	
     	// AHORA ESTO PUEDE SER BLANK, ASÍ QUE TENGO QUE VERIFICARLO MAS ABAJO, YA VUELVO XD
-    	this.paramEnt.puntaje = Integer.parseInt(this.txtPuntaje.getText());
+    	if (this.ent.getEstado().equals("Finalizado")) {    		
+    		this.paramEnt.puntaje = Integer.parseInt(this.txtPuntaje.getText());
+    	}
     	
     	boolean hayErrorDeCampos = false;
     	
@@ -247,11 +269,15 @@ public class ControladorVistaModifEntrenamiento {
     		); // LOG
     	}
     	
-    	if (!hayErrorDeCampos && this.paramEnt.puntaje == 0) {
-    		hayErrorDeCampos = true;
-    		System.err.println(
-    				"[ ERROR ] > El puntaje del tutor debe ser un numero entre 1 y 10!"
-    		); // LOG
+    	/* HACK: SE PUEDE MEJORAR
+    	 */
+    	if (this.ent.getEstado().equals("Finalizado")) {
+    		if (!hayErrorDeCampos && this.paramEnt.puntaje == 0) {
+    			hayErrorDeCampos = true;
+    			System.err.println(
+    					"[ ERROR ] > El puntaje del tutor debe ser un numero entre 1 y 10!"
+    					); // LOG
+    		}    		
     	}
     	
 //    	if (!hayErrorDeCampos && this.paramEnt.rutina == null) {
@@ -373,14 +399,18 @@ public class ControladorVistaModifEntrenamiento {
     @FXML
     private void initialize() {
     	this.LTitulo.setText("Modificar entrenamiento");
-    	this.HBPuntaje.setVisible(false);
+//    	this.HBPuntaje.setVisible(false);
+    	this.txtPuntaje.setDisable(true);
 
     	// PARA QUE EL USUARIO NO PUEDA DIGITAR //
     	// CUALQUIERA EN LOS DP.				//
     	this.DPFI.setEditable(false);
     	this.DPFF.setEditable(false);
     	
-    	this.DPFF.setVisible(false);
+//    	this.DPFF.setVisible(false);
+    	
+    	this.DPFI.setDisable(true);
+    	this.DPFF.setDisable(true);
     	
 //    	this.txtPuntaje.setVisible(true);
 //    	this.actualizarCB(

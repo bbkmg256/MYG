@@ -21,15 +21,19 @@ import utilidades.navegacion.RutasVistas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.event.ActionEvent;
+
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Cliente;
 import edu.unam.servicio.ClienteServicio;
 
 /*
  * 
- * NOTA:
+ * NOTE:
  * 
  * EN EL BOTON DE FINALIZAR FALTAN ALGUNAS LLAMAR A ALGUNA VERIFICACION QUE DE AVISO DE QUE
  * SI EL DNI YA ESTA, ENTONCES NO LO AGREGUE Y SE LO INFORME AL USUARIO (ESTO YA ESTA EN EL BACKEND, PERO
@@ -88,7 +92,7 @@ public class ControladorVistaCargaCliente {
 
     
     // METODOS Y EVENTOS //
-    private void lanzarMensaje(
+    private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
     ) {
@@ -96,7 +100,7 @@ public class ControladorVistaCargaCliente {
     	alerta.setTitle(titulo);
     	alerta.setHeaderText(cabecera);
     	alerta.setContentText(contenido);
-    	alerta.showAndWait();
+    	return alerta.showAndWait();
     }
     
     // EVITA QUE SE MARQUE MAS DE UN RADIO BUTTON
@@ -142,7 +146,7 @@ public class ControladorVistaCargaCliente {
     		camposIncompletos = true;
     	}
     	
-    	// SE NECESITA ALMENOS 1 DE LOS 2 RADIOBUTTON PRESIONADOS
+    	// SE NECESITA AL MENOS 1 DE LOS 2 RADIOBUTTON PRESIONADOS
     	if (!this.RBMasculino.isSelected() && !this.RBFemenino.isSelected()) {
     		camposIncompletos = true;
     	}
@@ -173,7 +177,7 @@ public class ControladorVistaCargaCliente {
     				"ERROR DE CAMPOS",
     				"Faltan campos que completar..."
     		);
-    		System.out.println("[ ERROR ] > Faltan campos que completar!"); // LOG
+    		System.err.println("[ ERROR ] > Faltan campos que completar!"); // LOG
     		return;
     	}
     	
@@ -181,7 +185,7 @@ public class ControladorVistaCargaCliente {
 //    	LocalDate fIng = this.DPFechaIng.getValue(), fNac = this.DPFechaNac.getValue();
 //    	System.out.printf("Fecha nac: %td/%tm/%tY %nFecha ing: %td/%tm/%tY%n", fIng, fIng, fIng, fNac, fNac, fNac);
     	
-    	// EVITA QUE SE INGRESE UNA FECHA DE NACIMIENTO POSTERIOR A LA DEL INGRESO AL GYM
+    	// NOTE: EVITA QUE SE INGRESE UNA FECHA DE NACIMIENTO POSTERIOR A LA DEL INGRESO AL GYM
     	if (!this.DPFechaNac.getValue().isBefore(this.DPFechaIng.getValue())) {
     		this.lanzarMensaje(
     				AlertType.ERROR, "Error!",
@@ -189,8 +193,32 @@ public class ControladorVistaCargaCliente {
     				"La fecha de ingreso no puede ser menor a la de nacimiento..."
     		);
     		// LOG
-    		System.out.println("[ ERROR ] > Incoherencia en fecha de nacimiento y de ingreso!");
-    		return;
+    		System.err.println("[ ERROR ] > Incoherencia en fecha de nacimiento y de ingreso!");
+    		return;    		
+    	}
+    	
+    	// NOTE: EVITA LAS FECHAS QUE CAEN DOMINGO
+    	if (this.DPFechaIng.getValue().getDayOfWeek() == DayOfWeek.SUNDAY) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, "Error!",
+    				"ERROR DE CAMPOS",
+    				"La fecha de ingreso no puede ser un día domingo..."
+    		);
+    		// LOG
+    		System.err.println("[ ERROR ] > Incoherencia en fecha de ingreso!");
+    		return;    		
+    	}
+    	
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Creación de cliente",
+    			"OPERACIÓN DE CARGA", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
     	}
     	
     	// VER DESPUES POR QUE CARAJO ESTOY REEMPLAZANDO CARACTERES  //
@@ -222,18 +250,18 @@ public class ControladorVistaCargaCliente {
 //    	if (!ComprobarConexionBD.hayConexion(EMFSingleton.getInstancia().getEMF())) {
 //			this.lanzarMensaje(
 //					AlertType.ERROR, "Error!",
-//					"ERROR DE CONEXION A BASE DE DATOS",
+//					"ERROR DE CONEXIÓN A BASE DE DATOS",
 //					"No se encuentra una base de datos activa..."
 //			);
 //			// LOG
 //			System.out.println(
-//					"[ ERROR ] > No hay conexión a una BD o la misma está caida!"
+//					"[ ERROR ] > No hay conexión a una BD o la misma está caída!"
 //			);
 //			return;
 //		}
     	
     	// CREA Y CARGA UN CLIENTE A LA BD
-    	this.scli.cargarCliente(
+    	boolean cargaCorrecta = this.scli.cargarCliente(
     			new Cliente(
 	    			dni,
 	    			nombre,
@@ -246,21 +274,38 @@ public class ControladorVistaCargaCliente {
 	    			fechaIng
     	));
     	
+    	/*
+    	 * BUG: EL CONTROLADOR MARCA COMO CARGA CORRECTA AUN CUANDO SE INGRESA
+    	 * UN CLIENTE QUE YA ESTÁ EN LA BD.
+    	 */
     	// POR SI OCURREN ALGUN PROBLEMA DESPUES DE HABER HECHO LA TRANSACCION
-    	if (scli.obtenerCliente(dni, false) == null) {
+//    	if (scli.obtenerCliente(dni, false) == null) {
+//    		this.lanzarMensaje(
+//    				AlertType.ERROR, "Error!",
+//    				"ERROR DE OPERACIÓN",
+//    				"Algo falló al cargar el cliente..."
+//    		);
+//    		System.err.println("[ ERROR ] > Fallo al cargar el cliente!"); // LOG
+//    		return;
+//    	}
+    	
+    	/*
+    	 * NOTE: COMPRUEBA QUE LA CARGA SEA EXITOSA
+    	 */
+    	if (!cargaCorrecta) {
     		this.lanzarMensaje(
     				AlertType.ERROR, "Error!",
-    				"ERROR DE OPERACION",
+    				"ERROR DE OPERACIÓN",
     				"Algo falló al cargar el cliente..."
     		);
-    		System.out.println("[ ERROR ] > Fallo al cargar el cliente!"); // LOG
+    		System.err.println("[ ERROR ] > Fallo al cargar el cliente!"); // LOG
     		return;
     	}
     	
     	this.lanzarMensaje(
-				AlertType.INFORMATION, "Exito!",
-				"OPERACION RELIZADA",
-				"El cliente fue cargado con exito..."
+				AlertType.INFORMATION, "Éxito!",
+				"OPERACIÓN REALIZADA",
+				"El cliente fue cargado con éxito..."
 		);
     	
     	NavegadorDeVistasSingleton

@@ -188,6 +188,11 @@ public class ControladorVistaABMRutinaEntrenamiento {
     	this.actualizarTabla(this.TVLR, this.listaRutina);
     	this.actualizarTabla(this.TVRC, this.listaRE);
     	
+    	
+    	if (this.ent.getEstado().equals("Finalizado")) {
+    		this.BTAgregar.setDisable(true);
+    		this.BTEliminar.setDisable(true);
+    	}
     }
     
     @FXML
@@ -205,6 +210,19 @@ public class ControladorVistaABMRutinaEntrenamiento {
     				"[ ERROR ] > Seleccione un registro para continuar!"
     		); // LOG
     		return;
+    	}
+    	
+    	if (this.sru.obtenerListaDeRutinaEjercicios(regRutEj.getIdRutina()).isEmpty()) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, 
+    				"Error!", 
+    				"ERROR DE OPERACION", 
+    				"Seleccione una rutina que contenga ejercicios..."
+    		);
+    		System.err.println(
+    				"[ ERROR ] > Rutina sin ejercicios!"
+    		); // LOG
+    		return;    		
     	}
     	
     	RutinaEntrenamiento re =

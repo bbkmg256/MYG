@@ -18,6 +18,7 @@ import utilidades.parametros.ParametrosEntrenamiento;
 import edu.unam.modelo.Entrenamiento;
 import edu.unam.modelo.Cliente;
 import edu.unam.modelo.Rutina;
+import edu.unam.modelo.RutinaEntrenamiento;
 import edu.unam.modelo.Seguimiento;
 import edu.unam.modelo.Tutor;
 
@@ -252,6 +253,48 @@ public class EntrenamientoServicio {
 		
 		return entr;
 	}
+	
+	/* NOTE: ESTE METODO SOLO RETORNA UNA LISTA CON LAS ASOCIACIONES
+	 * ENTRE UN ENTRENAMIENTO Y UNA RUTINA.
+	 */
+	public List<RutinaEntrenamiento> obtenerListaDeRutinas(Entrenamiento ent) {
+		List<RutinaEntrenamiento> listaRutinas = null;
+		String consulta =
+				"SELECT re FROM Entrenamiento e "
+				+ "JOIN e.rutinaentrenamientos re "
+				+ "WHERE e = :obj";
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			listaRutinas = this.entreDao.obtenerListaGenerica(this.manager, RutinaEntrenamiento.class, consulta, ent);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("[ ERROR ] > Falla al obtener la lista!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return listaRutinas;
+	}
+	// PARA MODIFICAR EL METODO DE ARRIBA MAS TARDE
+//	public List<RutinaEjercicio> obtenerListaDeRutinaEjercicios(int id) {
+//	List<RutinaEjercicio> lista = new ArrayList<>();
+//	Rutina regRut = this.obtenerRutina(id);
+//	
+//	this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+//	
+//	try {
+//		lista.addAll(this.manager.merge(regRut).getRutinaEjercicios());
+//	} catch (Exception e) {
+//		System.out.println(e);
+//		System.out.println("[ ERROR ] > Falla al obtener la lista de rutinaEjercicios!");
+//	} finally {
+//		this.manager.close();
+//	}
+//	
+//	return lista;
+//}
 	
 	public List<Seguimiento> obtenerListaDeSeguimientos(int id) {
 		List<Seguimiento> lista = new ArrayList<>();

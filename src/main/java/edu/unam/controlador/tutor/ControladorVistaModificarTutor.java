@@ -4,6 +4,7 @@
 
 package edu.unam.controlador.tutor;
 
+import java.util.Optional;
 // LIBRERIAS
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Tutor;
@@ -12,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -79,7 +81,7 @@ public class ControladorVistaModificarTutor {
     
     
     // METODOS Y EVENTOS //
-    private void lanzarMensaje(
+    private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
     ) {
@@ -87,7 +89,7 @@ public class ControladorVistaModificarTutor {
     	alerta.setTitle(titulo);
     	alerta.setHeaderText(cabecera);
     	alerta.setContentText(contenido);
-    	alerta.showAndWait();
+    	return alerta.showAndWait();
     }
     
     // EVITA QUE SE MARQUE MAS DE UN RADIO BUTTON
@@ -150,6 +152,18 @@ public class ControladorVistaModificarTutor {
 
     @FXML
     private void eventoBTFinalizar(ActionEvent event) {
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Modificación del tutor",
+    			"OPERACION MODIFICAR", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
+    	}
+    	
     	this.paramTutor.nombre = this.txtNombre.getText();
     	this.paramTutor.apellido = this.txtApellido.getText();
     	

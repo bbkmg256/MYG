@@ -39,6 +39,9 @@ public class ControladorVistaABMSeg {
 
     @FXML
     private Button BTEliminar;
+    
+    @FXML
+    private Button BTET;
 
     @FXML
     private Button BTModificar;
@@ -234,7 +237,39 @@ public class ControladorVistaABMSeg {
     	
     	this.actualizarTabla();
     }
+    
+    @FXML
+    private void eventoBTET(ActionEvent event) {
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Eliminación de todos los seguimientos",
+    			"OPERACION ELIMINAR", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Eliminación cancelada!"); // LOG
+        	return;
+    	}
+    	
+    	boolean eliminacionCorrecta = false;
+    	
+    	eliminacionCorrecta = this.sseg.eliminarTodosLosSeguimientosDeUnEntrenamiento(ent);
+    	
+    	if (!eliminacionCorrecta) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, 
+    				"Error!", 
+    				"OPERACION FALLIDA", 
+    				"Falla al eliminar seguimientos..."
+    		);
+    		return;
+    	}
+    	
+    	this.actualizarTabla();
+    }
 
+    // NOTE: NO USADO
     @FXML
     private void eventoBTModificar(ActionEvent event) {
 

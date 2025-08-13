@@ -20,7 +20,7 @@ import java.util.List;
 
 // JPA
 import jakarta.persistence.EntityManager;
-
+import edu.unam.modelo.Entrenamiento;
 // ENTIDAD
 import edu.unam.modelo.Tutor;
 
@@ -89,6 +89,11 @@ public class TutorDAO {
 //		return regEntidades;
 
 		return em.createQuery(consulta, Tutor.class).getResultList();
+	}
+	
+	// OBTENER LISTA DE ENTRENAMIENTOS DE UN TUTOR
+	public List<Entrenamiento> obtenerListaEntrenamiento(EntityManager em, String consulta, int dni) {
+		return em.createQuery(consulta, Entrenamiento.class).setParameter("dni", dni).getResultList();
 	}
 	
 	// ACTUALIZA ATRIBUTO NOMBRE

@@ -79,6 +79,7 @@ public class ControladorDeVistaCalculoVolEntSemanal {
 //		this.semanaTres = new LocalDate[6];
 //		this.semanaCuatro = new LocalDate[6];
 		
+		// TODO: CAMBIAR NOMBRES A ESTAS LISTAS POR ALGO COMO "fechasSemUno, fechasSemDos..."
 		this.semUno = new ArrayList<>();
 		this.semDos = new ArrayList<>();
 		this.semTres = new ArrayList<>();
@@ -90,6 +91,10 @@ public class ControladorDeVistaCalculoVolEntSemanal {
 		
 		this.listaSeg = new ArrayList<>(); this.listaSeg.addAll(lista);
 		
+		/*
+		 * TODO: CAMBIAR NOMBRES A ESTAS LISTAS POR ALGO COMO
+		 * "listaSeguimientosSemanaUno, listaSeguimientosSemanaDos..."
+		 */
 		this.listaSemanaUno = new ArrayList<>();
 		this.listaSemanaDos = new ArrayList<>();
 		this.listaSemanaTres = new ArrayList<>();
@@ -103,6 +108,7 @@ public class ControladorDeVistaCalculoVolEntSemanal {
     	this.hm = new HashMap<>();
 	}
 	
+	// OPTIMIZE: ASIGNA LAS FECHAS (DE LA PEOR MANERA POSIBLE)
 	private void establecerFechasParaSemanas() {
 		LocalDate arregloFechas[] = new LocalDate[6*4];
 		LocalDate fechaActual = this.ent.getFechaInicio();
@@ -116,7 +122,6 @@ public class ControladorDeVistaCalculoVolEntSemanal {
 			fechaActual = fechaActual.plusDays(1);
 		}
 		
-		// OPTIMIZE: ASIGNA LAS FECHAS (DE LA PEOR MANERA POSIBLE)
 		for (int i = 0; i < 6; i++) {			
 			this.semUno.add(arregloFechas[i]);
 		}
@@ -257,18 +262,37 @@ public class ControladorDeVistaCalculoVolEntSemanal {
     	List<Ejercicio> listaEj = this.sgm.obtenerListaDeEjercicios(gm.getIdGM());
     	double volumenEntrenamientoSemanal = 0;
 		
-    	for (Seguimiento regSeg: hm.get(semana)) {
-			if (listaEj.contains(regSeg.getEjercicioRealizado())) {
-				volumenEntrenamientoSemanal += regSeg.getPesoTrabajado() * regSeg.getCantRepeticionesRealizado() * regSeg.getCantSerieRealizado();
-			}
+    	// BUG: FALLA EL METODO CONTAINS, POR QUE NO ESTÁ ENTONTRANDO OBJETOS IGUALES
+//    	for (Seguimiento regSeg: hm.get(semana)) {
+//			if (listaEj.contains(regSeg.getEjercicioRealizado())) {
+//				volumenEntrenamientoSemanal += regSeg.getPesoTrabajado() * regSeg.getCantRepeticionesRealizado() * regSeg.getCantSerieRealizado();
+//				System.out.println(regSeg.getFechaHoy());
+//				System.out.println("-----");
+//			}
+//		} this.txtResultado.setText(String.format("%.2f",volumenEntrenamientoSemanal));
+		
+		// HACK: PUEDE MEJORARSE
+    	for (Seguimiento regSeg : hm.get(semana)) { // NOTE: ITERA SOBRE UNA LISTA DE SEGUIMIENTOS
+    		for (Ejercicio ej : listaEj) { // NOTE: ITERA SOBRE UNA LISTA DE EJERCICIOS
+    			if (regSeg.getEjercicioRealizado().getIdEjercicio() == ej.getIdEjercicio()) {
+    				volumenEntrenamientoSemanal += 
+    						regSeg.getPesoTrabajado() * 
+    						regSeg.getCantRepeticionesRealizado() * 
+    						regSeg.getCantSerieRealizado();
+    				System.out.println(regSeg.getFechaHoy());
+    				System.out.println("-----");
+    				break;
+    			}    			
+    		}
+    		
 		} this.txtResultado.setText(String.format("%.2f",volumenEntrenamientoSemanal));
-		
-		// LOGs
-		for (Seguimiento i : this.listaSemanaUno) {
-			System.out.println(i.getFechaHoy());
-		} System.out.println("-----");
-		
-		System.out.println(volumenEntrenamientoSemanal);
+//		this.txtResultado.setText(String.format("%.2f",volumenEntrenamientoSemanal));
+//		// LOGs
+//		for (Seguimiento i : this.listaSemanaUno) {
+//			System.out.println(i.getFechaHoy());
+//		} System.out.println("-----");
+//		
+//		System.out.println(volumenEntrenamientoSemanal);
     }
     
     // NOTE: NO USADO

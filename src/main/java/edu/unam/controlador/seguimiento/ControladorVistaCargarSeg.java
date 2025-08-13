@@ -22,16 +22,14 @@ import utilidades.AlmacenadorDeEntidadesSingleton;
 import utilidades.navegacion.NavegadorDeVistasSingleton;
 import utilidades.navegacion.RutasVistas;
 import edu.unam.servicio.SeguimientoServicio;
-import edu.unam.servicio.EjercicioServicio;
+//import edu.unam.servicio.EjercicioServicio;
 import edu.unam.servicio.EntrenamientoServicio;
 import edu.unam.servicio.RutinaEntrenamientoServicio;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Ejercicio;
 import edu.unam.modelo.Entrenamiento;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import edu.unam.modelo.Seguimiento;
@@ -203,6 +201,18 @@ public class ControladorVistaCargarSeg {
 
     @FXML
     private void eventoBTFinalizar(ActionEvent event) {
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Creación de seguimiento",
+    			"OPERACION DE CARGA", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
+    	}
+    	
     	LocalDate fecha = this.DPFecha.getValue();
     	Ejercicio ej =  this.CBEjercicio.getValue();
     	

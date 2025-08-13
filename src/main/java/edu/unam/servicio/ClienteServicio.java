@@ -56,41 +56,41 @@ public class ClienteServicio {
 	/**
 	 * Recibe un objeto de tipo Cliente, no retorna datos.
 	 */
-	public void cargarCliente(Cliente cliente) {
+	public boolean cargarCliente(Cliente cliente) {
 		// Si el metodo es diferente de null, es por que se encontró un cliente con el mismo DNI
 		if (this.obtenerCliente(cliente.getDni(), false) != null) {
 			System.out.printf("[ ERROR ] > El cliente %d ya se encuentra en el sistema!%n", cliente.getDni());
-			return; // SI EL OBJETO YA ESTÁ EN LA BD, MUESTRA EL MENSAJE Y SALE DEL METODO.
+			return false; // SI EL OBJETO YA ESTÁ EN LA BD, MUESTRA EL MENSAJE Y SALE DEL METODO.
 		}
 		
 		if (cliente.getNombre() == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no tiene un nombre asignado o este es nulo!%n", cliente.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (cliente.getApellido() == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no tiene un apellido asignado o este es nulo!%n", cliente.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (cliente.getFechaNacimiento() == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no tiene una fecha de nacimiento asignada o este es nulo!%n", cliente.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (cliente.getCiudad() == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no tiene una ciudad asignada o este es nulo!%n", cliente.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (cliente.getProvincia() == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no tiene una provincia asignada o este es nulo!%n", cliente.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		if (cliente.getFechaIngreso() == null) {
 			System.out.printf("[ ERROR ] > El cliente %d no tiene una fecha de ingreso asignada o este es nulo!%n", cliente.getDni()); // LOG
-			return;
+			return false;
 		}
 		
 		// MODIFICA TODOS LOS VALORES TEXTUALES QUE TENGA EL OBJETO, A MINUSCULA.
@@ -109,16 +109,19 @@ public class ClienteServicio {
 			this.clienteDao.crearEntidadCliente(this.manager, cliente);
 			this.manager.getTransaction().commit();
 			System.out.printf("[ EXITO ] > El cliente %d cargado correctamente!%n", cliente.getDni()); // LOG
+			return true;
 		} catch (Exception e) {
 			this.manager.getTransaction().rollback();
 			System.out.println(e);
 			System.out.println("[ ERROR ] > Falla al cargar el cliente!"); // LOG
+			return false;
 		} finally {
 			this.manager.close();
+
+			// SIN IMPORTANCIA ;)
+			this.egg(cliente);
 		}
 		
-		// SIN IMPORTANCIA ;)
-		this.egg(cliente);
 	}
 	
 	// Busca un cliente en el sistema

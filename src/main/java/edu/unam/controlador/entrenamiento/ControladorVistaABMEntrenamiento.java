@@ -429,6 +429,6 @@ public class ControladorVistaABMEntrenamiento {
     @FXML
     private void initialize() {
     	// VER DESPUES QUE SE PODRÁ, Y QUE NO, MODIFICAR
-    	this.BTModificar.setVisible(false);
+//    	this.BTModificar.setVisible(false);
     }
 }

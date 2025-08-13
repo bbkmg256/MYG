@@ -167,8 +167,8 @@ public class ControladorVistaCargaEntrenamiento {
     	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
     	Optional<ButtonType> resultado =  this.lanzarMensaje(
     			AlertType.CONFIRMATION, "Carga de entrenamiento",
-    			"CREAR ENTRENAMIENTO",
-    			"La fecha de inicio, esta correcta? " +
+    			"OPERACION CARGA",
+    			"Confirmar operación? " +
     			"(tenga en cuenta que las fechas de inicio " +
     			"y finalización del entrenamiento no podrán modificarse)"
     	);
@@ -292,7 +292,7 @@ public class ControladorVistaCargaEntrenamiento {
 		}
 //		fechaFin = arregloFechas[6*4-1];
 		fechaFin = fechaFinal;
-    	
+		
 //    	Entrenamiento ent = new Entrenamiento(regCli, regTu, regRu, fechaInicio, fechaFin);
     	
     	Entrenamiento ent = new Entrenamiento(regCli, regTu, fechaInicio, fechaFin);
@@ -340,14 +340,23 @@ public class ControladorVistaCargaEntrenamiento {
     }
     
     @FXML
-    void eventoBTInfo(ActionEvent event) {} // NO USADO
+    void eventoBTInfo(ActionEvent event) {
+    	this.lanzarMensaje(
+    			AlertType.INFORMATION,
+    			"Acerca de puntaje...",
+    			"PUNTUACION AL TUTOR",
+    			"Al haber terminado el entrenamiento, " +
+    			"puede definir una calificación al tutor entre 1 a 10..."
+    	);
+    }
     
     
     @FXML
     private void initialize() {
     	this.LTitulo.setText("Cargar entrenamiento");
 //    	this.txtPuntaje.setVisible(false);
-    	this.HBPuntaje.setVisible(false);
+//    	this.HBPuntaje.setVisible(false);
+    	this.txtPuntaje.setDisable(true);
     	
     	// PARA QUE EL USUARIO NO PUEDA DIGITAR //
     	// CUALQUIERA EN LOS DP.				//

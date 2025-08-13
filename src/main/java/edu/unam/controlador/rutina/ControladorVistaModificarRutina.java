@@ -77,6 +77,18 @@ public class ControladorVistaModificarRutina {
     
     @FXML
     private void eventoBTFinalizar(ActionEvent event) {
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Modificación de rutina",
+    			"OPERACION MODIFICAR", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
+    	} resultado = null;
+    	
     	String nombreRutina = this.txtNombreRutina.getText();
     	
     	if (nombreRutina.isBlank()) {
@@ -101,7 +113,7 @@ public class ControladorVistaModificarRutina {
     	}
     	
     	if (rtConNombreRepetido) {
-        	Optional<ButtonType> resultado =  this.lanzarMensaje(
+        	resultado =  this.lanzarMensaje(
         			AlertType.CONFIRMATION, "Atención!",
         			"NOMBRES DUPLICADOS",
         			"Ya existe una rutina con el mismo nombre, quiere continuar?"
