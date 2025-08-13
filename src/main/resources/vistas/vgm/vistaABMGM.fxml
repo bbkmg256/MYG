@@ -14,9 +14,9 @@
    <children>
       <HBox layoutX="11.0" layoutY="14.0" prefHeight="69.0" prefWidth="778.0">
          <children>
-            <Label alignment="CENTER" prefHeight="57.0" prefWidth="390.0" text="Lista de grupos musculares" textAlignment="CENTER" wrapText="true">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="57.0" prefWidth="398.0" text="Lista de grupos musculares" wrapText="true">
                <font>
-                  <Font name="DejaVu Sans Bold Oblique" size="24.0" />
+                  <Font name="DejaVu Sans Bold" size="24.0" />
                </font>
             </Label>
          </children>

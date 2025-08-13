@@ -16,7 +16,7 @@
          <children>
             <Label alignment="CENTER" prefHeight="53.0" prefWidth="306.0" text="Cargar Cliente">
                <font>
-                  <Font name="System Bold Italic" size="36.0" />
+                  <Font name="DejaVu Sans Bold" size="36.0" />
                </font>
             </Label>
             <HBox alignment="CENTER" prefHeight="383.0" prefWidth="772.0" spacing="40.0">

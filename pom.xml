@@ -1,4 +1,4 @@
-<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>MYG</groupId>
 	<artifactId>MYG</artifactId>
@@ -12,7 +12,9 @@
 		<maven.compiler.version>3.13.0</maven.compiler.version>
 		<hibernate.orm.version>6.6.9.Final</hibernate.orm.version>
 		<javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
-		<javafx.depend.version>21</javafx.depend.version>
+		<javafx.depend.version>23-ea+20</javafx.depend.version>
+		<MYG.nombre.version>MYG-v0.10.0-beta</MYG.nombre.version>
+		<clase.main>edu.unam.app.App</clase.main>
 	</properties>
 	
 	<!-- Dependencias -->
@@ -44,21 +46,30 @@
 			<version>2.0.0</version>
 		</dependency>
 		
-		<!-- Dependencias de javaFX -->
+		<!-- Dependencias de JavaFX -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
 			<version>${javafx.depend.version}</version>
-			<classifier>linux</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-fxml</artifactId>
 			<version>${javafx.depend.version}</version>
-			<classifier>linux</classifier>
 		</dependency>
+		<dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.depend.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.depend.version}</version>
+        </dependency>
 	</dependencies>
 	
+	<!-- Zona de compilación y contrucción -->
 	<build>
 	<!-- Plugins -->
 		<plugins>
@@ -68,8 +79,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.version}</version>
 				<configuration>
-					<source>21.0.5</source>  <!-- Versión de Java fuente -->
-					<target>21.0.5</target>  <!-- Versión de Java objetivo -->
+					<source>21.0.7</source>  <!-- Versión de Java fuente -->
+					<target>21.0.7</target>  <!-- Versión de Java objetivo -->
 				</configuration>
 			</plugin>
 	        
@@ -79,8 +90,31 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>${javafx.maven.plugin.version}</version>
 				<configuration>
-					<mainClass>edu.unam.app.App</mainClass>
+					<mainClass>${clase.main}</mainClass>
 				</configuration>
+			</plugin>
+			
+			<!-- Plugin de empaquetación FatJar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.6.0</version>
+				<executions>
+					<execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>${clase.main}</mainClass>
+                                </transformer>
+                            </transformers>
+                            <finalName>${MYG.nombre.version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
 			</plugin>
 		</plugins>
 	</build>

@@ -112,6 +112,18 @@ public class ControladorVistaModificarEjercicio {
     
     @FXML
     void eventoBTFinalizar(ActionEvent event) {
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Modificación de ejercicio",
+    			"OPERACION MODIFICAR", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
+    	}; resultado = null; // NOTE: SE USA LA MISMA REFERENCIA PARA OTRA CONSULTA AL USUARIO MAS ABAJO.
+    	
     	String nombreEj = this.txtNombre.getText();
     	GrupoMuscular regGm = this.CBGM.getSelectionModel().getSelectedItem();
     	
@@ -152,7 +164,7 @@ public class ControladorVistaModificarEjercicio {
     	}
     	
     	if (ejConNombreRepetido) {
-        	Optional<ButtonType> resultado =  this.lanzarMensaje(
+        	resultado =  this.lanzarMensaje(
         			AlertType.CONFIRMATION, "Atención!",
         			"NOMBRES DUPLICADOS", "Ya existe un ejercicio con este nombre asociado a un grupo muscular, quiere continuar de todas formas?"
         	);

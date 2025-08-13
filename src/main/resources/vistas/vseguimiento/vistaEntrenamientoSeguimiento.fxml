@@ -16,14 +16,14 @@
          <children>
             <Label text="Lista de entrenamientos del cliente:">
                <font>
-                  <Font name="System Bold Italic" size="24.0" />
+                  <Font name="DejaVu Sans Bold" size="24.0" />
                </font>
             </Label>
             <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label fx:id="txtCliente" text="Label">
                      <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font name="DejaVu Sans Bold Oblique" size="24.0" />
                      </font>
                   </Label>
                </children>
@@ -35,16 +35,25 @@
             <TableView fx:id="TVEntrenamiento" prefHeight="432.0" prefWidth="763.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="TCID" prefWidth="112.0" text="ID" />
-                  <TableColumn fx:id="TCTu" prefWidth="127.0" text="Tutor" />
-                  <TableColumn fx:id="TCFI" prefWidth="130.0" text="Fecha Inicio" />
-                  <TableColumn fx:id="TCFf" prefWidth="138.0" text="Fecha Fin" />
-                  <TableColumn fx:id="TCPT" prefWidth="131.0" text="Puntaje Tutor" />
+                  <TableColumn fx:id="TCTu" prefWidth="197.0" text="Tutor" />
+                  <TableColumn fx:id="TCFI" prefWidth="156.0" text="Fecha Inicio" />
+                  <TableColumn fx:id="TCFf" prefWidth="155.0" text="Fecha Fin" />
+                  <TableColumn fx:id="TCE" prefWidth="151.0" text="Estado" />
                </columns>
             </TableView>
-            <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="763.0" spacing="15.0">
+            <HBox alignment="BOTTOM_CENTER" prefHeight="33.0" prefWidth="772.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="36.0" prefWidth="120.0" text="Atras" />
-                  <Button fx:id="BTAbrir" mnemonicParsing="false" onAction="#eventoBTAbrir" prefHeight="36.0" prefWidth="120.0" text="Abrir" />
+                  <HBox alignment="BOTTOM_LEFT" prefHeight="49.0" prefWidth="348.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="BTMostrarMas" mnemonicParsing="false" onAction="#eventoBTMostrarMas" prefHeight="36.0" prefWidth="150.0" text="Mostrar finalizados" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="36.0" prefWidth="120.0" text="Atras" />
+                        <Button fx:id="BTAbrir" mnemonicParsing="false" onAction="#eventoBTAbrir" prefHeight="36.0" prefWidth="120.0" text="Abrir" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
          </children>

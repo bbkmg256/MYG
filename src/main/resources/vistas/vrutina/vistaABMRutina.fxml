@@ -16,7 +16,7 @@
          <children>
             <Label alignment="CENTER" prefHeight="51.0" prefWidth="259.0" text="Listas de rutinas" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font name="System Bold Italic" size="24.0" />
+                  <Font name="DejaVu Sans Bold" size="24.0" />
                </font>
             </Label>
          </children>

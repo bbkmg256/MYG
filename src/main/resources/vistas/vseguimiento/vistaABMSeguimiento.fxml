@@ -16,7 +16,7 @@
          <children>
             <Label alignment="CENTER" prefHeight="46.0" prefWidth="309.0" text="Lista de seguimientos" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font name="System Bold Italic" size="24.0" />
+                  <Font name="DejaVu Sans Bold" size="24.0" />
                </font>
             </Label>
          </children>
@@ -27,6 +27,8 @@
                <children>
                   <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCrear" prefHeight="40.0" prefWidth="129.0" text="Agregar" />
                   <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="129.0" text="Eliminar" />
+                  <Button fx:id="BTET" layoutX="35.0" layoutY="70.0" mnemonicParsing="false" onAction="#eventoBTET" prefHeight="40.0" prefWidth="129.0" text="Eliminar todo" />
+                  <Button fx:id="BTVE" mnemonicParsing="false" onAction="#eventoBTVE" prefHeight="44.0" prefWidth="129.0" text="Volumen de entrenamiento" textAlignment="CENTER" wrapText="true" />
                   <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="129.0" text="Modificar" visible="false" />
                   <HBox alignment="BOTTOM_CENTER" prefHeight="133.0" prefWidth="179.0" VBox.vgrow="ALWAYS">
                      <children>

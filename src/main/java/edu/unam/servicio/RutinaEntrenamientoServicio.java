@@ -9,6 +9,7 @@ import edu.unam.modelo.RutinaEntrenamiento;
 
 import java.util.List;
 
+import edu.unam.modelo.Ejercicio;
 import edu.unam.modelo.Entrenamiento;
 import edu.unam.repositorio.RutinaEntrenamientoDAO;
 import jakarta.persistence.EntityManager;
@@ -174,6 +175,35 @@ public class RutinaEntrenamientoServicio {
 		}
 		
 		return reList;
+	}
+	
+	/* HACK: METODO QUE OBTIENE LOS EJERCICIOS DE UNA RUTINA ASOCIADA A UN ENTRENAMIENTO,
+	 * SE APLICA A EL FILTRO DE LA CARGA DE SEGUIMIENTO, EVITANDO CARGAR SEGUIMIENTOS CON
+	 * EJERCICIOS NO EXISTENTES O NO ASOCIADOS A UNA RUTINA PERTENECIENTE A EL ENTRENAMIENTO
+	 * EN CUESTION.
+	 */
+	public List<Ejercicio> obtenerEjerciciosDeLasRutinasDelEntrenamiento(Entrenamiento ent) {
+		String consulta =
+				"SELECT e FROM RutinaEntrenamiento ren "
+				+ "JOIN ren.rutina r "
+				+ "JOIN r.rutinaEjercicios rej "
+				+ "JOIN rej.ejercicio e "
+				+ "WHERE ren.entrenamiento = :obj";
+		
+		List<Ejercicio> ejList = null;
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			ejList = this.reDAO.consultaGenerica(this.manager, Ejercicio.class, consulta, ent);
+		} catch (Exception e) {
+			System.err.println(e);
+			System.err.println("[ ERROR ] > Falla al obtener las entidades!");
+		} finally {
+			this.manager.close();
+		}
+		
+		return ejList;
 	}
 	
 	// MODIFICAR RUTINAENTRENMIENTO

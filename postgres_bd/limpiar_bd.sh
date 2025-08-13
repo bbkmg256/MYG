@@ -4,7 +4,7 @@
 # Usar el caso de quere borrar todo al carajo xd
 
 # ELIMINA EL CONTENEDOR
-docker rm postgres_container
+docker rm postgres_container &> /dev/null
 
 if [ $? -gt 0 ]; then
 	echo -e "[-] Fallo al eliminar el contenedor!\n"
@@ -12,7 +12,7 @@ if [ $? -gt 0 ]; then
 fi
 
 # ELIMINA EL VOLUMEN DE ALMACENAMIENTO DEL CONTENEDOR (Y TODAS LAS BD'S)
-docker volume rm postgres_bd_postgres_data
+docker volume rm postgres_bd_postgres_data &> /dev/null
 
 if [ $? -gt 0 ]; then
 	echo -e "[-] Fallo al eliminar el volumen del contenedor!\n"

@@ -18,7 +18,7 @@
                <children>
                   <Label text="Lista de clientes">
                      <font>
-                        <Font name="System Bold Italic" size="24.0" />
+                        <Font name="DejaVu Sans Bold" size="24.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtDNI" prefHeight="36.0" prefWidth="255.0" promptText="Ingrese el DNI del cliente" visible="false" />

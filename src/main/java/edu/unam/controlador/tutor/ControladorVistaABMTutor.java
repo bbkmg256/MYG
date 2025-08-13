@@ -133,6 +133,7 @@ public class ControladorVistaABMTutor {
     	this.asignarValoresColumnas(this.colFechaNacimiento, "fechaNacimiento");
     }
     
+    // NOTE: APARENTEMENTE ESTO NO SE ESTÁ USANDO
     // EVITA QUE SE INGRESEN CARACTERES NO NUMERICOS EN UN TEXTFIELD
     private void limitarATextoNumerico(TextField textField) {
         // FILTRO
@@ -222,6 +223,21 @@ public class ControladorVistaABMTutor {
     		return;
     	}
     	
+    	// NOTE: POR SI EL OBJETO TIENE HIJOS
+    	if (this.ts.obtenerEntrenamientos(regTu.getDni()) != null) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, "Error!", 
+    				"OPERACION FALLIDA", 
+    				"Este tutor es usado o está relacionado "
+    				+ "con por lo menos 1 entrenamiento..."
+    		);
+    		System.err.println(
+    				"[ ERROR ] > No se puede eliminar el registro " +
+    				"por que tiene registros hijos asociados!"
+    		);
+    		return;
+    	}
+    	
     	
     	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
     	Optional<ButtonType> resultado =  this.lanzarMensaje(
@@ -300,7 +316,7 @@ public class ControladorVistaABMTutor {
 }
 
 
-// CODIGO SIN USAR //
+// DEPRECATE: CODIGO SIN USAR
 
 //@FXML
 //private Stage ventanaActual;

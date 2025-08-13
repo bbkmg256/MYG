@@ -13,7 +13,7 @@
    <children>
       <Label fx:id="LTitulo" layoutX="354.0" layoutY="79.0" text="Label">
          <font>
-            <Font name="System Bold Italic" size="30.0" />
+            <Font name="DejaVu Sans Bold" size="30.0" />
          </font>
       </Label>
       <VBox alignment="CENTER" layoutX="74.0" layoutY="224.0" prefHeight="232.0" prefWidth="732.0" spacing="20.0" AnchorPane.bottomAnchor="224.0" AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="74.0" AnchorPane.topAnchor="224.0">

@@ -105,6 +105,15 @@ public class EntrenamientoDAO{
 		return em.createQuery(consulta, Entrenamiento.class).setParameter("cliente", cli).getResultList();
 	}
 	
+	/* NOTE: OBTIENE UNA LISTA DE ELEMENTOS ACORDE
+	 * A LO QUE ESPECIFIQUE LA CONSULTA
+	 */
+	public <T, S> List<T> obtenerListaGenerica(
+			EntityManager em, Class<T> clase, String consulta, S obj
+	) {		
+		return em.createQuery(consulta, clase).setParameter("obj", obj).getResultList();
+	}
+	
 	// CODIGO VIEJO
 	// ACTUALIZAR ENTIDAD (TODAVIA NO ESTA COMPLETO HASTA QUE TODAS SUS RELACIONES ESTEN TERMINADAS)
 //	public void actualizarEntidadEntrenamiento(Entrenamiento entidadEntrenamiento,

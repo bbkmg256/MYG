@@ -4,6 +4,8 @@
 
 package edu.unam.controlador.cliente;
 
+import java.time.DayOfWeek;
+import java.util.Optional;
 // LIBRERIAS
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Cliente;
@@ -12,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -26,7 +29,7 @@ import utilidades.parametros.ParametrosClienteTutor;
 
 /*
  * 
- * NOTAS:
+ * NOTE:
  * 
  * LA CLASE ES MEDIO SIMILAR A LA DE CARGA, PERO CON ALGUNOS CAMBIOS
  * 
@@ -86,7 +89,8 @@ public class ControladorVistaModificarCliente {
     
     
     // METODOS Y EVENTOS //
-    private void lanzarMensaje(
+    // MENSAJE DE UI
+    private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
     ) {
@@ -94,17 +98,17 @@ public class ControladorVistaModificarCliente {
     	alerta.setTitle(titulo);
     	alerta.setHeaderText(cabecera);
     	alerta.setContentText(contenido);
-    	alerta.showAndWait();
+    	return alerta.showAndWait();
     }
     
-    // EVITA QUE SE MARQUE MAS DE UN RADIO BUTTON
+    // NOTE: EVITA QUE SE MARQUE MAS DE UN RADIO BUTTON
     private void radioButtons() {
     	ToggleGroup grupo = new ToggleGroup();
     	this.RBFemenino.setToggleGroup(grupo); // ES UNO
     	this.RBMasculino.setToggleGroup(grupo); // U OTRO, NO AMBOS XD.
     }
     
-    // EVITA QUE SE INGRESEN CARACTERES NO NUMERICOS EN UN TEXTFIELD (SI, LO COPIE, Y QUE??, QUE TE PASA??!!)
+    // NOTE: EVITA QUE SE INGRESEN CARACTERES NO NUMERICOS EN UN TEXTFIELD (SI, LO COPIE, Y QUE??, QUE TE PASA??!!)
     private void limitarATextoNumerico(TextField textField) {
         // FILTRO DE ENTRADA DE CARACTERES
     	UnaryOperator<TextFormatter.Change> integerFilter = change -> {
@@ -120,7 +124,7 @@ public class ControladorVistaModificarCliente {
         textField.setTextFormatter(textFormatter);
     }
     
-    // PARA EXTRAER EL CLIENTE DEL CONTROLADOR ANTERIOR (DE LA VISTA ABM)
+    // NOTE: PARA EXTRAER EL CLIENTE DEL CONTROLADOR ANTERIOR (DE LA VISTA ABM)
     public void establecerClienteParaModificar(Cliente pcli) {
     	this.IDdni = pcli.getDni(); // NO SE MODIFICA EN LA VISTA
     	this.txtNombre.setText(pcli.getNombre());
@@ -165,8 +169,18 @@ public class ControladorVistaModificarCliente {
 
     @FXML
     private void eventoBTFinalizar(ActionEvent event) {
-    	// BUG: FALTAN COMPROBAR QUE LOS CAMPOS NO ESTEN VACIOS
-    	// O INVALIDOS, SINO MODIFICA ERRONEAMENTE A LA ENTIDAD!!
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Modificación de cliente",
+    			"OPERACION MODIFICAR", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
+    	}
+    	
     	this.paramCli.nombre = this.txtNombre.getText();
     	this.paramCli.apellido = this.txtApellido.getText();
     	
@@ -181,8 +195,10 @@ public class ControladorVistaModificarCliente {
     	this.paramCli.ciudad = this.txtCiudad.getText();
     	this.paramCli.provincia = this.txtProvincia.getText();
     	
-    	// NO NECESITAN VALIDACIÓN POR QUE EL CAMPO NO QUEDA VACIO //
-    	// AL NO SER EDITABLE.									   //
+    	/*
+    	 * NOTE: NO NECESITAN VALIDACIÓN POR QUE EL CAMPO NO QUEDA
+    	 * VACIO AL NO SER EDITABLE.
+    	 */
     	this.paramCli.fechaNacimiento = this.DPFechaNac.getValue();
     	this.paramCli.fechaIngreso = this.DPFechaIng.getValue();
     	
@@ -198,8 +214,10 @@ public class ControladorVistaModificarCliente {
     		System.err.println("[ ERROR ] > Debe ingresar apellido para continuar...");
     	}
     	
-    	// NO ES NECESARIO POR QUE POR DEFECTO EL RADIO BUTTON //
-    	// NO PUEDE QUEDAR SIN SELECCION.					   //
+    	/*
+    	 * NOTE: NO ES NECESARIO POR QUE POR DEFECTO EL RADIO BUTTON
+    	 * NO PUEDE QUEDAR SIN SELECCION.
+    	 */
 //    	if (this.paramCli.sexo == ' ') {
 //    		hayErrorDeCampos = true;
 //    		System.err.println("[ ERROR ] > Debe ingresar nombre para continuar...");
@@ -207,19 +225,21 @@ public class ControladorVistaModificarCliente {
     	
     	if (!hayErrorDeCampos && this.paramCli.ciudad.isBlank()) {
     		hayErrorDeCampos = true;
-    		System.err.println("[ ERROR ] > Debe ingresar una ciudad para continuar...");
+    		System.err.println("[ ERROR ] > Debe ingresar una ciudad para continuar..."); // LOG
     	}
     	
     	if (!hayErrorDeCampos && this.paramCli.provincia.isBlank()) {
     		hayErrorDeCampos = true;
-    		System.err.println("[ ERROR ] > Debe ingresar una provincia para continuar...");
+    		System.err.println("[ ERROR ] > Debe ingresar una provincia para continuar..."); // LOG
     	}
     	
-    	// SE PARSEA Y ALMACENA AL PARAMETRO DESPUES,YA QUE SE TIENE	 //
-    	// QUE COMPROBAR EN TEXTO PRIMERO,QUE NO SE DEJE EL CAMPO VACÍO. //
+    	/*
+    	 * NOTE: SE PARSEA Y ALMACENA AL PARAMETRO DESPUES,YA QUE SE TIENE QUE
+    	 * COMPROBAR EN TEXTO PRIMERO,QUE NO SE DEJE EL CAMPO VACÍO.
+    	 */
     	if (!hayErrorDeCampos && this.txtCodigoPostal.getText().isBlank()) {
     		hayErrorDeCampos = true;
-    		System.err.println("[ ERROR ] > Debe ingresar una numero de codigo postal para continuar...");
+    		System.err.println("[ ERROR ] > Debe ingresar una numero de codigo postal para continuar..."); // LOG
     	}
     	
     	if (hayErrorDeCampos) {
@@ -232,7 +252,7 @@ public class ControladorVistaModificarCliente {
     		return;
     	}
     	 
-    	// EVITA QUE SE INGRESE UNA FECHA DE NACIMIENTO POSTERIOR A LA DEL INGRESO AL GYM
+    	// NOTE: EVITA QUE SE INGRESE UNA FECHA DE NACIMIENTO POSTERIOR A LA DEL INGRESO AL GYM
     	if (this.paramCli.fechaIngreso.isBefore(this.paramCli.fechaNacimiento)) {
     		this.lanzarMensaje(
     				AlertType.ERROR, "Error!",
@@ -243,7 +263,19 @@ public class ControladorVistaModificarCliente {
     		return;
     	}
     	
-    	// PARSEO DEL CODIGO POSTAL AL PARAMETRO
+    	// NOTE: EVITA LAS FECHAS QUE CAEN DOMINGO
+    	if (this.paramCli.fechaIngreso.getDayOfWeek() == DayOfWeek.SUNDAY) {
+    		this.lanzarMensaje(
+    				AlertType.ERROR, "Error!",
+    				"ERROR DE CAMPOS",
+    				"La fecha de ingreso no puede ser un día domingo..."
+    		);
+    		// LOG
+    		System.out.println("[ ERROR ] > Incoherencia en fecha de ingreso!");
+    		return;    		
+    	}
+    	
+    	// NOTE: PARSEO DEL CODIGO POSTAL AL PARAMETRO
     	this.paramCli.codigoPostal = Integer.parseInt(this.txtCodigoPostal.getText());
     	 
      	// POR SI FALLA LA CONEXION CON LA BD POR X MOTIVO     	

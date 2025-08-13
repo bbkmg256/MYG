@@ -19,7 +19,7 @@
                <children>
                   <Label text="Lista de tutores">
                      <font>
-                        <Font name="System Bold Italic" size="24.0" />
+                        <Font name="DejaVu Sans Bold" size="24.0" />
                      </font>
                   </Label>
                   <HBox alignment="TOP_RIGHT" prefHeight="36.0" prefWidth="434.0" spacing="10.0" visible="false" HBox.hgrow="SOMETIMES">

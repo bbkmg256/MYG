@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManager;
 // VARIOS
 import java.util.List;
 
+import edu.unam.modelo.Entrenamiento;
 // ENTIDAD
 import edu.unam.modelo.Seguimiento;
 
@@ -56,5 +57,10 @@ public class SeguimientoDAO {
 	// ELIMINAR ENTIDAD
 	public void eliminarEntidadSeguimiento(EntityManager em, Seguimiento entidadSeguimiento) {		
 		em.remove(entidadSeguimiento);
+	}
+	
+	// NOTE: ELIMINA VARIAS ENTIDADES
+	public int eliminarEntidadesSeguimiento(EntityManager em, String consulta, Entrenamiento paramEnt) {
+		return em.createQuery(consulta).setParameter("ent", paramEnt).executeUpdate();
 	}
 }

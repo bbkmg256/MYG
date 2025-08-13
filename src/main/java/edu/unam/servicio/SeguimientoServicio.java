@@ -357,4 +357,30 @@ public class SeguimientoServicio {
 			this.manager.close();
 		}
 	}
+	
+	// NOTE: ELIMINA TODOS LOS SEGUIMIENTOS DE UN ENTRENAMIENTO (CUIDADO!)
+	public boolean eliminarTodosLosSeguimientosDeUnEntrenamiento(Entrenamiento ent) {
+		int regAfectados = 0;
+		String consulta =
+				"DELETE FROM Seguimiento s "
+				+ "WHERE s.entrenamiento = :ent";
+		
+		this.manager = EMFSingleton.getInstancia().getEMF().createEntityManager();
+		
+		try {
+			this.manager.getTransaction().begin();
+			regAfectados = this.segDao.eliminarEntidadesSeguimiento(this.manager, consulta, ent);
+			this.manager.getTransaction().commit();
+			System.out.println("[ ! ] > Cantidad de registros eliminados: " + regAfectados);
+			return true;
+		} catch (Exception e) {
+			this.manager.getTransaction().rollback();
+			System.err.println(e);
+			System.err.println("[ ERROR ] > Falla al eliminar los seguimientos!");
+			return false;
+		} finally {
+			this.manager.close();
+		}
+		
+	}
 }

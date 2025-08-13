@@ -32,7 +32,10 @@
             <Font size="15.0" />
          </font>
       </Button>
-      <Label fx:id="LBBuildVer" layoutX="19.0" layoutY="555.0" text="BuildVer" />
+      <Label fx:id="LBBuildVer" layoutX="13.0" layoutY="555.0" prefHeight="16.0" prefWidth="109.0" text="BuildVer">
+         <font>
+            <Font name="DejaVu Sans Bold" size="13.0" />
+         </font></Label>
       <HBox alignment="CENTER" layoutX="13.0" layoutY="107.0" prefHeight="424.0" prefWidth="773.0" spacing="50.0">
          <children>
             <VBox alignment="CENTER" spacing="15.0">

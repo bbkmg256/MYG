@@ -156,6 +156,18 @@ public class ControladorVistaCargaEjercicio {
         	}
     	}
     	
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Creación de ejercicio",
+    			"OPERACION DE CARGA", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
+    	}
+    	
     	Ejercicio ej = new Ejercicio(nombreEj, regGm);
     	
     	this.sejer.cargarEjercicio(ej);

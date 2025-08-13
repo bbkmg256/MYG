@@ -5,6 +5,7 @@
 package edu.unam.controlador.seguimiento;
 
 import javafx.util.StringConverter;
+import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,13 +22,14 @@ import utilidades.AlmacenadorDeEntidadesSingleton;
 import utilidades.navegacion.NavegadorDeVistasSingleton;
 import utilidades.navegacion.RutasVistas;
 import edu.unam.servicio.SeguimientoServicio;
-import edu.unam.servicio.EjercicioServicio;
+//import edu.unam.servicio.EjercicioServicio;
 import edu.unam.servicio.EntrenamientoServicio;
+import edu.unam.servicio.RutinaEntrenamientoServicio;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Ejercicio;
 import edu.unam.modelo.Entrenamiento;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import edu.unam.modelo.Seguimiento;
@@ -64,29 +66,41 @@ public class ControladorVistaCargarSeg {
     
     private SeguimientoServicio sseg;
     
-    private EjercicioServicio sej;
+//    private EjercicioServicio sej;
     
     private EntrenamientoServicio sentre;
     
     private Entrenamiento ent;
     
     private LocalDate fechaInicioEnt, fechaFinEnt;
+    
+    private RutinaEntrenamientoServicio res;
+    
+    private List<Ejercicio> ej;
 
     
     // METODOS Y EVENTOS //
     private void inicializarDatos() {
     	this.sseg = new SeguimientoServicio();
-    	this.sej = new EjercicioServicio();
+//    	this.sej = new EjercicioServicio();
     	this.sentre = new EntrenamientoServicio();
     	this.ent = AlmacenadorDeEntidadesSingleton.getInstancia().getEntrenamiento();
     	this.fechaInicioEnt = this.sentre.obtenerEntrenamiento(this.ent.getIdEntrenamiento()).getFechaInicio();
     	this.fechaFinEnt = this.sentre.obtenerEntrenamiento(this.ent.getIdEntrenamiento()).getFechaFin();
+    	
+    	// NOTE: ESTA MAMADA FUNCIONA, AHORA HAY QUE APLICAR EL FILTRO A LA CARGA DE SEGUIMIENTO
+    	this.res = new RutinaEntrenamientoServicio();
+    	this.ej = res.obtenerEjerciciosDeLasRutinasDelEntrenamiento(this.ent);
     }
     
+    /* TODO: FILTRAR EJERCICIOS DISPONIBLES PARA CARGAR,
+     * SOLO PUEDEN ESTAR LOS QUE SE ENCUENTRAN ASOCIADOS A
+     * RUTINAS PERTENECIENTES A X ENTRENAMIENTO.
+     */
     // ACTUALIZA Y CARGA DATOS AL COMBOBOX
     private void actualizarComboBox() {
     	this.CBEjercicio.getItems().clear();
-    	this.CBEjercicio.getItems().addAll(this.sej.obtenerTodosLosEjercicios());
+    	this.CBEjercicio.getItems().addAll(this.ej);
     	
     	this.CBEjercicio.setConverter(new StringConverter<Ejercicio>() {
     		@Override
@@ -114,24 +128,51 @@ public class ControladorVistaCargarSeg {
     }
     
     // FILTRA LA ENTRADA DE LOS TEXTFIELD
-    private void limitarATextoNumerico(TextField textField) {
+    private <T> void limitarYFiltrarEntrada(
+    		TextField textField,
+    		StringConverter<T> conversor,
+    		String regExp
+    ) {
         // FILTRO DE ENTRADA DE CARACTERES
-    	UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+    	UnaryOperator<TextFormatter.Change> doubleFilter = change -> {
             String newText = change.getControlNewText();
-            if (newText.matches("\\d*")) {
+            if (newText.matches(regExp)) {
                 return change;
             }
             return null;
         };
 
         // CONVERSOR DE TIPOS
-        TextFormatter<Integer> textFormatter = new TextFormatter<>(new IntegerStringConverter(), null, integerFilter);
+        TextFormatter<T> textFormatter = 
+        		new TextFormatter<>(conversor, null, doubleFilter);
         textField.setTextFormatter(textFormatter);
     }
     
     public void iniciar() {
     	this.inicializarDatos();
     	this.actualizarComboBox();
+    	
+//    	this.limitarATextoNumerico(this.txtPeso);
+//    	this.limitarATextoNumerico(this.txtSeries);
+//    	this.limitarATextoNumerico(this.txtRep);
+    	
+    	this.limitarYFiltrarEntrada(
+    			this.txtPeso, 
+    			new DoubleStringConverter(), 
+    			"\\d+\\.?\\d*"
+    	);
+    	
+    	this.limitarYFiltrarEntrada(
+    			this.txtSeries, 
+    			new IntegerStringConverter(), 
+    			"\\d*"
+    	);
+    	
+    	this.limitarYFiltrarEntrada(
+    			this.txtRep, 
+    			new IntegerStringConverter(), 
+    			"\\d*"
+    	);
     }
     
     @FXML
@@ -160,6 +201,18 @@ public class ControladorVistaCargarSeg {
 
     @FXML
     private void eventoBTFinalizar(ActionEvent event) {
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Creación de seguimiento",
+    			"OPERACION DE CARGA", "Confirmar operación?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Operación cancelada!"); // LOG
+        	return;
+    	}
+    	
     	LocalDate fecha = this.DPFecha.getValue();
     	Ejercicio ej =  this.CBEjercicio.getValue();
     	
@@ -222,7 +275,8 @@ public class ControladorVistaCargarSeg {
     	}
     	
     	switch (errorDeFecha) {
-			case 1, 2: {
+			case 1, 2:
+			{
 	    		this.lanzarMensaje(
 	    				AlertType.ERROR,
 	    				"Error!",
@@ -235,7 +289,7 @@ public class ControladorVistaCargarSeg {
 	    		System.err.println("[ ERROR ] > Fecha fuera de rango!"); // LOG
 	    		return;
 			}
-			case 3: {
+		case 3: {
 	    		this.lanzarMensaje(
 	    				AlertType.ERROR,
 	    				"Error!",
@@ -329,9 +383,5 @@ public class ControladorVistaCargarSeg {
     	this.LBTitulo.setText("Cargar seguimiento");
     	
     	this.DPFecha.setEditable(false);
-    	
-    	this.limitarATextoNumerico(this.txtPeso);
-    	this.limitarATextoNumerico(this.txtSeries);
-    	this.limitarATextoNumerico(this.txtRep);
     }
 }

@@ -19,8 +19,10 @@ import javafx.util.converter.IntegerStringConverter;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.event.ActionEvent;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 import edu.unam.modelo.Tutor;
 import edu.unam.servicio.TutorServicio;
@@ -78,7 +80,7 @@ public class ControladorVistaCargaTutor {
 
     
     // METODOS Y EVENTOS //
-    private void lanzarMensaje(
+    private Optional<ButtonType> lanzarMensaje(
     		AlertType tipoDeAlerta, String titulo,
     		String cabecera, String contenido
     ) {
@@ -86,7 +88,7 @@ public class ControladorVistaCargaTutor {
     	alerta.setTitle(titulo);
     	alerta.setHeaderText(cabecera);
     	alerta.setContentText(contenido);
-    	alerta.showAndWait();
+    	return alerta.showAndWait();
     }
     
     // EVITA QUE SE MARQUE MAS DE UN RADIO BUTTON
@@ -132,7 +134,7 @@ public class ControladorVistaCargaTutor {
     		camposIncompletos = true;
     	}
     	
-    	// SE NECESITA ALMENOS 1 DE LOS 2 RADIOBUTTON PRESIONADOS
+    	// SE NECESITA AL MENOS 1 DE LOS 2 RADIOBUTTON PRESIONADOS
     	if (!this.RBMasculino.isSelected() && !this.RBFemenino.isSelected()) {
     		camposIncompletos = true;
     	}
@@ -156,10 +158,10 @@ public class ControladorVistaCargaTutor {
     	if (camposIncompletos) {
     		this.lanzarMensaje(
     				AlertType.ERROR, "Error!",
-    				"ERROR DE CAMPOS!",
+    				"ERROR DE CAMPOS",
     				"Faltan campos que completar..."
     		);
-    		System.out.println("[ ERROR ] > Faltan campos que completar!"); // LOG
+    		System.err.println("[ ERROR ] > Faltan campos que completar!"); // LOG
     		return;
     	}
     	
@@ -175,9 +177,21 @@ public class ControladorVistaCargaTutor {
 //    				"La fecha de ingreso no puede ser menor a la de nacimiento..."
 //    		);
 //    		// LOG
-//    		System.out.println("[ ERROR ] > Incoherencia en fecha de nacimiento y de ingreso!");
+//    		System.err.println("[ ERROR ] > Incoherencia en fecha de nacimiento y de ingreso!");
 //    		return;
 //    	}
+    	
+    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	Optional<ButtonType> resultado =  this.lanzarMensaje(
+    			AlertType.CONFIRMATION, "Crear tutor",
+    			"OPERACIÓN CREAR", "Los datos ingresados son correctos?"
+    	);
+    	
+    	// CONFIRMAR O DENEGAR OPERACION
+    	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
+    		System.out.println("[ ! ] > Carga cancelada!"); // LOG
+        	return;
+    	}
     	
     	// CASTEO DE CADENAS A ENTEROS
     	dni = Integer.parseInt(
@@ -206,18 +220,18 @@ public class ControladorVistaCargaTutor {
     	if (!ComprobarConexionBD.hayConexion(EMFSingleton.getInstancia().getEMF())) {
 			this.lanzarMensaje(
 					AlertType.ERROR, "Error!",
-					"ERROR DE CONEXION A BASE DE DATOS!",
+					"ERROR DE CONEXIÓN A BASE DE DATOS",
 					"No se encuentra una base de datos activa..."
 			);
 			// LOG
 			System.out.println(
-					"[ ERROR ] > No hay conexión a una BD o la misma está caida!"
+					"[ ERROR ] > No hay conexión a una BD o la misma está caída!"
 			);
 			return;
 		}
     	
     	// CREA Y CARGA UN CLIENTE A LA BD
-    	this.stutor.cargarTutor(
+    	boolean cargaCorrecta = this.stutor.cargarTutor(
     			new Tutor(
 	    			dni,
 	    			nombre,
@@ -229,20 +243,37 @@ public class ControladorVistaCargaTutor {
 	    			codPost
     	));
     	
+    	/*
+    	 * BUG: EL CONTROLADOR MARCA COMO CARGA CORRECTA AUN CUANDO SE INGRESA
+    	 * UN TUTOR QUE YA ESTÁ EN LA BD.
+    	 */
     	// POR SI OCURREN ALGUN PROBLEMA DESPUES DE HABER HECHO LA TRANSACCION
-    	if (stutor.obtenerTutor(dni, false) == null) {
-    		this.lanzarMensaje(
-    				AlertType.ERROR, "Error!",
-    				"ERROR DE OPERACION!",
-    				"Algo falló al cargar el tutor..."
-    		);
-    		return;
+//    	if (stutor.obtenerTutor(dni, false) == null) {
+//    		this.lanzarMensaje(
+//    				AlertType.ERROR, "Error!",
+//    				"ERROR DE OPERACIÓN",
+//    				"Algo falló al cargar el tutor..."
+//    		);
+//    		return;
+//    	}
+    	
+    	/*
+    	 * NOTE: COMPRUEBA LA CARGA DE LA ENTIDAD
+    	 */
+    	if (!cargaCorrecta) {
+			this.lanzarMensaje(
+					AlertType.ERROR, "Error!",
+					"ERROR DE OPERACIÓN",
+					"Algo falló al cargar el tutor..."
+			);
+    		System.err.println("[ ERROR ] > Fallo al cargar el tutor!"); // LOG
+			return;
     	}
     	
     	this.lanzarMensaje(
-				AlertType.INFORMATION, "Exito!",
-				"OPERACION RELIZADA!",
-				"El Tutor fue cargado con exito..."
+				AlertType.INFORMATION, "Éxito!",
+				"OPERACIÓN REALIZADA",
+				"El Tutor fue cargado con éxito..."
 		);
     	
     	NavegadorDeVistasSingleton
