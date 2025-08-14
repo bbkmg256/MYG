@@ -6,33 +6,38 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.seguimiento.ControladorVistaEntSeg">
    <children>
-      <HBox layoutX="14.0" layoutY="14.0" prefHeight="50.0" prefWidth="772.0">
-         <children>
-            <Label text="Lista de entrenamientos del cliente:">
-               <font>
-                  <Font name="DejaVu Sans Bold" size="24.0" />
-               </font>
-            </Label>
-            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="800.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="txtCliente" text="Label">
+                  <Label text="Lista de entrenamientos del cliente:">
                      <font>
-                        <Font name="DejaVu Sans Bold Oblique" size="24.0" />
+                        <Font name="DejaVu Sans Bold" size="24.0" />
                      </font>
                   </Label>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="txtCliente" text="Label">
+                           <font>
+                              <Font name="DejaVu Sans Bold Oblique" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
             </HBox>
-         </children>
-      </HBox>
-      <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="72.0" prefHeight="514.0" prefWidth="772.0" spacing="20.0">
-         <children>
-            <TableView fx:id="TVEntrenamiento" prefHeight="432.0" prefWidth="763.0" VBox.vgrow="ALWAYS">
+         </top>
+         <center>
+            <TableView fx:id="TVEntrenamiento" prefHeight="432.0" prefWidth="763.0" BorderPane.alignment="CENTER">
                <columns>
                   <TableColumn fx:id="TCID" prefWidth="112.0" text="ID" />
                   <TableColumn fx:id="TCTu" prefWidth="197.0" text="Tutor" />
@@ -40,26 +45,34 @@
                   <TableColumn fx:id="TCFf" prefWidth="155.0" text="Fecha Fin" />
                   <TableColumn fx:id="TCE" prefWidth="151.0" text="Estado" />
                </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
-            <HBox alignment="BOTTOM_CENTER" prefHeight="33.0" prefWidth="772.0" VBox.vgrow="ALWAYS">
+         </center>
+         <bottom>
+            <HBox alignment="BOTTOM_CENTER" prefHeight="80.0" prefWidth="800.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox alignment="BOTTOM_LEFT" prefHeight="49.0" prefWidth="348.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="BTMostrarMas" mnemonicParsing="false" onAction="#eventoBTMostrarMas" prefHeight="36.0" prefWidth="150.0" text="Mostrar finalizados" />
+                        <Button fx:id="BTMostrarMas" mnemonicParsing="false" onAction="#eventoBTMostrarMas" prefHeight="40.0" prefWidth="150.0" text="Mostrar finalizados" />
                      </children>
                   </HBox>
                   <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="36.0" prefWidth="120.0" text="Atras" />
-                        <Button fx:id="BTAbrir" mnemonicParsing="false" onAction="#eventoBTAbrir" prefHeight="36.0" prefWidth="120.0" text="Abrir" />
+                        <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="120.0" text="Atras" />
+                        <Button fx:id="BTAbrir" mnemonicParsing="false" onAction="#eventoBTAbrir" prefHeight="40.0" prefWidth="120.0" text="Abrir" />
                      </children>
                   </HBox>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </padding>
             </HBox>
-         </children>
-      </VBox>
+         </bottom>
+      </BorderPane>
    </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
 </AnchorPane>

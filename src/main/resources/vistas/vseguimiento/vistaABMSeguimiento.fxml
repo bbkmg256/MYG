@@ -6,51 +6,68 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.seguimiento.ControladorVistaABMSeg">
    <children>
-      <HBox layoutX="14.0" layoutY="14.0" prefHeight="64.0" prefWidth="772.0">
-         <children>
-            <Label alignment="CENTER" prefHeight="46.0" prefWidth="309.0" text="Lista de seguimientos" textAlignment="CENTER" wrapText="true">
-               <font>
-                  <Font name="DejaVu Sans Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <HBox layoutX="15.0" layoutY="91.0" prefHeight="497.0" prefWidth="772.0">
-         <children>
-            <VBox alignment="TOP_CENTER" prefHeight="234.0" prefWidth="177.0" spacing="20.0" HBox.hgrow="ALWAYS">
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="800.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCrear" prefHeight="40.0" prefWidth="129.0" text="Agregar" />
-                  <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="129.0" text="Eliminar" />
-                  <Button fx:id="BTET" layoutX="35.0" layoutY="70.0" mnemonicParsing="false" onAction="#eventoBTET" prefHeight="40.0" prefWidth="129.0" text="Eliminar todo" />
-                  <Button fx:id="BTVE" mnemonicParsing="false" onAction="#eventoBTVE" prefHeight="44.0" prefWidth="129.0" text="Volumen de entrenamiento" textAlignment="CENTER" wrapText="true" />
+                  <Label alignment="CENTER" prefHeight="46.0" prefWidth="309.0" text="Lista de seguimientos" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="DejaVu Sans Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </HBox>
+         </top>
+         <left>
+            <VBox alignment="TOP_CENTER" prefHeight="536.0" prefWidth="210.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="BTCrear" mnemonicParsing="false" onAction="#eventoBTCrear" prefHeight="40.0" prefWidth="177.0" text="Agregar" />
+                  <Button fx:id="BTEliminar" mnemonicParsing="false" onAction="#eventoBTEliminar" prefHeight="40.0" prefWidth="177.0" text="Eliminar" />
+                  <Button fx:id="BTET" layoutX="35.0" layoutY="70.0" mnemonicParsing="false" onAction="#eventoBTET" prefHeight="40.0" prefWidth="177.0" text="Eliminar todo" />
+                  <Button fx:id="BTVE" mnemonicParsing="false" onAction="#eventoBTVE" prefHeight="40.0" prefWidth="177.0" text="Volumen de entrenamiento" textAlignment="CENTER" wrapText="true" />
                   <Button fx:id="BTModificar" mnemonicParsing="false" onAction="#eventoBTModificar" prefHeight="40.0" prefWidth="129.0" text="Modificar" visible="false" />
                   <HBox alignment="BOTTOM_CENTER" prefHeight="133.0" prefWidth="179.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="129.0" text="Atras" />
+                        <Button fx:id="BTAtras" mnemonicParsing="false" onAction="#eventoBTAtras" prefHeight="40.0" prefWidth="177.0" text="Atras" />
                      </children>
                   </HBox>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
             </VBox>
-            <TableView fx:id="TVSeguimiento" prefHeight="494.0" prefWidth="591.0" HBox.hgrow="ALWAYS">
+         </left>
+         <center>
+            <TableView fx:id="TVSeguimiento" prefHeight="494.0" prefWidth="591.0" BorderPane.alignment="CENTER">
                <columns>
-                  <TableColumn fx:id="TCID" prefWidth="77.0" text="ID" />
-                  <TableColumn fx:id="TCEjercicio" prefWidth="138.0" text="Ejercicio" />
-                  <TableColumn fx:id="TCRep" prefWidth="114.0" text="Repetición" />
-                  <TableColumn fx:id="TCSerie" prefWidth="76.0" text="Serie" />
-                  <TableColumn fx:id="TCPeso" prefWidth="79.0" text="Peso" />
-                  <TableColumn fx:id="TCFecha" prefWidth="108.0" text="Fecha" />
+                  <TableColumn fx:id="TCID" prefWidth="72.0" text="ID" />
+                  <TableColumn fx:id="TCEjercicio" prefWidth="122.0" text="Ejercicio" />
+                  <TableColumn fx:id="TCRep" prefWidth="100.0" text="Repetición" />
+                  <TableColumn fx:id="TCSerie" prefWidth="73.0" text="Serie" />
+                  <TableColumn fx:id="TCPeso" text="Peso" />
+                  <TableColumn fx:id="TCFecha" prefWidth="102.0" text="Fecha" />
                </columns>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" right="20.0" />
+               </BorderPane.margin>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
-         </children>
-      </HBox>
+         </center>
+      </BorderPane>
    </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
 </AnchorPane>
