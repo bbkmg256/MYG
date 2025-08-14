@@ -87,6 +87,7 @@ public class ControladorVistaABMRutina {
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_MODIF_RUTINA,
+					BTAtras,
 					new ControladorVistaCargaRutina()
 			);
 		NavegadorDeVistasSingleton
@@ -172,6 +173,7 @@ public class ControladorVistaABMRutina {
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_MODIF_RUTINA,
+					BTModificar,
 					new ControladorVistaModificarRutina()
 			);
     	
@@ -210,7 +212,8 @@ public class ControladorVistaABMRutina {
 		.getInstancia()
 		.cargarNuevaVista(
 				this.getClass(),
-				RutasVistas.VISTA_ABM_RUTEJ
+				RutasVistas.VISTA_ABM_RUTEJ,
+				BTAbrir
 		);
     	
 //    	NavegadorDeVistas
@@ -243,7 +246,8 @@ public class ControladorVistaABMRutina {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_INICIO
+    				RutasVistas.VISTA_INICIO,
+    				BTAtras
     		);
     	
     	ControladorVistaInicio CVI = 

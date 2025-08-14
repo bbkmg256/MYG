@@ -312,7 +312,8 @@ public class ControladorVistaCargaCliente {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_ABM_CLIENTE
+    				RutasVistas.VISTA_ABM_CLIENTE,
+    				BTFinalizar
     		);
     	
     	ControladorVistaABMCliente CVABMC =
@@ -336,7 +337,8 @@ public class ControladorVistaCargaCliente {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_ABM_CLIENTE
+    				RutasVistas.VISTA_ABM_CLIENTE,
+    				BTCancelar
     		);
     	
     	ControladorVistaABMCliente CVABMC =

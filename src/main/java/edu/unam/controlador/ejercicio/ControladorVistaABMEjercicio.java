@@ -117,7 +117,8 @@ public class ControladorVistaABMEjercicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_INICIO
+					RutasVistas.VISTA_INICIO,
+					BTAtras
 			);
     	
     	ControladorVistaInicio CVI = 
@@ -142,6 +143,7 @@ public class ControladorVistaABMEjercicio {
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_MODIF_EJER,
+					BTCrear,
 					new ControladorVistaCargaEjercicio()
 			);
     	NavegadorDeVistasSingleton
@@ -236,6 +238,7 @@ public class ControladorVistaABMEjercicio {
     		.cargarNuevaVista(
     				this.getClass(),
     				RutasVistas.VISTA_CARGA_MODIF_EJER, // VISTA REUTILIZADA
+    				BTModificar,
     				new ControladorVistaModificarEjercicio()
     		);
     	

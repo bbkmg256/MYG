@@ -224,7 +224,8 @@ public class ControladorDeVistaCalculoVolEntSemanal {
     	.getInstancia()
     	.cargarNuevaVista(
     			this.getClass(),
-    			RutasVistas.VISTA_ABM_SEG
+    			RutasVistas.VISTA_ABM_SEG,
+    			this.BTAtras
     	);
 
 	ControladorVistaABMSeg CVABMS =

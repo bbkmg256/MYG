@@ -156,7 +156,8 @@ public class ControladorVistaABMTutor {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-	    			RutasVistas.VISTA_CARGAR_TUTOR
+	    			RutasVistas.VISTA_CARGAR_TUTOR,
+	    			BTCrear
 			);
     	NavegadorDeVistasSingleton
     		.getInstancia()
@@ -192,7 +193,8 @@ public class ControladorVistaABMTutor {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_INICIO
+    				RutasVistas.VISTA_INICIO,
+    				BTAtras
     		);
     	
     	ControladorVistaInicio CVI = 
@@ -293,7 +295,8 @@ public class ControladorVistaABMTutor {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_MODIFICAR_TUTOR
+    				RutasVistas.VISTA_MODIFICAR_TUTOR,
+    				BTModificar
     		);
     	
     	// OBTIENE EL CONTROLADOR DE LA VISTA SIGUIENTE Y PASA EL OBJETO TUTORES EXTRAIDO DE LA TABLA DE DATOS

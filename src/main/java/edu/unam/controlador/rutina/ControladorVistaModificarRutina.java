@@ -69,8 +69,6 @@ public class ControladorVistaModificarRutina {
     }
     
     public void establecerRutinaParaModificar(Rutina regRutina) {
-    	// PROBAR DE USAR HASHMAPS PARA MANEJAR LOS DATOS DEL OBJETO //
-    	// (NO CONVIENE, POR LA FORMA EN QUE ESTÁ DISEÑADO JAVA)	 //
     	this.rutinaID = regRutina.getIdRutina();
     	this.txtNombreRutina.setText(regRutina.getNombreRutina());
     }
@@ -106,28 +104,26 @@ public class ControladorVistaModificarRutina {
     	boolean rtConNombreRepetido = false;
     	
     	for (Rutina regRt : listaRu) {
-    		if (regRt.getNombreRutina().equals(nombreRutina)) {
+    		if (regRt.getNombreRutina().equals(nombreRutina.toLowerCase())) {
     			rtConNombreRepetido = true;
     			break;
     		}
     	}
     	
     	if (rtConNombreRepetido) {
-        	resultado =  this.lanzarMensaje(
-        			AlertType.CONFIRMATION, "Atención!",
+        	this.lanzarMensaje(
+        			AlertType.WARNING, "Atención!",
         			"NOMBRES DUPLICADOS",
-        			"Ya existe una rutina con el mismo nombre, quiere continuar?"
+        			"Ya existe una rutina con el mismo nombre..."
         	);
-        	
-        	// CONFIRMAR O DENEGAR OPERACION
-        	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
-        		System.out.println("[ ! ] > Cancelado!"); // LOG
-            	return;
-        	}
+    		System.err.println("[ ERROR ] > Existencia de nombre repetidos!");
+        	return;
     	}
     	
-    	// EL METODO RETORNA TRUE SI LA ENTIDAD SE ACTUALIZA, //
-    	// DE LO CONTRARIO, RETORNA FALSE					  //
+    	/*
+    	 * NOTE: EL METODO RETORNA TRUE SI LA ENTIDAD SE ACTUALIZA,
+    	 * DE LO CONTRARIO, RETORNA FALSE.
+    	 */
     	boolean actualizacionCorrecta =
     			this.srut.actualizarEstadoRutina(
     					rutinaID, nombreRutina
@@ -153,7 +149,8 @@ public class ControladorVistaModificarRutina {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_RUTINA
+					RutasVistas.VISTA_ABM_RUTINA,
+					BTFinalizar
 			);
 		NavegadorDeVistasSingleton
 			.getInstancia()
@@ -169,7 +166,8 @@ public class ControladorVistaModificarRutina {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_RUTINA
+					RutasVistas.VISTA_ABM_RUTINA,
+					BTCancelar
 			);
 		NavegadorDeVistasSingleton
 			.getInstancia()
@@ -189,7 +187,7 @@ public class ControladorVistaModificarRutina {
 
 
 
-// CODIGO SIN USAR //
+// DEPRECATE: CODIGO SIN USAR
 
 //this.srut.crearRutina(this.rutina = new Rutina(nombreRutina));
 

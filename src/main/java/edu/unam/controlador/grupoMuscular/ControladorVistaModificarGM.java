@@ -128,23 +128,19 @@ public class ControladorVistaModificarGM {
     	boolean gmConNombreRepetido = false;
     	
     	for (GrupoMuscular regGM: listaGM) {
-    		if (regGM.getNombreGrupo().equals(nombreGM)) {
+    		if (regGM.getNombreGrupo().equals(nombreGM.toLowerCase())) {
     			gmConNombreRepetido = true;
     			break;
     		}
     	}
     	
     	if (gmConNombreRepetido) {
-        	resultado =  this.lanzarMensaje(
-        			AlertType.CONFIRMATION, "Atención!",
-        			"NOMBRES DUPLICADOS", "Ya existe un GM con el mismo nombre, quiere continuar?"
+        	this.lanzarMensaje(
+        			AlertType.WARNING, "Atención!",
+        			"NOMBRES DUPLICADOS", "Ya existe un GM con el mismo nombre..."
         	);
-        	
-        	// CONFIRMAR O DENEGAR OPERACION
-        	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
-        		System.out.println("[ ! ] > Cancelado!"); // LOG
-            	return;
-        	}
+    		System.err.println("[ ! ] > Existencia de nombre repetidos!");
+        	return;
     	}
     	
     	boolean actualizacionCorrecta = this.sgm.actualizarEstadoGM(IDgm, nombreGM);
@@ -170,7 +166,8 @@ public class ControladorVistaModificarGM {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_GM
+					RutasVistas.VISTA_ABM_GM,
+					BTCancelar
 			);
 		NavegadorDeVistasSingleton
     		.getInstancia()
@@ -186,7 +183,8 @@ public class ControladorVistaModificarGM {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-        			RutasVistas.VISTA_ABM_GM
+        			RutasVistas.VISTA_ABM_GM,
+        			BTCancelar
         	);
     	NavegadorDeVistasSingleton
     		.getInstancia()

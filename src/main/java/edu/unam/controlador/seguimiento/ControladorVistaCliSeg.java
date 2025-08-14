@@ -137,7 +137,8 @@ public class ControladorVistaCliSeg {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ENT_SEG
+					RutasVistas.VISTA_ENT_SEG,
+					BTAbrir
 			);
     	
     	ControladorVistaEntSeg CVES = 
@@ -161,7 +162,8 @@ public class ControladorVistaCliSeg {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_INICIO
+					RutasVistas.VISTA_INICIO,
+					BTAtras
 			);
 		NavegadorDeVistasSingleton
 			.getInstancia()

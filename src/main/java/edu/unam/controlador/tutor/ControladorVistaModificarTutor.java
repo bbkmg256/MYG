@@ -140,7 +140,8 @@ public class ControladorVistaModificarTutor {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_TUTOR
+					RutasVistas.VISTA_ABM_TUTOR,
+					BTCancelar
 			);
     	NavegadorDeVistasSingleton
 			.getInstancia()
@@ -242,7 +243,8 @@ public class ControladorVistaModificarTutor {
      		.getInstancia()
      		.cargarNuevaVista(
      				this.getClass(),
-     				RutasVistas.VISTA_ABM_TUTOR
+     				RutasVistas.VISTA_ABM_TUTOR,
+     				BTFinalizar
      		);
      	
      	NavegadorDeVistasSingleton

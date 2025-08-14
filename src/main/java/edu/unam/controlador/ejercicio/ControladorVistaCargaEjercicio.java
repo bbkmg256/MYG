@@ -137,23 +137,21 @@ public class ControladorVistaCargaEjercicio {
     	
     	boolean ejConNombreRepetido = false;
     	for (Ejercicio regEj : listaEj) {
-    		if (regEj.getNombreEjercicio().equals(nombreEj)) {
+    		if (regEj.getNombreEjercicio().equals(nombreEj.toLowerCase())) {
     			ejConNombreRepetido = true;
     			break;
     		}
     	}
     	
     	if (ejConNombreRepetido) {
-        	Optional<ButtonType> resultado =  this.lanzarMensaje(
-        			AlertType.CONFIRMATION, "Atención!",
-        			"NOMBRES DUPLICADOS", "Ya existe un ejercicio con este nombre asociado a un grupo muscular, quiere continuar de todas formas?"
+        	this.lanzarMensaje(
+        			AlertType.WARNING, "Atención!",
+        			"NOMBRES DUPLICADOS",
+        			"Ya existe un ejercicio con este "
+        			+ "nombre asociado a un grupo muscular..."
         	);
-        	
-        	// CONFIRMAR O DENEGAR OPERACION
-        	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
-        		System.out.println("[ ! ] > Cancelado!"); // LOG
-            	return;
-        	}
+    		System.err.println("[ ! ] > Existencia de nombre repetidos!");
+        	return;
     	}
     	
     	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
@@ -191,7 +189,8 @@ public class ControladorVistaCargaEjercicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_EJERCICIO
+					RutasVistas.VISTA_ABM_EJERCICIO,
+					BTFinalizar
 			);
     	NavegadorDeVistasSingleton
 			.getInstancia()
@@ -207,7 +206,8 @@ public class ControladorVistaCargaEjercicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_EJERCICIO
+					RutasVistas.VISTA_ABM_EJERCICIO,
+					BTCancelar
 			);
     	NavegadorDeVistasSingleton
 			.getInstancia()

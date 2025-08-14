@@ -181,7 +181,8 @@ public class ControladorVistaABMCliente {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-	    			RutasVistas.VISTA_CARGA_CLIENTE
+	    			RutasVistas.VISTA_CARGA_CLIENTE,
+	    			BTCrear
 			);
     	NavegadorDeVistasSingleton
     		.getInstancia()
@@ -218,7 +219,8 @@ public class ControladorVistaABMCliente {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_INICIO
+    				RutasVistas.VISTA_INICIO,
+    				BTAtras
     		);
     	
     	ControladorVistaInicio CVI = 
@@ -316,7 +318,8 @@ public class ControladorVistaABMCliente {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_MODIFICAR_CLIENTE
+    				RutasVistas.VISTA_MODIFICAR_CLIENTE,
+    				BTModificar
     		);
     	
     	// OBTIENE EL CONTROLADOR DE LA VISTA SIGUIENTE Y PASA //
