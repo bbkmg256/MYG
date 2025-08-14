@@ -144,7 +144,8 @@ public class ControladorVistaCargaEntrenamiento {
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
-	    			RutasVistas.VISTA_ABM_ENT
+	    			RutasVistas.VISTA_ABM_ENT,
+	    			this.BTCancelar
 	    	);
     	
     	ControladorVistaABMEntrenamiento CVABME =
@@ -321,7 +322,8 @@ public class ControladorVistaCargaEntrenamiento {
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
-	    			RutasVistas.VISTA_ABM_ENT
+	    			RutasVistas.VISTA_ABM_ENT,
+	    			this.BTFinalizar
 	    	);
     	
     	ControladorVistaABMEntrenamiento CVABME =

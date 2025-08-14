@@ -116,7 +116,8 @@ public class ControladorVistaModificarRutinaEjercicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_RUTEJ
+					RutasVistas.VISTA_ABM_RUTEJ,
+					this.BTFinalizar
 			);
     	
     	ControladorVistaABMRutinaEjercicio CVABMRE =
@@ -208,7 +209,8 @@ public class ControladorVistaModificarRutinaEjercicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_RUTEJ
+					RutasVistas.VISTA_ABM_RUTEJ,
+					this.BTFinalizar
 			);
     	
     	ControladorVistaABMRutinaEjercicio CVABMRE =

@@ -147,7 +147,8 @@ public class ControladorVistaABMSeg {
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
-	    			RutasVistas.VISTA_ENT_SEG
+	    			RutasVistas.VISTA_ENT_SEG,
+	    			this.BTAtras
 	    	);
     	
     	ControladorVistaEntSeg CVES =
@@ -172,6 +173,7 @@ public class ControladorVistaABMSeg {
     	.cargarNuevaVista(
     			this.getClass(),
     			RutasVistas.VISTA_CARGA_MODIF_SEG,
+    			this.BTCrear,
     			new ControladorVistaCargarSeg()
     	);
 	
@@ -277,7 +279,13 @@ public class ControladorVistaABMSeg {
     
     @FXML
     private void eventoBTVE(ActionEvent event) {
-    	NavegadorDeVistasSingleton.getInstancia().cargarNuevaVista(this.getClass(), RutasVistas.VISTA_CALCULO_VOLUMEN_ENTRENAMIENTO);
+    	NavegadorDeVistasSingleton
+    		.getInstancia()
+    		.cargarNuevaVista(
+    				this.getClass(), 
+    				RutasVistas.VISTA_CALCULO_VOLUMEN_ENTRENAMIENTO,
+    				this.BTVE
+    		);
     	
     	ControladorDeVistaCalculoVolEntSemanal CDVCVE =
     			NavegadorDeVistasSingleton
@@ -286,7 +294,12 @@ public class ControladorVistaABMSeg {
     	
     	CDVCVE.iniciar(this.sseg.obtenerListaFiltradaPorEntrenamiento(ent));
     	
-    	NavegadorDeVistasSingleton.getInstancia().cambiarVista(this.BTVE, "Volumen de entrenamiento semanal");
+    	NavegadorDeVistasSingleton
+    		.getInstancia()
+    		.cambiarVista(
+    				this.BTVE, 
+    				"Volumen de entrenamiento semanal"
+    		);
     }
     
     @FXML

@@ -210,7 +210,8 @@ public class ControladorVistaEntSeg {
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
-	    			RutasVistas.VISTA_ABM_SEG
+	    			RutasVistas.VISTA_ABM_SEG,
+	    			this.BTAtras
 	    	);
     	
     	ControladorVistaABMSeg CVABMS =
@@ -234,7 +235,8 @@ public class ControladorVistaEntSeg {
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
-	    			RutasVistas.VISTA_CLI_SEG
+	    			RutasVistas.VISTA_CLI_SEG,
+	    			this.BTAtras
 	    	);
     	NavegadorDeVistasSingleton
 	    	.getInstancia()

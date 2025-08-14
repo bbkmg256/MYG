@@ -8,78 +8,94 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.unam.controlador.tutor.ControladorVistaCargaTutor">
    <children>
-      <HBox alignment="CENTER" layoutX="9.0" layoutY="11.0" prefHeight="59.0" prefWidth="784.0">
-         <children>
-            <Label text="Cargar tutor">
-               <font>
-                  <Font name="DejaVu Sans Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <VBox alignment="CENTER" layoutX="14.0" layoutY="112.0" prefHeight="309.0" prefWidth="772.0" spacing="20.0">
-         <children>
-            <HBox alignment="CENTER" prefHeight="275.0" prefWidth="772.0" spacing="40.0">
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="68.0" prefWidth="800.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="300.0" spacing="20.0">
+                  <Label prefHeight="44.0" prefWidth="271.0" text="Cargar tutor">
+                     <font>
+                        <Font name="DejaVu Sans Bold" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </HBox>
+         </top>
+         <center>
+            <VBox alignment="CENTER" prefHeight="309.0" prefWidth="772.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="275.0" prefWidth="772.0" spacing="40.0">
                      <children>
-                        <TextField fx:id="txtDNI" prefHeight="45.0" prefWidth="215.0" promptText="DNI" />
-                        <TextField fx:id="txtNombre" prefHeight="45.0" prefWidth="215.0" promptText="Nombre" />
-                        <TextField fx:id="txtApellido" prefHeight="45.0" prefWidth="215.0" promptText="Apellido" />
-                        <VBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="215.0" spacing="10.0">
+                        <VBox alignment="CENTER_RIGHT" fillWidth="false" prefHeight="350.0" prefWidth="300.0" spacing="20.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <HBox alignment="CENTER" spacing="20.0">
+                              <TextField fx:id="txtDNI" prefHeight="45.0" prefWidth="300.0" promptText="DNI" />
+                              <TextField fx:id="txtNombre" prefHeight="45.0" prefWidth="300.0" promptText="Nombre" />
+                              <TextField fx:id="txtApellido" prefHeight="45.0" prefWidth="300.0" promptText="Apellido" />
+                              <VBox alignment="CENTER_LEFT" fillWidth="false" prefHeight="45.0" prefWidth="300.0" spacing="10.0">
                                  <children>
-                                    <Label text="Sexo">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <RadioButton fx:id="RBFemenino" mnemonicParsing="false" text="Femenino">
-                                       <toggleGroup>
-                                          <ToggleGroup fx:id="sexoGroup" />
-                                       </toggleGroup></RadioButton>
-                                    <RadioButton fx:id="RBMasculino" mnemonicParsing="false" text="Masculino" toggleGroup="$sexoGroup" />
+                                    <HBox alignment="CENTER" prefHeight="45.0" prefWidth="326.0" spacing="20.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Label text="Sexo">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <RadioButton fx:id="RBFemenino" mnemonicParsing="false" text="Femenino">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="sexoGroup" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="RBMasculino" mnemonicParsing="false" text="Masculino" toggleGroup="$sexoGroup" />
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <VBox fillWidth="false" prefHeight="242.0" prefWidth="300.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <DatePicker fx:id="DPFechaNac" prefHeight="45.0" prefWidth="300.0" promptText="Fecha de nacimiento" />
+                              <TextField fx:id="txtCiudad" prefHeight="45.0" prefWidth="300.0" promptText="Ciudad" />
+                              <TextField fx:id="txtProvincia" prefHeight="45.0" prefWidth="300.0" promptText="Provincia" />
+                              <TextField fx:id="txtCodigoPostal" prefHeight="45.0" prefWidth="300.0" promptText="Código postal" />
                            </children>
                         </VBox>
                      </children>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="242.0" prefWidth="300.0" spacing="20.0">
-                     <children>
-                        <DatePicker fx:id="DPFechaNac" prefHeight="45.0" prefWidth="309.0" promptText="Fecha de nacimiento" />
-                        <TextField fx:id="txtCiudad" prefHeight="45.0" prefWidth="215.0" promptText="Ciudad" />
-                        <TextField fx:id="txtProvincia" prefHeight="45.0" prefWidth="215.0" promptText="Provincia" />
-                        <TextField fx:id="txtCodigoPostal" prefHeight="45.0" prefWidth="215.0" promptText="Código postal" />
-                     </children>
-                  </VBox>
+                  </HBox>
                </children>
+            </VBox>
+         </center>
+         <bottom>
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="80.0" prefWidth="800.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="BTCancelar" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="40.0" prefWidth="120.0" text="Cancelar">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="BTFinalizar" mnemonicParsing="false" onAction="#eventoBTFinalizar" prefHeight="40.0" prefWidth="120.0" text="Finalizar">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="10.0" right="10.0" />
+               </padding>
             </HBox>
-         </children>
-      </VBox>
-      <HBox alignment="BOTTOM_RIGHT" layoutX="14.0" layoutY="550.0" prefHeight="36.0" prefWidth="772.0" spacing="20.0">
-         <children>
-            <Button fx:id="BTCancelar" mnemonicParsing="false" onAction="#eventoBTCancelar" prefHeight="36.0" prefWidth="120.0" text="Cancelar">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="BTFinalizar" mnemonicParsing="false" onAction="#eventoBTFinalizar" prefHeight="36.0" prefWidth="120.0" text="Finalizar">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
+         </bottom>
+      </BorderPane>
    </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
 </AnchorPane>

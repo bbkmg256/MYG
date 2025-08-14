@@ -81,33 +81,30 @@ public class ControladorVistaCargaRutina {
     		return;
     	}
     	
-    	// BLOQUE DE VERIFICACIÓN DE NOMBRES DUPLICADOS //
+    	// NOTE: BLOQUE DE VERIFICACIÓN DE NOMBRES DUPLICADOS
     	List<Rutina> listaRu = this.srut.obtenerTodasLasRutinas();
     	
     	boolean rtConNombreRepetido = false;
     	
     	for (Rutina regRt : listaRu) {
-    		if (regRt.getNombreRutina().equals(nombreRutina)) {
+    		if (regRt.getNombreRutina().equals(nombreRutina.toLowerCase())) {
     			rtConNombreRepetido = true;
     			break;
     		}
     	}
     	
+    	// NOTE: EVITA NOMBRES REPETIDOS
     	if (rtConNombreRepetido) {
-        	Optional<ButtonType> resultado =  this.lanzarMensaje(
-        			AlertType.CONFIRMATION, "Atención!",
+    		this.lanzarMensaje(
+        			AlertType.WARNING, "Atención!",
         			"NOMBRES DUPLICADOS",
-        			"Ya existe una rutina con el mismo nombre, quiere continuar?"
+        			"Ya existe una rutina con el mismo nombre..."
         	);
-        	
-        	// CONFIRMAR O DENEGAR OPERACION
-        	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
-        		System.out.println("[ ! ] > Cancelado!"); // LOG
-            	return;
-        	}
+    		System.err.println("[ ! ] > Existencia de nombre repetidos!");
+    		return;
     	}
     	
-    	// RESULTADO ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
+    	// NOTE: "resultado" ALMACENA LA OPCION INDICADA POR EL USUARIO EN LA ALERTA
     	Optional<ButtonType> resultado =  this.lanzarMensaje(
     			AlertType.CONFIRMATION, "Creación de rutina",
     			"OPERACION DE CARGA", "Confirmar operación?"
@@ -141,7 +138,8 @@ public class ControladorVistaCargaRutina {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_RUTINA
+					RutasVistas.VISTA_ABM_RUTINA,
+					BTFinalizar
 			);
 		NavegadorDeVistasSingleton
 			.getInstancia()
@@ -157,7 +155,8 @@ public class ControladorVistaCargaRutina {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_RUTINA
+					RutasVistas.VISTA_ABM_RUTINA,
+					BTCancelar
 			);
     	NavegadorDeVistasSingleton
 			.getInstancia()

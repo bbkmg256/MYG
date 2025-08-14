@@ -252,7 +252,8 @@ public class ControladorVistaABMRutinaEntrenamiento {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_ENT
+					RutasVistas.VISTA_ABM_ENT,
+					this.BTAtras
 			);
     	
     	ControladorVistaABMEntrenamiento CVABME =

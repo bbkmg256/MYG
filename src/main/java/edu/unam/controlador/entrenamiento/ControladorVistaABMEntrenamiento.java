@@ -157,6 +157,7 @@ public class ControladorVistaABMEntrenamiento {
 	    	.cargarNuevaVista(
 	    			this.getClass(),
 	    			RutasVistas.VISTA_CARGA_MODIF_ENT,
+	    			this.BTCrear,
 	    			new ControladorVistaCargaEntrenamiento()
 	    	);
     	
@@ -264,6 +265,7 @@ public class ControladorVistaABMEntrenamiento {
 	    	.cargarNuevaVista(
 	    			this.getClass(),
 	    			RutasVistas.VISTA_CARGA_MODIF_ENT,
+	    			this.BTModificar,
 	    			new ControladorVistaModifEntrenamiento()
 	    	);
     	
@@ -315,7 +317,8 @@ public class ControladorVistaABMEntrenamiento {
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
-	    			RutasVistas.VISTA_ABM_RUT_ENT_B
+	    			RutasVistas.VISTA_ABM_RUT_ENT_B,
+	    			this.BTAbrir
 	    	);
 	
     	ControladorVistaABMRutinaEntrenamiento CVAMBRE = 
@@ -339,7 +342,8 @@ public class ControladorVistaABMEntrenamiento {
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
-	    			RutasVistas.VISTA_INICIO
+	    			RutasVistas.VISTA_INICIO,
+	    			this.BTAtras
 	    	);
     	
     	ControladorVistaInicio CVI = 
@@ -408,7 +412,8 @@ public class ControladorVistaABMEntrenamiento {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_PUNTUAR_TUTOR
+    				RutasVistas.VISTA_PUNTUAR_TUTOR,
+    				this.BTFinalizarEnt
     		);
     	
     	ControladorVistaPuntuarTutor CVPT =

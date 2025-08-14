@@ -98,24 +98,20 @@ public class ControladorVistaCargarGM {
     	for (GrupoMuscular regGM : listaGM) {
 //    		System.out.printf("%s | %s%n", regGM.getNombreGrupo(), this.gm.getNombreGrupo());
 //    		gmConNombreRepetido = (regGM.getNombreGrupo() == this.gm.getNombreGrupo()) ? true : false;
-    		if (regGM.getNombreGrupo().equals(nombreGM)) {
+    		if (regGM.getNombreGrupo().equals(nombreGM.toLowerCase())) {
     			gmConNombreRepetido = true;
     			break;
     		}
     	}
     	
     	if (gmConNombreRepetido) {
-        	Optional<ButtonType> resultado =  this.lanzarMensaje(
-        			AlertType.CONFIRMATION, "Atención!",
+    		this.lanzarMensaje(
+    				AlertType.WARNING, "Atención!",
         			"NOMBRES DUPLICADOS",
-        			"Ya existe un GM con el mismo nombre, quiere continuar?"
+        			"Ya existe un GM con el mismo nombre..."
         	);
-        	
-        	// CONFIRMAR O DENEGAR OPERACION
-        	if (resultado.isPresent() && resultado.get() == ButtonType.CANCEL) {
-        		System.out.println("[ ! ] > Cancelado!"); // LOG
-            	return;
-        	}
+    		System.err.println("[ ! ] > Existencia de nombre repetidos!");
+        	return;
     	}
     	
     	this.gm = new GrupoMuscular(nombreGM);
@@ -159,12 +155,13 @@ public class ControladorVistaCargarGM {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_GM
+					RutasVistas.VISTA_ABM_GM,
+					BTAceptar
 			);
 		NavegadorDeVistasSingleton
     		.getInstancia()
     		.cambiarVista(
-    				BTCancelar,
+    				BTAceptar,
     				"Grupo Muscular"
     		);
     }
@@ -175,7 +172,8 @@ public class ControladorVistaCargarGM {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-        			RutasVistas.VISTA_ABM_GM
+        			RutasVistas.VISTA_ABM_GM,
+        			BTCancelar
         	);
     	NavegadorDeVistasSingleton
     		.getInstancia()

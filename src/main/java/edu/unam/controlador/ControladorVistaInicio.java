@@ -145,7 +145,8 @@ public class ControladorVistaInicio {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_ABM_CLIENTE
+    				RutasVistas.VISTA_ABM_CLIENTE,
+    				LBBuildVer
     		);
     	
     	ControladorVistaABMCliente CVABMC =
@@ -169,7 +170,8 @@ public class ControladorVistaInicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_EJERCICIO
+					RutasVistas.VISTA_ABM_EJERCICIO,
+					LBBuildVer
 			);
 //    	NavegadorDeVistas
 //			.getInstancia()
@@ -192,7 +194,8 @@ public class ControladorVistaInicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_ENT
+					RutasVistas.VISTA_ABM_ENT,
+					LBBuildVer
 			);
     	
     	ControladorVistaABMEntrenamiento CVABME =
@@ -216,7 +219,8 @@ public class ControladorVistaInicio {
     		.getInstancia()
     		.cargarNuevaVista(
     				this.getClass(),
-    				RutasVistas.VISTA_ABM_GM
+    				RutasVistas.VISTA_ABM_GM,
+    				LBBuildVer
     		);
     	NavegadorDeVistasSingleton
     		.getInstancia()
@@ -232,7 +236,8 @@ public class ControladorVistaInicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_RUTINA
+					RutasVistas.VISTA_ABM_RUTINA,
+					LBBuildVer
 			);
     	NavegadorDeVistasSingleton
 			.getInstancia()
@@ -248,7 +253,8 @@ public class ControladorVistaInicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_CLI_SEG
+					RutasVistas.VISTA_CLI_SEG,
+					LBBuildVer
 			);
     	NavegadorDeVistasSingleton
 			.getInstancia()
@@ -264,7 +270,8 @@ public class ControladorVistaInicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_TUTOR
+					RutasVistas.VISTA_ABM_TUTOR,
+					LBBuildVer
 			);
     	NavegadorDeVistasSingleton
 			.getInstancia()

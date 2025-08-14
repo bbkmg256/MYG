@@ -181,7 +181,8 @@ public class ControladorVistaCargarSeg {
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
-	    			RutasVistas.VISTA_ABM_SEG
+	    			RutasVistas.VISTA_ABM_SEG,
+	    			this.BTCancelar
 	    	);
 	
 		ControladorVistaABMSeg CVABMS =
@@ -360,7 +361,8 @@ public class ControladorVistaCargarSeg {
 	    	.getInstancia()
 	    	.cargarNuevaVista(
 	    			this.getClass(),
-	    			RutasVistas.VISTA_ABM_SEG
+	    			RutasVistas.VISTA_ABM_SEG,
+	    			this.BTCancelar
 	    	);
 	
 		ControladorVistaABMSeg CVABMS =

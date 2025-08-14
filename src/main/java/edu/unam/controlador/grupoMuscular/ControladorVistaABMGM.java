@@ -90,11 +90,15 @@ public class ControladorVistaABMGM {
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_GM, // SE REUTILIZA LA VISTA DE CARGA PARA LA MODIFICACION
+					BTAgregar,
 					new ControladorVistaCargarGM()
 			);
     	NavegadorDeVistasSingleton
     		.getInstancia()
-    		.cambiarVista(BTAgregar, "Cargar GM");
+    		.cambiarVista(
+    				BTAgregar,
+    				"Cargar GM"
+    		);
     }
 
     @FXML
@@ -158,6 +162,7 @@ public class ControladorVistaABMGM {
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_GM, // SE REUTILIZA LA VISTA DE CARGA PARA LA MODIFICACION
+					BTModificar,
 					new ControladorVistaModificarGM()
 			);
 
@@ -178,7 +183,8 @@ public class ControladorVistaABMGM {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(), 
-					RutasVistas.VISTA_INICIO
+					RutasVistas.VISTA_INICIO,
+					BTAtras
 			);
     	
     	ControladorVistaInicio CVI = 

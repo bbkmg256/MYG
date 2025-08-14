@@ -129,6 +129,7 @@ public class ControladorVistaABMRutinaEjercicio {
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_MODIF_RUTEJ,
+					this.BTCrear,
 					new ControladorVistaCargarRutinaEjercicio()
 			);
     	
@@ -163,6 +164,7 @@ public class ControladorVistaABMRutinaEjercicio {
 			.cargarNuevaVista(
 					this.getClass(),
 					RutasVistas.VISTA_CARGA_MODIF_RUTEJ,
+					this.BTModificar,
 					new ControladorVistaModificarRutinaEjercicio()
 			);
     	
@@ -227,7 +229,8 @@ public class ControladorVistaABMRutinaEjercicio {
 			.getInstancia()
 			.cargarNuevaVista(
 					this.getClass(),
-					RutasVistas.VISTA_ABM_RUTINA
+					RutasVistas.VISTA_ABM_RUTINA,
+					this.BTAtras
 			);
     	NavegadorDeVistasSingleton
 			.getInstancia()

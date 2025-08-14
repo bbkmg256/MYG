@@ -149,6 +149,7 @@ public class App extends Application {
 		// MODIFICAR TOD0 ESTO PARA QUE UTILICE EL SINGLETON DE NAVEGACIÓN
 		FXMLLoader raizVistaInicio = new FXMLLoader(this.getClass().getResource(RutasVistas.VISTA_INICIO)); // LEE EL FICHERO FXML DE LA VISTA
 		AnchorPane vista = raizVistaInicio.load();
+//		vista.setMinSize(800, 600);
 		Scene escenaInicio = new Scene(vista); // CREA UNA NUEVA ESCENA EN BASE AL CONTENEDOR RAIZ		
 		
 		// SIEMPRE ES NECESESARIO QUE SE CASTEE EL RETORNO DEL CONTROLADOR, //
@@ -158,7 +159,8 @@ public class App extends Application {
 		
 		ventana.setScene(escenaInicio); // ESTABLECE LA ESCENA EN LA VENTANA
 		ventana.setTitle("Inicio"); // ESTABLECE TITUTO A LA VENTANA
-		ventana.setResizable(false);
+		ventana.setResizable(true);
+		ventana.setMinWidth(800); ventana.setMinHeight(600);
 		ventana.show(); // MUESTRA LA VENTANA
 		
 		// RETONAR EL ANCHO Y ALTO DEL CONTENEDOR DE LA VISTA
